@@ -9,7 +9,7 @@
         public static IEnumerable<Point> GetHistogram(FunctionData data, int intervals)
         {
             var histogramList = new List<Point>();
-            var step = (data.Amplitude * 2) / intervals;
+            var step = data.Amplitude * 2 / intervals;
             for (var i = 0; i <= intervals; i++)
             {
                 histogramList.Add(new Point(i * step, 0));

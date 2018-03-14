@@ -1,7 +1,6 @@
 ﻿namespace CPS1
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
 
@@ -15,13 +14,13 @@
                 {
                     foreach (var point in points)
                     {
-                        writer.WriteLine("{0} {1}",point.X, point.Y);
+                        writer.WriteLine("{0} {1}", point.X, point.Y);
                     }
                 }
             }
             catch (Exception exception)
             {
-                //TODO Handle exception
+                // TODO Handle exception
             }
         }
     }

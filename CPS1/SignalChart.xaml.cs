@@ -1,29 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-namespace CPS1
+﻿namespace CPS1
 {
+    using System.Windows.Controls;
+
     /// <summary>
-    /// Interaction logic for SignalChart.xaml
+    ///     Interaction logic for SignalChart.xaml
     /// </summary>
     public partial class SignalChart : UserControl
     {
-        public int ChartNumber { get; set; }
         public SignalChart()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        public int ChartNumber { get; set; }
     }
 }

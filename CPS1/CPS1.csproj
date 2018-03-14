@@ -63,10 +63,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="docs\CommandHandler.cs" />
+    <Compile Include="CommandHandler.cs" />
     <Compile Include="Functions\FunctionData.cs" />
     <Compile Include="Functions\FullyRectifiedSineWave.cs" />
     <Compile Include="Functions\HalfRectifiedSineWave.cs" />
+    <Compile Include="Functions\Required.cs" />
     <Compile Include="Functions\SquareWave.cs" />
     <Compile Include="Functions\SymmetricalSquareWave.cs" />
     <Compile Include="Functions\TriangleWave.cs" />

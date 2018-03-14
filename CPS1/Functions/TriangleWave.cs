@@ -1,15 +1,18 @@
 ﻿namespace CPS1.Functions
 {
     using System;
-    using System.Windows.Controls;
 
     public class TriangleWave : IFunction
     {
-        private Func<double, double, double, double, double, double> Function { get; }
         public TriangleWave()
         {
             this.Function = (A, T, t1, kw, t) => { return 0; };
         }
+
+        public static Required RequiredAttributes { get; set; } = new Required(true, true, true, true, true, true);
+
+        private Func<double, double, double, double, double, double> Function { get; }
+
         public void GeneratePoints(FunctionData data)
         {
             data.Points.Clear();

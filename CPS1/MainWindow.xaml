@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow"
         Height="1000" Width="1800"
-        Left="60" Top="20" >
+        Left="60" Top="20">
     <Window.Resources>
         <local:ViewModelLocator x:Key="Locator" />
         <Style TargetType="Control" x:Key="ChartStyle">
@@ -16,6 +16,7 @@
             <Setter Property="Padding" Value="5 5 5 5" />
             <Setter Property="Margin" Value="2 2 2 2" />
         </Style>
+
     </Window.Resources>
     <Grid Margin="5 5 5 5" DataContext="{Binding ViewModel, Source={StaticResource Locator}}">
         <Grid.ColumnDefinitions>
@@ -27,23 +28,20 @@
             <RowDefinition Height="25" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                   Text="MENU"/>
-        <TextBlock Grid.Column="1" Grid.Row="0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                   Text="FIRST SIGNAL GRAPH AND HISTOGRAM"/>
-        <TextBlock Grid.Column="2" Grid.Row="0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                   Text="SECOND SIGNAL GRAPH AND HISTOGRAM"/>
+        <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Text="MENU" />
+        <TextBlock Grid.Column="1" Grid.Row="0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Text="FIRST SIGNAL GRAPH AND HISTOGRAM" />
+        <TextBlock Grid.Column="2" Grid.Row="0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Text="SECOND SIGNAL GRAPH AND HISTOGRAM" />
         <Grid Grid.Column="0" Grid.Row="1">
             <TabControl Style="{StaticResource ChartStyle}">
-                <TabItem Header="First signal">
-
-                </TabItem>
-                <TabItem Header="Second signal">
-
-                </TabItem>
-                <TabItem Header="Operations">
-
-                </TabItem>
+                <TabItem Header="First signal" />
+                <TabItem Header="Second signal" />
+                <TabItem Header="Operations" />
             </TabControl>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1">

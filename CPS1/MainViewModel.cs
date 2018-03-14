@@ -1,7 +1,6 @@
 ﻿namespace CPS1
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Windows.Input;
 

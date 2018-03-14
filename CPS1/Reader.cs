@@ -1,10 +1,8 @@
 ﻿namespace CPS1
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.CompilerServices;
 
     public static class Reader
     {
@@ -17,7 +15,7 @@
                 {
                     while (!reader.EndOfStream)
                     {
-                        GetPoints(out double x, out double y, reader.ReadLine());
+                        GetPoints(out var x, out var y, reader.ReadLine());
                         pointsList.Add(new Point(x, y));
                     }
                 }

@@ -24,6 +24,8 @@
             this.DutyCycle = dutyCycle;
             this.Points = new List<Point>();
 
+            this.RequiredAttributes = new Required(false, false, false, false, false, false);
+
             this.Formatter = value => value.ToString("N");
         }
 
@@ -46,6 +48,8 @@
         public double Period { get; }
 
         public List<Point> Points { get; }
+
+        public Required RequiredAttributes { get; set; }
 
         public int Samples { get; }
 

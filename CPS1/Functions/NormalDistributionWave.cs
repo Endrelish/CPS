@@ -6,6 +6,8 @@
     {
         public static int NumbersPerSample { get; set; } = 100;
 
+        public static Required RequiredAttributes { get; set; } = new Required(true, true, false, true, false, true);
+
         public void GeneratePoints(FunctionData data)
         {
             var random = new Random();
@@ -22,6 +24,7 @@
                 y /= NumbersPerSample;
                 data.Points.Add(new Point(i * interval + data.StartTime, y));
             }
+
             data.SetAmplitude();
         }
     }

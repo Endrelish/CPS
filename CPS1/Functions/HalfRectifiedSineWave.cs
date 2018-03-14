@@ -18,6 +18,8 @@
                 };
         }
 
+        public static Required RequiredAttributes { get; set; } = new Required(true, true, true, true, true, true);
+
         private Func<double, double, double, double, double> Function { get; }
 
         public void GeneratePoints(FunctionData data)
