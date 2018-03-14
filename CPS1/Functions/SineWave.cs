@@ -2,9 +2,9 @@
 {
     using System;
 
-    public class Sinusoid : IFunction
+    public class SineWave : IFunction
     {
-        public Sinusoid()
+        public SineWave()
         {
             this.SinusoidFunction = (A, T, t, t1) => A * Math.Sin(Math.PI * 2 * (t - t1) / T);
         }
@@ -15,15 +15,15 @@
         {
             data.Points.Clear();
 
-            var interval = (data.MaxArgument - data.MinArgument) / data.Samples;
+            var interval = data.Duration / data.Samples;
             for (var i = 0; i < data.Samples; i++)
             {
-                var x = i * interval + data.MinArgument;
-                var y = this.SinusoidFunction(data.MaxValue, data.Period, x, data.StartTime);
+                var x = i * interval + data.StartTime;
+                var y = this.SinusoidFunction(data.Amplitude, data.Period, x, data.StartTime);
                 data.Points.Add(new Point(x, y));
             }
-
-            data.SetMinMaxValue();
         }
+
+      
     }
 }

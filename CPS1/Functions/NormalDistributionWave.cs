@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class NormalDistribution : IFunction
+    public class NormalDistributionWave : IFunction
     {
         public static int NumbersPerSample { get; set; } = 100;
 
@@ -10,20 +10,19 @@
         {
             var random = new Random();
             data.Points.Clear();
-            var interval = (data.MaxArgument - data.MinArgument) / data.Samples;
+            var interval = data.Duration / data.Samples;
             for (var i = 0; i < data.Samples; i++)
             {
                 var y = 0d;
                 for (var j = 0; j < NumbersPerSample; j++)
                 {
-                    y += random.NextDouble() * (data.MaxValue - data.MinValue) + data.MinValue;
+                    y += random.NextDouble() * (data.Amplitude * 2) - data.Amplitude;
                 }
 
                 y /= NumbersPerSample;
-                data.Points.Add(new Point(i * interval + data.MinArgument, y));
+                data.Points.Add(new Point(i * interval + data.StartTime, y));
             }
-
-            data.SetMinMaxValue();
+            data.SetAmplitude();
         }
     }
 }

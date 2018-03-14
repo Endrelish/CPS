@@ -1,14 +1,17 @@
 ﻿namespace CPS1
 {
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Windows.Input;
 
     using CPS1.Functions;
 
-    using LiveCharts;
+    using org.mariuszgromada.math.mxparser;
 
     public class MainViewModel : INotifyPropertyChanged
     {
-        private SeriesCollection a;
+        private ICommand clickCommand;
 
         private FunctionData histogram;
 
@@ -16,8 +19,8 @@
 
         public MainViewModel()
         {
-            this.Generator = new NormalDistribution();
-            this.signal = new FunctionData(maxArgument:10, minArgument:0);
+            this.Generator = new SquareWave();
+            this.signal = new FunctionData();
 
             this.Generator.GeneratePoints(this.signal);
             this.histogram = new FunctionData();
@@ -25,6 +28,14 @@
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ICommand ClickCommand
+        {
+            get
+            {
+                return this.clickCommand ?? (this.clickCommand = new CommandHandler(() => this.Compute(), true));
+            }
+        }
 
         public IFunction Generator { get; set; }
 
@@ -46,6 +57,19 @@
                 this.signal = value;
                 this.OnPropertyChanged("Signal");
             }
+        }
+
+        public string Text { get; set; } = "PI / 2";
+
+        public double Value { get; set; } = 3;
+
+        public void Compute()
+        {
+            this.Value = 9;
+            var pi = new Constant("PI", Math.PI);
+            var e1 = new Expression(this.Text);
+            e1.addConstants(pi);
+            this.Value = e1.calculate();
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

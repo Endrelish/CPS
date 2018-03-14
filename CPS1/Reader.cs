@@ -11,7 +11,6 @@
         public static IEnumerable<Point> ReadData(string filepath)
         {
             var pointsList = new List<Point>();
-            string line;
             try
             {
                 using (var reader = new StreamReader(filepath))

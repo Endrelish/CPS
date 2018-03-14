@@ -20,6 +20,7 @@ namespace CPS1
     /// </summary>
     public partial class SignalChart : UserControl
     {
+        public int ChartNumber { get; set; }
         public SignalChart()
         {
             InitializeComponent();

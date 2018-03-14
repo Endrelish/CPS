@@ -9,20 +9,14 @@
     public class FunctionData
     {
         public FunctionData(
-            double maxArgument = 100,
-            double minArgument = -100,
-            double maxValue = 50,
-            double minValue = -50,
-            double period = Math.PI,
             double startTime = 0,
+            double amplitude = 50,
+            double period = Math.PI,
             double duration = Math.PI * 10,
-            double dutyCycle = Math.PI / 4,
+            double dutyCycle = Math.PI / 5,
             int samples = 500)
         {
-            this.MaxArgument = maxArgument;
-            this.MinArgument = minArgument;
-            this.MaxValue = maxValue;
-            this.MinValue = minValue;
+            this.Amplitude = amplitude;
             this.Period = period;
             this.Samples = samples;
             this.StartTime = startTime;
@@ -32,6 +26,8 @@
 
             this.Formatter = value => value.ToString("N");
         }
+
+        public double Amplitude { get; private set; }
 
         public double Duration { get; }
 
@@ -46,14 +42,6 @@
                 return this.Points.Select(p => p.X.ToString("N")).ToArray();
             }
         }
-
-        public double MaxArgument { get; }
-
-        public double MaxValue { get; private set; }
-
-        public double MinArgument { get; }
-
-        public double MinValue { get; }
 
         public double Period { get; }
 
@@ -71,10 +59,9 @@
             }
         }
 
-        public void SetMinMaxValue()
+        public void SetAmplitude()
         {
-            this.MaxValue = this.Points.Max(p => p.Y);
-            this.MaxValue = this.Points.Min(p => p.Y);
+            this.Amplitude = Math.Max(this.Points.Max(p => p.Y), Math.Abs(this.Points.Min(p => p.Y)));
         }
     }
 }
