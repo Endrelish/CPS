@@ -2,6 +2,8 @@
 {
     using System.ComponentModel;
 
+    using CPS1.Functions;
+
     using LiveCharts;
 
     public class MainViewModel : INotifyPropertyChanged
@@ -14,8 +16,8 @@
 
         public MainViewModel()
         {
-            this.Generator = new RandomNoise();
-            this.signal = new FunctionData();
+            this.Generator = new NormalDistribution();
+            this.signal = new FunctionData(maxArgument:10, minArgument:0);
 
             this.Generator.GeneratePoints(this.signal);
             this.histogram = new FunctionData();

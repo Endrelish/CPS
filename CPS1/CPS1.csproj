@@ -60,18 +60,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="FunctionData.cs" />
+    <Compile Include="Functions\FunctionData.cs" />
+    <Compile Include="HalfRectifiedSinusoid.cs" />
     <Compile Include="Histogram.cs" />
     <Compile Include="HistogramChart.xaml.cs">
       <DependentUpon>HistogramChart.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IFunction.cs" />
+    <Compile Include="Functions\IFunction.cs" />
     <Compile Include="MainViewModel.cs" />
-    <Compile Include="RandomNoise.cs" />
+    <Compile Include="Functions\NormalDistribution.cs" />
+    <Compile Include="Functions\RandomNoise.cs" />
     <Compile Include="Reader.cs" />
     <Compile Include="SignalChart.xaml.cs">
       <DependentUpon>SignalChart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Functions\Sinusoid.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="Writer.cs" />
     <Page Include="HistogramChart.xaml">

@@ -1,4 +1,4 @@
-﻿namespace CPS1
+﻿namespace CPS1.Functions
 {
     using System;
 
@@ -14,6 +14,7 @@
                 var y = (random.NextDouble() * (data.MaxValue - data.MinValue)) + data.MinValue;
                 data.Points.Add(new Point((i * interval) + data.MinArgument, y));
             }
+            data.SetMinMaxValue();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace CPS1
+﻿namespace CPS1.Functions
 {
     using System.Collections;
     using System.Collections.Generic;

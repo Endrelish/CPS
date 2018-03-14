@@ -3,6 +3,8 @@
     using System.Collections;
     using System.Collections.Generic;
 
+    using CPS1.Functions;
+
     public static class Histogram
     {
         public static IEnumerable<Point> GetHistogram(FunctionData data, int intervals)
