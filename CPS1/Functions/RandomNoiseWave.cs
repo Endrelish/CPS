@@ -17,6 +17,8 @@
                 data.Points.Add(new Point(i * interval + data.StartTime, y));
             }
 
+            data.RequiredAttributes = RandomNoiseWave.RequiredAttributes;
+
             data.SetAmplitude();
         }
     }

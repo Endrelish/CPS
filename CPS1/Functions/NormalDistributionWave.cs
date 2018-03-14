@@ -25,6 +25,8 @@
                 data.Points.Add(new Point(i * interval + data.StartTime, y));
             }
 
+            data.RequiredAttributes = NormalDistributionWave.RequiredAttributes;
+
             data.SetAmplitude();
         }
     }

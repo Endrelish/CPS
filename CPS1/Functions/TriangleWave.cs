@@ -24,6 +24,8 @@
                 var y = this.Function(data.Amplitude, data.Period, data.StartTime, data.DutyCycle, x);
                 data.Points.Add(new Point(x, y));
             }
+
+            data.RequiredAttributes = TriangleWave.RequiredAttributes;
         }
     }
 }
