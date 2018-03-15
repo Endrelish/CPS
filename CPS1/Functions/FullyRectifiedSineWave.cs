@@ -18,7 +18,7 @@
                 };
         }
 
-        public static Required RequiredAttributes { get; set; } = new Required(true, true, true, true, true, true);
+        public static Required RequiredAttributes { get; set; } = new Required(true, true, true, true, false, true);
 
         private Func<double, double, double, double, double> Function { get; }
 
@@ -33,11 +33,6 @@
                 var y = this.Function(data.Amplitude.Value, data.Period.Value, x, data.StartTime.Value);
                 data.Points.Add(new Point(x, y));
             }
-
-            data.RequiredAttributes = FullyRectifiedSineWave.RequiredAttributes;
         }
-
-        // TODO Make a list of known generators, choose one from list 
-        
     }
 }

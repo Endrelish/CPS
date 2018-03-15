@@ -34,8 +34,7 @@
                 var y = this.Function(data.Amplitude.Value, data.Period.Value, data.StartTime.Value, data.DutyCycle.Value, x);
                 data.Points.Add(new Point(x, y));
             }
-
-            data.RequiredAttributes = SymmetricalSquareWave.RequiredAttributes;
+            
         }
     }
 }

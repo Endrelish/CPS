@@ -61,6 +61,7 @@
                     Triangle.GeneratePoints(data);
                     break;
             }
+            data.PointsUpdate();
         }
     }
 }

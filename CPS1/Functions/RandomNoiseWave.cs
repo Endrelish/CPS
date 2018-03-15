@@ -16,9 +16,7 @@
                 var y = random.NextDouble() * (data.Amplitude.Value * 2) - data.Amplitude.Value;
                 data.Points.Add(new Point(i * interval + data.StartTime.Value, y));
             }
-
-            data.RequiredAttributes = RandomNoiseWave.RequiredAttributes;
-
+           
             data.SetAmplitude();
         }
     }

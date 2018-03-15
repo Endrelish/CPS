@@ -24,8 +24,7 @@
                 var y = this.SinusoidFunction(data.Amplitude.Value, data.Period.Value, x, data.StartTime.Value);
                 data.Points.Add(new Point(x, y));
             }
-
-            data.RequiredAttributes = SineWave.RequiredAttributes;
+            
         }
     }
 }

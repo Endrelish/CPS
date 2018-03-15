@@ -77,8 +77,20 @@
                     this.DurationInterval = this.Duration.Value / 100.0d;
                 };
 
-            this.Points.CollectionChanged += (sender, args) => { this.OnPropertyChanged(nameof(Values)); };
-            this.HistogramPoints.CollectionChanged += (sender, args) => { this.OnPropertyChanged(nameof(HistogramValues)); };
+            //this.Points.CollectionChanged += (sender, args) => { this.OnPropertyChanged(nameof(Values)); };
+            //this.HistogramPoints.CollectionChanged += (sender, args) => { this.OnPropertyChanged(nameof(HistogramValues)); };
+        }
+
+        public void HistogramPointsUpdate()
+        {
+            this.OnPropertyChanged(nameof(this.HistogramValues));
+            this.OnPropertyChanged(nameof(this.HistogramLabels));
+        }
+
+        public void PointsUpdate()
+        {
+            this.OnPropertyChanged(nameof(this.Values));
+            this.OnPropertyChanged(nameof(this.Labels));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
