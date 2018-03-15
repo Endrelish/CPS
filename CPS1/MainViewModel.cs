@@ -1,103 +1,114 @@
 ﻿namespace CPS1
 {
     using System;
-    using System.ComponentModel;
+    using System.Collections.Generic;
+    using System.Collections.Immutable;
+    using System.Linq;
     using System.Windows.Input;
 
     using CPS1.Functions;
 
-    using org.mariuszgromada.math.mxparser;
-
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel
     {
-        private ICommand clickCommand;
+        private Signal firstSignalType = Signal.Sine;
 
-        private FunctionData histogramFirst;
+        private ICommand generateSignalCommand;
 
-        private FunctionData signalFirst;
+        private ICommand saveCommand;
+
+        private Signal secondSignalType = Signal.NormalDistribution;
 
         public MainViewModel()
         {
-            this.Generator = new SquareWave();
-            //this.signal = new FunctionData();
+            this.SignalFirst = new FunctionData();
+            this.SignalSecond = new FunctionData();
 
-            //this.Generator.GeneratePoints(this.signal);
-            //this.histogram = new FunctionData();
-            //this.histogram.Points.AddRange(CPS1.Histogram.GetHistogram(this.signal, 10));
+            var signals = new List<Tuple<Signal, string>>();
+            signals.Add(new Tuple<Signal, string>(Signal.FullyRectifiedSine, "Fully rectified sine signal"));
+            signals.Add(new Tuple<Signal, string>(Signal.HalfRectifiedSine, "Half rectified sine signal"));
+            signals.Add(new Tuple<Signal, string>(Signal.NormalDistribution, "Gaussian distribution signal"));
+            signals.Add(new Tuple<Signal, string>(Signal.RandomNoise, "Random noise signal"));
+            signals.Add(new Tuple<Signal, string>(Signal.Sine, "Sine signal"));
+            signals.Add(new Tuple<Signal, string>(Signal.Square, "Square signal"));
+            signals.Add(new Tuple<Signal, string>(Signal.SymmetricalSquare, "Symmetrical square signal"));
+            signals.Add(new Tuple<Signal, string>(Signal.Triangle, "Triangle signal"));
+
+            this.AvailableSignals = ImmutableList.CreateRange(signals);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public ImmutableList<Tuple<Signal, string>> AvailableSignals { get; }
 
-        public ICommand ClickCommand
+        public string FirstSignalType
+        {
+            get => this.AvailableSignals.Where(s => s.Item1.Equals(this.firstSignalType)).Select(s => s.Item2)
+                .FirstOrDefault();
+            set
+            {
+                this.firstSignalType = this.AvailableSignals.Where(s => s.Item2.Equals(value)).Select(s => s.Item1)
+                    .FirstOrDefault();
+            }
+        }
+
+        public ICommand GenerateSignalCommand => this.generateSignalCommand
+                                                 ?? (this.generateSignalCommand = new CommandHandler(
+                                                         this.GenerateSignal,
+                                                         () => true));
+
+        public ICommand SaveCommand =>
+            this.saveCommand ?? (this.saveCommand = new CommandHandler(this.SaveSignal, () => true));
+
+        public string SecondSignalType
+        {
+            get => this.AvailableSignals.Where(s => s.Item1.Equals(this.secondSignalType)).Select(s => s.Item2)
+                .FirstOrDefault();
+            set
+            {
+                this.secondSignalType = this.AvailableSignals.Where(s => s.Item2.Equals(value)).Select(s => s.Item1)
+                    .FirstOrDefault();
+            }
+        }
+
+        public FunctionData SignalFirst { get; }
+
+        public FunctionData SignalSecond { get; }
+
+        public IEnumerable<string> SignalsLabels
         {
             get
             {
-                return this.clickCommand ?? (this.clickCommand = new CommandHandler(() => this.Compute(), true));
+                return this.AvailableSignals.Select(p => p.Item2);
             }
         }
 
-        private FunctionData histogramSecond;
-
-        private FunctionData signalSecond;
-
-        public FunctionData HistogramSecond
+        private void GenerateSignal(object parameter)
         {
-            get => this.histogramSecond;
-            set
+            if (parameter is short chart)
             {
-                this.histogramSecond = value;
-                OnPropertyChanged("HistogramSecond");
-            } 
-        }
-
-        public FunctionData SignalSecond
-        {
-            get => this.signalSecond;
-            set
-            {
-                this.signalSecond = value;
-                OnPropertyChanged("SignalSecond");
+                if (chart == 1)
+                {
+                    Generator.GenerateSignal(this.SignalFirst, this.firstSignalType);
+                    Histogram.GetHistogram(this.SignalFirst);
+                }
+                else if (chart == 2)
+                {
+                    Generator.GenerateSignal(this.SignalSecond, this.secondSignalType);
+                }
             }
         }
 
-        public IFunction Generator { get; set; }
-
-        public FunctionData HistogramFirst
+        private void SaveSignal(object parameter)
         {
-            get => this.histogramFirst;
-            set
+            if (parameter is short chart)
             {
-                this.histogramFirst = value;
-                this.OnPropertyChanged("HistogramFirst");
+                if (chart == 1)
+                {
+                    Writer.Write(this.SignalFirst.Points, "chart1.txt");
+                }
+                else if (chart == 2)
+                {
+                    Writer.Write(this.SignalSecond.Points, "chart2.txt");
+                }
             }
-        }
-
-        public FunctionData SignalFirst
-        {
-            get => this.signalFirst;
-            set
-            {
-                this.signalFirst = value;
-                this.OnPropertyChanged("SignalFirst");
-            }
-        }
-
-        public string Text { get; set; } = "PI / 2";
-
-        public double Value { get; set; } = 3;
-
-        public void Compute()
-        {
-            this.Value = 9;
-            var pi = new Constant("PI", Math.PI);
-            var e1 = new Expression(this.Text);
-            e1.addConstants(pi);
-            this.Value = e1.calculate();
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

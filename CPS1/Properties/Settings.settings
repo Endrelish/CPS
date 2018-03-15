@@ -38,8 +38,11 @@
     <Setting Name="DutyCycleMin" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0.005</Value>
     </Setting>
-    <Setting Name="Setting" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="HistogramIntervalMax" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">150</Value>
+    </Setting>
+    <Setting Name="HistogramIntervalMin" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5</Value>
     </Setting>
   </Settings>
 </SettingsFile>

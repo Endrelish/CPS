@@ -169,13 +169,25 @@ namespace CPS1.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public double Setting {
+        [global::System.Configuration.DefaultSettingValueAttribute("150")]
+        public int HistogramIntervalMax {
             get {
-                return ((double)(this["Setting"]));
+                return ((int)(this["HistogramIntervalMax"]));
             }
             set {
-                this["Setting"] = value;
+                this["HistogramIntervalMax"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int HistogramIntervalMin {
+            get {
+                return ((int)(this["HistogramIntervalMin"]));
+            }
+            set {
+                this["HistogramIntervalMin"] = value;
             }
         }
     }

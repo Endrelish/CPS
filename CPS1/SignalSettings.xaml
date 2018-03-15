@@ -4,21 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CPS1"
-             mc:Ignorable="d" 
-             d:DesignHeight="900" d:DesignWidth="400">
+             mc:Ignorable="d" d:DesignWidth="400" Height="463.5">
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <ControlTemplate x:Key="Setting" TargetType="Control">
-            <Grid>
+            <Grid Margin="25 5 25 5" Visibility="{Binding Visibility, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <!--TITLE row 0!-->
+                <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="70"/>
                     </Grid.ColumnDefinitions>
+                    <Slider Grid.Column="0" Minimum="{Binding MinValue}" Maximum="{Binding MaxValue}" Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TickPlacement="BottomRight" TickFrequency="{Binding DurationInterval, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsSnapToTickEnabled="True" Name="Slider" />
+                    <TextBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
             </Grid>
         </ControlTemplate>
@@ -27,14 +29,26 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
             <RowDefinition Height="25" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Text="SIGNAL SETTINGS" />
-        <TextBlock Grid.Row="2" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
+        <Control Grid.Row="1" Template="{StaticResource Setting}" DataContext="{Binding StartTime}"/>
+        <Control Grid.Row="2" Template="{StaticResource Setting}" DataContext="{Binding Duration}"/>
+        <Control Grid.Row="3" Template="{StaticResource Setting}" DataContext="{Binding Amplitude}"/>
+        <Control Grid.Row="4" Template="{StaticResource Setting}" DataContext="{Binding Period}"/>
+        <Control Grid.Row="5" Template="{StaticResource Setting}" DataContext="{Binding DutyCycle}"/>
+        <Control Grid.Row="6" Template="{StaticResource Setting}" DataContext="{Binding Samples}"/>
+        <TextBlock Grid.Row="7" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Text="HISTOGRAM SETTINGS" />
+        <Control Grid.Row="8" Template="{StaticResource Setting}" DataContext="{Binding HistogramIntervals}"/>
     </Grid>
 </UserControl>

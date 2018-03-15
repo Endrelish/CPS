@@ -3,33 +3,44 @@
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
-    public class FunctionAttribute<T> : INotifyPropertyChanged where T : struct
+    using CPS1.Annotations;
+
+    public class FunctionAttribute<T> : INotifyPropertyChanged
+        where T : struct
     {
+        private T maxValue;
+
+        private T minValue;
+
+        private string name;
+
         private T value;
 
         private bool visibility;
 
-        private T minValue;
-
-        private T maxValue;
-
-        public T Value
+        public FunctionAttribute(T value, bool visibility, T minValue, T maxValue, string name)
         {
-            get => this.value;
-            set
-            {
-                this.value = value;
-                this.OnPropertyChanged("Value");
-            }
+            this.Value = value;
+            this.Visibility = visibility;
+            this.MinValue = minValue;
+            this.MaxValue = maxValue;
+            this.Name = name;
         }
 
-        public bool Visibility
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public T MaxValue
         {
-            get => this.visibility;
+            get => this.maxValue;
             set
             {
-                this.visibility = value;
-                this.OnPropertyChanged("Visibility");
+                if (value.Equals(this.maxValue))
+                {
+                    return;
+                }
+
+                this.maxValue = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -38,31 +49,62 @@
             get => this.minValue;
             set
             {
+                if (value.Equals(this.minValue))
+                {
+                    return;
+                }
+
                 this.minValue = value;
-                this.OnPropertyChanged("Value");
+                this.OnPropertyChanged();
             }
         }
 
-        public T MaxValue
+        public string Name
         {
-            get => this.maxValue;
+            get => this.name;
             set
             {
-                this.maxValue = value;
-                this.OnPropertyChanged("Value");
+                if (value == this.name)
+                {
+                    return;
+                }
+
+                this.name = value;
+                this.OnPropertyChanged();
             }
         }
 
-        public FunctionAttribute(T value, bool visibility, T minValue, T maxValue)
+        public T Value
         {
-            this.Value = value;
-            this.Visibility = visibility;
-            this.MinValue = minValue;
-            this.MaxValue = maxValue;
+            get => this.value;
+            set
+            {
+                if (value.Equals(this.value))
+                {
+                    return;
+                }
+
+                this.value = value;
+                this.OnPropertyChanged();
+            }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public bool Visibility
+        {
+            get => this.visibility;
+            set
+            {
+                if (value == this.visibility)
+                {
+                    return;
+                }
 
+                this.visibility = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

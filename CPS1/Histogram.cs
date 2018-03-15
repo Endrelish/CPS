@@ -6,22 +6,21 @@
 
     public static class Histogram
     {
-        public static IEnumerable<Point> GetHistogram(FunctionData data, int intervals)
+        public static void GetHistogram(FunctionData data)
         {
-            var histogramList = new List<Point>();
-            var step = data.Amplitude.Value * 2 / intervals;
-            for (var i = 0; i <= intervals; i++)
+            data.HistogramPoints.Clear();
+            var step = data.Amplitude.Value * 2 / data.HistogramIntervals.Value;
+            for (var i = 0; i <= data.HistogramIntervals.Value; i++)
             {
-                histogramList.Add(new Point(i * step, 0));
+                data.HistogramPoints.Add(new Point(i * step, 0));
             }
 
             foreach (var point in data.Points)
             {
                 var index = (int)((point.Y + data.Amplitude.Value) / step);
-                histogramList[index].Y++;
+                data.HistogramPoints[index].Y++;
             }
-
-            return histogramList;
+            
         }
     }
 }

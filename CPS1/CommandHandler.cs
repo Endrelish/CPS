@@ -5,26 +5,31 @@
 
     public class CommandHandler : ICommand
     {
-        private readonly Action _action;
+        private readonly Action<object> action;
 
-        private readonly bool _canExecute;
+        private readonly Func<bool> canExecute;
 
-        public CommandHandler(Action action, bool canExecute)
+        public CommandHandler(Action<object> action, Func<bool> canExecute)
         {
-            this._action = action;
-            this._canExecute = canExecute;
+            this.action = action;
+            this.canExecute = canExecute;
         }
 
         public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter)
         {
-            return this._canExecute;
+            return this.canExecute();
         }
 
         public void Execute(object parameter)
         {
-            this._action();
+            this.action(parameter);
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            this.CanExecuteChanged?.Invoke(this, new EventArgs());
         }
     }
 }

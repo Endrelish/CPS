@@ -4,19 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CPS1"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:functions="clr-namespace:CPS1.Functions"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="1000" Width="1800"
         Left="60" Top="20">
     <Window.Resources>
         <local:ViewModelLocator x:Key="Locator" />
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style TargetType="Control" x:Key="ChartStyle">
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="Beige" />
             <Setter Property="Padding" Value="5 5 5 5" />
             <Setter Property="Margin" Value="2 2 2 2" />
         </Style>
+
+        <system:Int16 x:Key="First">1</system:Int16>
+        <system:Int16 x:Key="Second">2</system:Int16>
+        <Image x:Key="SaveIcon" Source="resources/SaveIcon.png" />
 
     </Window.Resources>
     <Grid Margin="5 5 5 5" DataContext="{Binding ViewModel, Source={StaticResource Locator}}">
@@ -44,8 +49,38 @@
                 <ColumnDefinition Width="232*"/>
             </Grid.ColumnDefinitions>
             <TabControl Style="{StaticResource ChartStyle}" Grid.ColumnSpan="2">
-                <TabItem Header="First signal" />
-                <TabItem Header="Second signal" />
+                <TabItem Header="First signal">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
+                        Text="SIGNAL TYPE" />
+                        <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1" ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding FirstSignalType}"/>
+                        <local:SignalSettings Grid.Row="2" DataContext="{Binding SignalFirst}" />
+                        <Button Margin="0 50 0 0"  Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Width="100" Height="40" Content="GENERATE" FontWeight="Bold" Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}"/>
+                        <Button Grid.Row="3" Margin="15 15 15 15" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="30" Content="{StaticResource SaveIcon}" Command="{Binding SaveCommand}" CommandParameter="{StaticResource First}"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Second signal">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
+                                   Text="SIGNAL TYPE" />
+                        <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1" ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding SecondSignalType}"/>
+                        <local:SignalSettings Grid.Row="2" DataContext="{Binding SignalSecond}" />
+                        <Button Margin="0 50 0 0"  Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Width="100" Height="40" Content="GENERATE" FontWeight="Bold" Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource Second}"/>
+                        <Button Grid.Row="3" Margin="15 15 15 15" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="30" Content="{StaticResource SaveIcon}" Command="{Binding SaveCommand}" CommandParameter="{StaticResource Second}"/>
+                    </Grid>
+                </TabItem>
                 <TabItem Header="Operations" />
             </TabControl>
         </Grid>
@@ -55,7 +90,7 @@
                 <RowDefinition Height="50*" />
             </Grid.RowDefinitions>
             <local:SignalChart DataContext="{Binding SignalFirst}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
-            <local:HistogramChart DataContext="{Binding HistogramFirst}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
+            <local:HistogramChart DataContext="{Binding SignalFirst}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
         </Grid>
         <Grid Grid.Column="2" Grid.Row="1">
             <Grid.RowDefinitions>
@@ -63,7 +98,7 @@
                 <RowDefinition Height="50*" />
             </Grid.RowDefinitions>
             <local:SignalChart DataContext="{Binding SignalSecond}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
-            <local:HistogramChart DataContext="{Binding HistogramSecond}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
+            <local:HistogramChart DataContext="{Binding SignalSecond}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
         </Grid>
     </Grid>
 </Window>
