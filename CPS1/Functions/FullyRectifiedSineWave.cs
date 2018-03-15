@@ -26,15 +26,17 @@
         {
             data.Points.Clear();
 
-            var interval = data.Duration / data.Samples;
-            for (var i = 0; i < data.Samples; i++)
+            var interval = data.Duration.Value / data.Samples.Value;
+            for (var i = 0; i < data.Samples.Value; i++)
             {
-                var x = i * interval + data.StartTime;
-                var y = this.Function(data.Amplitude, data.Period, x, data.StartTime);
+                var x = i * interval + data.StartTime.Value;
+                var y = this.Function(data.Amplitude.Value, data.Period.Value, x, data.StartTime.Value);
                 data.Points.Add(new Point(x, y));
             }
 
             data.RequiredAttributes = FullyRectifiedSineWave.RequiredAttributes;
         }
+
+        // TODO Make a list of known generators, choose one from list 
     }
 }

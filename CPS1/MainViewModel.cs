@@ -12,18 +12,18 @@
     {
         private ICommand clickCommand;
 
-        private FunctionData histogram;
+        private FunctionData histogramFirst;
 
-        private FunctionData signal;
+        private FunctionData signalFirst;
 
         public MainViewModel()
         {
             this.Generator = new SquareWave();
-            this.signal = new FunctionData();
+            //this.signal = new FunctionData();
 
-            this.Generator.GeneratePoints(this.signal);
-            this.histogram = new FunctionData();
-            this.histogram.Points.AddRange(CPS1.Histogram.GetHistogram(this.signal, 10));
+            //this.Generator.GeneratePoints(this.signal);
+            //this.histogram = new FunctionData();
+            //this.histogram.Points.AddRange(CPS1.Histogram.GetHistogram(this.signal, 10));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -36,25 +36,49 @@
             }
         }
 
-        public IFunction Generator { get; set; }
+        private FunctionData histogramSecond;
 
-        public FunctionData Histogram
+        private FunctionData signalSecond;
+
+        public FunctionData HistogramSecond
         {
-            get => this.histogram;
+            get => this.histogramSecond;
             set
             {
-                this.histogram = value;
-                this.OnPropertyChanged("Histogram");
+                this.histogramSecond = value;
+                OnPropertyChanged("HistogramSecond");
+            } 
+        }
+
+        public FunctionData SignalSecond
+        {
+            get => this.signalSecond;
+            set
+            {
+                this.signalSecond = value;
+                OnPropertyChanged("SignalSecond");
             }
         }
 
-        public FunctionData Signal
+        public IFunction Generator { get; set; }
+
+        public FunctionData HistogramFirst
         {
-            get => this.signal;
+            get => this.histogramFirst;
             set
             {
-                this.signal = value;
-                this.OnPropertyChanged("Signal");
+                this.histogramFirst = value;
+                this.OnPropertyChanged("HistogramFirst");
+            }
+        }
+
+        public FunctionData SignalFirst
+        {
+            get => this.signalFirst;
+            set
+            {
+                this.signalFirst = value;
+                this.OnPropertyChanged("SignalFirst");
             }
         }
 

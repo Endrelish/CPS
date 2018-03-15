@@ -17,11 +17,11 @@
         {
             data.Points.Clear();
 
-            var interval = data.Duration / data.Samples;
-            for (var i = 0; i < data.Samples; i++)
+            var interval = data.Duration.Value / data.Samples.Value;
+            for (var i = 0; i < data.Samples.Value; i++)
             {
-                var x = i * interval + data.StartTime;
-                var y = this.Function(data.Amplitude, data.Period, data.StartTime, data.DutyCycle, x);
+                var x = i * interval + data.StartTime.Value;
+                var y = this.Function(data.Amplitude.Value, data.Period.Value, data.StartTime.Value, data.DutyCycle.Value, x);
                 data.Points.Add(new Point(x, y));
             }
 

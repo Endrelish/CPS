@@ -64,10 +64,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="Functions\FunctionAttribute.cs" />
     <Compile Include="Functions\FunctionData.cs" />
     <Compile Include="Functions\FullyRectifiedSineWave.cs" />
     <Compile Include="Functions\HalfRectifiedSineWave.cs" />
     <Compile Include="Functions\Required.cs" />
+    <Compile Include="Functions\Signal.cs" />
     <Compile Include="Functions\SquareWave.cs" />
     <Compile Include="Functions\SymmetricalSquareWave.cs" />
     <Compile Include="Functions\TriangleWave.cs" />
@@ -84,6 +86,9 @@
       <DependentUpon>SignalChart.xaml</DependentUpon>
     </Compile>
     <Compile Include="Functions\SineWave.cs" />
+    <Compile Include="SignalSettings.xaml.cs">
+      <DependentUpon>SignalSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="Writer.cs" />
     <Page Include="HistogramChart.xaml">
@@ -103,6 +108,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="SignalChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SignalSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

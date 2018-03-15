@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="CPS1.SignalSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CPS1"
+             mc:Ignorable="d" 
+             d:DesignHeight="900" d:DesignWidth="400">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="Setting" TargetType="Control">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <!--TITLE row 0!-->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </Grid>
+        </ControlTemplate>
+    </UserControl.Resources>
+    <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition />
+            <RowDefinition Height="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Text="SIGNAL SETTINGS" />
+        <TextBlock Grid.Row="2" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Text="HISTOGRAM SETTINGS" />
+    </Grid>
+</UserControl>

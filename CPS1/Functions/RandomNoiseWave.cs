@@ -10,11 +10,11 @@
         {
             var random = new Random();
             data.Points.Clear();
-            var interval = data.Duration / data.Samples;
-            for (var i = 0; i < data.Samples; i++)
+            var interval = data.Duration.Value / data.Samples.Value;
+            for (var i = 0; i < data.Samples.Value; i++)
             {
-                var y = random.NextDouble() * (data.Amplitude * 2) - data.Amplitude;
-                data.Points.Add(new Point(i * interval + data.StartTime, y));
+                var y = random.NextDouble() * (data.Amplitude.Value * 2) - data.Amplitude.Value;
+                data.Points.Add(new Point(i * interval + data.StartTime.Value, y));
             }
 
             data.RequiredAttributes = RandomNoiseWave.RequiredAttributes;
