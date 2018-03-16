@@ -63,7 +63,7 @@
                         Text="SIGNAL TYPE" />
                         <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1" ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding FirstSignalType}"/>
                         <local:SignalSettings Grid.Row="2" DataContext="{Binding SignalFirst}" />
-                        <Button Margin="0 50 0 0"  Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Width="100" Height="40" Content="GENERATE" FontWeight="Bold" Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}"/>
+                        <Button Margin="0 50 0 0"  Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True" Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}"/>
                         <Button Grid.Row="3" Margin="15 15 15 15" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="30" Content="{StaticResource SaveIcon}" Command="{Binding SaveCommand}" CommandParameter="{StaticResource First}"/>
                     </Grid>
                 </TabItem>
@@ -79,7 +79,7 @@
                                    Text="SIGNAL TYPE" />
                         <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1" ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding SecondSignalType}"/>
                         <local:SignalSettings Grid.Row="2" DataContext="{Binding SignalSecond}" />
-                        <Button Margin="0 50 0 0"  Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Width="100" Height="40" Content="GENERATE" FontWeight="Bold" Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource Second}"/>
+                        <Button Margin="0 50 0 0"  Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True" Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource Second}"/>
                         <Button Grid.Row="3" Margin="15 15 15 15" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="30" Content="{StaticResource SaveIcon}" CommandParameter="{StaticResource Second}"/>
                     </Grid>
                 </TabItem>

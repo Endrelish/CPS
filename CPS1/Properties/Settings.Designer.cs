@@ -190,5 +190,17 @@ namespace CPS1.Properties {
                 this["HistogramIntervalMin"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public int NumbersPerSample {
+            get {
+                return ((int)(this["NumbersPerSample"]));
+            }
+            set {
+                this["NumbersPerSample"] = value;
+            }
+        }
     }
 }

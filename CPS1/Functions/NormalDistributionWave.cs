@@ -2,9 +2,11 @@
 {
     using System;
 
+    using CPS1.Properties;
+
     public class NormalDistributionWave : IFunction
     {
-        public static int NumbersPerSample { get; set; } = 100;
+        public static int NumbersPerSample { get; set; } = Settings.Default.NumbersPerSample;
 
         public static Required RequiredAttributes { get; set; } = new Required(true, true, false, true, false, true);
 
