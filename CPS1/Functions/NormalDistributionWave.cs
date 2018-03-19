@@ -4,31 +4,27 @@
 
     using CPS1.Properties;
 
-    public class NormalDistributionWave : IFunction
+    public class NormalDistributionWave : Function
     {
-        public static int NumbersPerSample { get; set; } = Settings.Default.NumbersPerSample;
+        public static int NumbersPerSample { get; } = Settings.Default.NumbersPerSample;
 
-        public static Required RequiredAttributes { get; set; } = new Required(true, true, false, true, false, true);
+        public static Required RequiredAttributes { get; } = new Required(true, true, false, true, false, true, false, false);
 
-        public void GeneratePoints(FunctionData data)
+        public NormalDistributionWave()
         {
-            var random = new Random();
-            data.Points.Clear();
-            var interval = data.Duration.Value / data.Samples.Value;
-            for (var i = 0; i < data.Samples.Value; i++)
-            {
-                var y = 0d;
-                for (var j = 0; j < NumbersPerSample; j++)
+            SignalFunction = (A, T, t, t1, p) =>
                 {
-                    y += random.NextDouble() * (data.Amplitude.Value * 2) - data.Amplitude.Value;
-                }
+                    var random = new Random();
+                    var y = 0d;
+                    for (var j = 0; j < NormalDistributionWave.NumbersPerSample; j++)
+                    {
+                        y += random.NextDouble() * (A * 2) - A;
+                    }
 
-                y /= NumbersPerSample;
-                data.Points.Add(new Point(i * interval + data.StartTime.Value, y));
-            }
-            
+                    y /= NumbersPerSample;
 
-            data.SetAmplitude();
+                    return y;
+                };
         }
     }
 }

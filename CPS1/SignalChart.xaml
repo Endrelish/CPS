@@ -5,15 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:CPS1"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:converters="clr-namespace:IKriv.Windows.Mvvm.Converters;assembly=IKriv.Windows"
              mc:Ignorable="d"
              d:DesignHeight="305" d:DesignWidth="400">
     <UserControl.Resources>
-        <local:ViewModelLocator x:Key="Locator" />
+        <local:ChartSettingsConverter x:Key="ChartSettingsConverter" />
     </UserControl.Resources>
     <Grid>
         <lvc:CartesianChart>
             <lvc:CartesianChart.Series>
-                <lvc:LineSeries Values="{Binding Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointGeometrySize="0" LineSmoothness="1" StrokeThickness="2" />
+                <lvc:LineSeries Values="{Binding Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointForeground="#2195f2" PointGeometrySize="3" LineSmoothness="1" StrokeThickness="{Binding Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
             </lvc:CartesianChart.Series>
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis Title="Signal value" Labels="{Binding Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />

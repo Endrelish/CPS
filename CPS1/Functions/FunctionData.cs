@@ -1,11 +1,11 @@
 ﻿namespace CPS1.Functions
 {
     using System;
-    using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Windows.Data;
 
     using CPS1.Annotations;
     using CPS1.Properties;
@@ -21,7 +21,8 @@
             double duration = Math.PI * 10,
             double dutyCycle = Math.PI / 5,
             int samples = 500,
-            int histogramIntervals = 10)
+            int histogramIntervals = 10,
+            double probability = 0.5)
         {
             this.Amplitude = new FunctionAttribute<double>(
                 amplitude,
@@ -65,10 +66,12 @@
                 Settings.Default.HistogramIntervalMin,
                 Settings.Default.HistogramIntervalMax,
                 "NUMBER OF INTERVALS");
-            this.Points = new ObservableCollection<Point>();
-            this.HistogramPoints = new ObservableCollection<Point>();
+            this.Probability = new FunctionAttribute<double>(probability, false, 0, 1, "PROBABILITY");
+            this.Continuous = new FunctionAttribute<bool>(true, false, false, true, "CONTINUITY");
+            this.Points = new List<Point>();
+            this.HistogramPoints = new List<Point>();
 
-            this.RequiredAttributes = new Required(false, false, false, false, false, false);
+            this.RequiredAttributes = new Required(false, false, false, false, false, false, false, false);
 
             this.Formatter = value => value.ToString("N");
 
@@ -76,26 +79,14 @@
                 {
                     this.DurationInterval = this.Duration.Value / 100.0d;
                 };
-
-            //this.Points.CollectionChanged += (sender, args) => { this.OnPropertyChanged(nameof(Values)); };
-            //this.HistogramPoints.CollectionChanged += (sender, args) => { this.OnPropertyChanged(nameof(HistogramValues)); };
-        }
-
-        public void HistogramPointsUpdate()
-        {
-            this.OnPropertyChanged(nameof(this.HistogramValues));
-            this.OnPropertyChanged(nameof(this.HistogramLabels));
-        }
-
-        public void PointsUpdate()
-        {
-            this.OnPropertyChanged(nameof(this.Values));
-            this.OnPropertyChanged(nameof(this.Labels));
+            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public FunctionAttribute<double> Amplitude { get; }
+
+        public FunctionAttribute<bool> Continuous { get; set; }
 
         public FunctionAttribute<double> Duration { get; }
 
@@ -115,7 +106,7 @@
             }
         }
 
-        public ObservableCollection<Point> HistogramPoints { get; }
+        public List<Point> HistogramPoints { get; }
 
         public ChartValues<double> HistogramValues
         {
@@ -135,7 +126,9 @@
 
         public FunctionAttribute<double> Period { get; }
 
-        public ObservableCollection<Point> Points { get; }
+        public List<Point> Points { get; }
+
+        public FunctionAttribute<double> Probability { get; }
 
         public Required RequiredAttributes
         {
@@ -148,6 +141,8 @@
                 this.Duration.Visibility = value.Duration;
                 this.DutyCycle.Visibility = value.DutyCycle;
                 this.Samples.Visibility = value.Samples;
+                this.Probability.Visibility = value.Probability;
+                this.Continuous.Visibility = value.Continuous;
             }
         }
 
@@ -163,6 +158,20 @@
             }
         }
 
+        private Func<double, double, double, double, double, double, double> Function { get; set; }
+
+        public void HistogramPointsUpdate()
+        {
+            this.OnPropertyChanged(nameof(this.HistogramValues));
+            this.OnPropertyChanged(nameof(this.HistogramLabels));
+        }
+
+        public void PointsUpdate()
+        {
+            this.OnPropertyChanged(nameof(this.Values));
+            this.OnPropertyChanged(nameof(this.Labels));
+        }
+
         public void SetAmplitude()
         {
             this.Amplitude.Value = Math.Max(this.Points.Max(p => p.Y), Math.Abs(this.Points.Min(p => p.Y)));
@@ -173,7 +182,5 @@
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        
     }
 }

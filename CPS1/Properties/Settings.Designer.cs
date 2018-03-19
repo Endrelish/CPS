@@ -49,7 +49,7 @@ namespace CPS1.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public double PeriodMax {
             get {
                 return ((double)(this["PeriodMax"]));
@@ -145,7 +145,7 @@ namespace CPS1.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("25")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public double DutyCycleMax {
             get {
                 return ((double)(this["DutyCycleMax"]));
@@ -157,7 +157,7 @@ namespace CPS1.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.005")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.001")]
         public double DutyCycleMin {
             get {
                 return ((double)(this["DutyCycleMin"]));

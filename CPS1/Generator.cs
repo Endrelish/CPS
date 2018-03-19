@@ -14,23 +14,27 @@
             Square = new SquareWave();
             SymmetricalSquare = new SymmetricalSquareWave();
             Triangle = new TriangleWave();
+            UnitStep = new UnitStepWave();
+            KroneckerDelta = new KroneckerDelta();
         }
 
-        private static IFunction FullyRectifiedSine { get; }
+        private static Function FullyRectifiedSine { get; }
 
-        private static IFunction HalfRectifiedSine { get; }
+        private static Function HalfRectifiedSine { get; }
 
-        private static IFunction NormalDistribution { get; }
+        private static Function NormalDistribution { get; }
 
-        private static IFunction RandomNoise { get; }
+        private static Function RandomNoise { get; }
 
-        private static IFunction Sine { get; }
+        private static Function Sine { get; }
 
-        private static IFunction Square { get; }
+        private static Function Square { get; }
 
-        private static IFunction SymmetricalSquare { get; }
+        private static Function SymmetricalSquare { get; }
 
-        private static IFunction Triangle { get; }
+        private static Function Triangle { get; }
+        private static Function UnitStep { get; }
+        private static Function KroneckerDelta { get; }
 
         public static void GenerateSignal(FunctionData data, Signal signal)
         {
@@ -41,6 +45,9 @@
                     break;
                 case Signal.HalfRectifiedSine:
                     HalfRectifiedSine.GeneratePoints(data);
+                    break;
+                case Signal.KroneckerDelta:
+                    KroneckerDelta.GeneratePoints(data);
                     break;
                 case Signal.NormalDistribution:
                     NormalDistribution.GeneratePoints(data);
@@ -59,6 +66,9 @@
                     break;
                 case Signal.Triangle:
                     Triangle.GeneratePoints(data);
+                    break;
+                case Signal.UnitStep:
+                    UnitStep.GeneratePoints(data);
                     break;
             }
             data.PointsUpdate();

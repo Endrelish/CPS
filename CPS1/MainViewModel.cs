@@ -14,10 +14,12 @@
 
         private ICommand generateSignalCommand;
 
+        private ICommand openCommand;
+
         private ICommand saveCommand;
 
         private Signal secondSignalType = Signal.Sine;
-
+        
         public MainViewModel()
         {
             this.SignalFirst = new FunctionData();
@@ -27,11 +29,14 @@
             signals.Add(new Tuple<Signal, string>(Signal.FullyRectifiedSine, "Fully rectified sine signal"));
             signals.Add(new Tuple<Signal, string>(Signal.NormalDistribution, "Gaussian distribution signal"));
             signals.Add(new Tuple<Signal, string>(Signal.HalfRectifiedSine, "Half rectified sine signal"));
+            signals.Add(new Tuple<Signal, string>(Signal.ImpulseNoise, "Impulse noise signal"));
+            signals.Add(new Tuple<Signal, string>(Signal.KroneckerDelta, "Kronecker delta signal"));
             signals.Add(new Tuple<Signal, string>(Signal.RandomNoise, "Random noise signal"));
             signals.Add(new Tuple<Signal, string>(Signal.Sine, "Sine signal"));
             signals.Add(new Tuple<Signal, string>(Signal.Square, "Square signal"));
             signals.Add(new Tuple<Signal, string>(Signal.SymmetricalSquare, "Symmetrical square signal"));
             signals.Add(new Tuple<Signal, string>(Signal.Triangle, "Triangle signal"));
+            signals.Add(new Tuple<Signal, string>(Signal.UnitStep, "Unit step signal"));
 
             this.AvailableSignals = ImmutableList.CreateRange(signals);
 
@@ -57,6 +62,11 @@
                                                  ?? (this.generateSignalCommand = new CommandHandler(
                                                          this.GenerateSignal,
                                                          () => true));
+
+        public ICommand OpenCommand =>
+            this.openCommand ?? (this.openCommand = new CommandHandler(this.OpenSignal, () => true));
+
+        public int Param { get; } = 2;
 
         public ICommand SaveCommand =>
             this.saveCommand ?? (this.saveCommand = new CommandHandler(this.SaveSignal, () => true));
@@ -98,6 +108,27 @@
                 {
                     Generator.GenerateSignal(this.SignalSecond, this.secondSignalType);
                     Histogram.GetHistogram(this.SignalSecond);
+                }
+            }
+        }
+
+        private void OpenSignal(object parameter)
+        {
+            if (parameter is short chart)
+            {
+                if (chart == 1)
+                {
+                    var points = Reader.ReadData("chart1.txt");
+                    this.SignalFirst.Points.Clear();
+                    this.SignalFirst.Points.AddRange(points);
+                    SignalFirst.PointsUpdate();
+                }
+                else if (chart == 2)
+                {
+                    var points = Reader.ReadData("chart2.txt");
+                    this.SignalSecond.Points.Clear();
+                    this.SignalSecond.Points.AddRange(points);
+                    SignalSecond.PointsUpdate();
                 }
             }
         }

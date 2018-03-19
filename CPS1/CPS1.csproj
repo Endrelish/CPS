@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IKriv.Windows, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\IKriv.Windows.0.1\lib\net40\IKriv.Windows.dll</HintPath>
+    </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
     </Reference>
@@ -45,6 +48,9 @@
       <HintPath>packages\System.Collections.Immutable.1.4.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\IKriv.Windows.0.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -63,22 +69,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ChartSettingsConverter.cs" />
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="FrequencyPeriodConverter.cs" />
     <Compile Include="Functions\FunctionAttribute.cs" />
     <Compile Include="Functions\FunctionData.cs" />
     <Compile Include="Functions\FullyRectifiedSineWave.cs" />
     <Compile Include="Functions\HalfRectifiedSineWave.cs" />
+    <Compile Include="Functions\ImpulseNoise.cs" />
+    <Compile Include="Functions\KroneckerDelta.cs" />
     <Compile Include="Functions\Required.cs" />
     <Compile Include="Functions\Signal.cs" />
     <Compile Include="Functions\SquareWave.cs" />
     <Compile Include="Functions\SymmetricalSquareWave.cs" />
     <Compile Include="Functions\TriangleWave.cs" />
+    <Compile Include="Functions\UnitStepWave.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="Histogram.cs" />
     <Compile Include="HistogramChart.xaml.cs">
       <DependentUpon>HistogramChart.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Functions\IFunction.cs" />
+    <Compile Include="Functions\Function.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Functions\NormalDistributionWave.cs" />
     <Compile Include="Functions\RandomNoiseWave.cs" />
@@ -91,6 +102,7 @@
     <Compile Include="SignalSettings.xaml.cs">
       <DependentUpon>SignalSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StringToDoubleConverter.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="Writer.cs" />
     <Page Include="HistogramChart.xaml">

@@ -2,22 +2,20 @@
 {
     using System;
 
-    public class RandomNoiseWave : IFunction
+    public class RandomNoiseWave : Function
     {
-        public static Required RequiredAttributes { get; set; } = new Required(true, true, false, true, false, true);
-
-        public void GeneratePoints(FunctionData data)
+        public RandomNoiseWave()
         {
-            var random = new Random();
-            data.Points.Clear();
-            var interval = data.Duration.Value / data.Samples.Value;
-            for (var i = 0; i < data.Samples.Value; i++)
-            {
-                var y = random.NextDouble() * (data.Amplitude.Value * 2) - data.Amplitude.Value;
-                data.Points.Add(new Point(i * interval + data.StartTime.Value, y));
-            }
-           
-            data.SetAmplitude();
+            this.SignalFunction = (A, T, t, t1, p) =>
+                {
+                    var random = new Random();
+                    var y = random.NextDouble() * (A * 2) - A;
+
+                    return y;
+                };
         }
+
+        public static Required RequiredAttributes { get; } =
+            new Required(true, true, false, true, false, true, false, false);
     }
 }

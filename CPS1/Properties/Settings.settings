@@ -9,7 +9,7 @@
       <Value Profile="(Default)">-100</Value>
     </Setting>
     <Setting Name="PeriodMax" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">50</Value>
+      <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="PeriodMin" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0.01</Value>
@@ -33,10 +33,10 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="DutyCycleMax" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">25</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="DutyCycleMin" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0.005</Value>
+      <Value Profile="(Default)">0.001</Value>
     </Setting>
     <Setting Name="HistogramIntervalMax" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">150</Value>

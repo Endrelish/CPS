@@ -11,7 +11,5 @@
         {
             this.InitializeComponent();
         }
-
-        public int ChartNumber { get; set; }
     }
 }
