@@ -13,7 +13,7 @@
                         return 0d;
                     }
 
-                    if (t == t1)
+                    if (Math.Abs(t - t1) < double.Epsilon)
                     {
                         return A * 0.5d;
                     }
@@ -22,6 +22,7 @@
                 };
         }
 
-        public static Required RequiredAttributes { get; set; } = new Required(true, true, false, true, false, true, true, false);
+        public static Required RequiredAttributes { get; set; } =
+            new Required(true, true, false, true, false, true, true, false);
     }
 }

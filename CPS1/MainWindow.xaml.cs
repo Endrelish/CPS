@@ -9,6 +9,7 @@
     {
         public MainWindow()
         {
+            System.Windows.FrameworkCompatibilityPreferences.KeepTextBoxDisplaySynchronizedWithTextProperty = false;
             this.InitializeComponent();
         }
         

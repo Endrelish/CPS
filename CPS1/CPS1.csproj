@@ -71,7 +71,10 @@
     </ApplicationDefinition>
     <Compile Include="ChartSettingsConverter.cs" />
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="FileBinarySerializer.cs" />
+    <Compile Include="FileDialogWpf.cs" />
     <Compile Include="FrequencyPeriodConverter.cs" />
+    <Compile Include="ExpanderConverter.cs" />
     <Compile Include="Functions\FunctionAttribute.cs" />
     <Compile Include="Functions\FunctionData.cs" />
     <Compile Include="Functions\FullyRectifiedSineWave.cs" />
@@ -90,6 +93,8 @@
       <DependentUpon>HistogramChart.xaml</DependentUpon>
     </Compile>
     <Compile Include="Functions\Function.cs" />
+    <Compile Include="IFileDialog.cs" />
+    <Compile Include="IFileSerializer.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Functions\NormalDistributionWave.cs" />
     <Compile Include="Functions\RandomNoiseWave.cs" />
@@ -160,6 +165,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="resources\SaveIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\OpenIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

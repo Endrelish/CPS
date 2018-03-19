@@ -1,10 +1,12 @@
 ﻿namespace CPS1.Functions
 {
+    using System;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
     using CPS1.Annotations;
 
+    [Serializable]
     public class FunctionAttribute<T> : INotifyPropertyChanged
         where T : struct
     {

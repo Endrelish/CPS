@@ -18,6 +18,6 @@
                 };
         }
 
-        public static Required RequiredAttributes { get; set; } = new Required(true, true, true, true, false, true, false, true);
+        public static Required RequiredAttributes { get; } = new Required(true, true, true, true, false, true, true, true);
     }
 }

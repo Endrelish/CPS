@@ -12,6 +12,7 @@
 
     using LiveCharts;
 
+    [Serializable]
     public class FunctionData : INotifyPropertyChanged
     {
         public FunctionData(
@@ -149,7 +150,7 @@
         public FunctionAttribute<int> Samples { get; }
 
         public FunctionAttribute<double> StartTime { get; }
-
+        
         public ChartValues<double> Values
         {
             get
