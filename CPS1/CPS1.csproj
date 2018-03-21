@@ -48,6 +48,7 @@
       <HintPath>packages\System.Collections.Immutable.1.4.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\IKriv.Windows.0.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -69,48 +70,48 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ChartSettingsConverter.cs" />
-    <Compile Include="CommandHandler.cs" />
-    <Compile Include="FileBinarySerializer.cs" />
-    <Compile Include="FileDialogWpf.cs" />
-    <Compile Include="FrequencyPeriodConverter.cs" />
-    <Compile Include="ExpanderConverter.cs" />
-    <Compile Include="Functions\FunctionAttribute.cs" />
-    <Compile Include="Functions\FunctionData.cs" />
-    <Compile Include="Functions\FullyRectifiedSineWave.cs" />
-    <Compile Include="Functions\HalfRectifiedSineWave.cs" />
-    <Compile Include="Functions\ImpulseNoise.cs" />
-    <Compile Include="Functions\KroneckerDelta.cs" />
-    <Compile Include="Functions\Required.cs" />
-    <Compile Include="Functions\Signal.cs" />
-    <Compile Include="Functions\SquareWave.cs" />
-    <Compile Include="Functions\SymmetricalSquareWave.cs" />
-    <Compile Include="Functions\TriangleWave.cs" />
-    <Compile Include="Functions\UnitStepWave.cs" />
-    <Compile Include="Generator.cs" />
-    <Compile Include="Histogram.cs" />
-    <Compile Include="HistogramChart.xaml.cs">
+    <Compile Include="Converters\ChartSettingsConverter.cs" />
+    <Compile Include="Model\FileXmlSerializer.cs" />
+    <Compile Include="Model\AvailableFunctions.cs" />
+    <Compile Include="ViewModel\CommandHandler.cs" />
+    <Compile Include="Model\FileBinarySerializer.cs" />
+    <Compile Include="View\FileDialogWpf.cs" />
+    <Compile Include="Converters\FrequencyPeriodConverter.cs" />
+    <Compile Include="Converters\ExpanderConverter.cs" />
+    <Compile Include="Model\FunctionAttribute.cs" />
+    <Compile Include="Model\FunctionData.cs" />
+    <Compile Include="Model\Functions\FullyRectifiedSineWave.cs" />
+    <Compile Include="Model\Functions\HalfRectifiedSineWave.cs" />
+    <Compile Include="Model\Functions\ImpulseNoise.cs" />
+    <Compile Include="Model\Functions\KroneckerDelta.cs" />
+    <Compile Include="Model\Required.cs" />
+    <Compile Include="Model\Signal.cs" />
+    <Compile Include="Model\Functions\SquareWave.cs" />
+    <Compile Include="Model\Functions\SymmetricalSquareWave.cs" />
+    <Compile Include="Model\Functions\TriangleWave.cs" />
+    <Compile Include="Model\Functions\UnitStepWave.cs" />
+    <Compile Include="Model\Generator.cs" />
+    <Compile Include="Model\Histogram.cs" />
+    <Compile Include="View\HistogramChart.xaml.cs">
       <DependentUpon>HistogramChart.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Functions\Function.cs" />
-    <Compile Include="IFileDialog.cs" />
-    <Compile Include="IFileSerializer.cs" />
-    <Compile Include="MainViewModel.cs" />
-    <Compile Include="Functions\NormalDistributionWave.cs" />
-    <Compile Include="Functions\RandomNoiseWave.cs" />
+    <Compile Include="Model\Functions\Function.cs" />
+    <Compile Include="ViewModel\IFileDialog.cs" />
+    <Compile Include="Model\IFileSerializer.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="Model\Functions\NormalDistributionWave.cs" />
+    <Compile Include="Model\Functions\RandomNoiseWave.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Reader.cs" />
-    <Compile Include="SignalChart.xaml.cs">
+    <Compile Include="View\SignalChart.xaml.cs">
       <DependentUpon>SignalChart.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Functions\SineWave.cs" />
-    <Compile Include="SignalSettings.xaml.cs">
+    <Compile Include="Model\Functions\SineWave.cs" />
+    <Compile Include="View\SignalSettings.xaml.cs">
       <DependentUpon>SignalSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StringToDoubleConverter.cs" />
-    <Compile Include="ViewModelLocator.cs" />
-    <Compile Include="Writer.cs" />
-    <Page Include="HistogramChart.xaml">
+    <Compile Include="Converters\StringToDoubleConverter.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Page Include="View\HistogramChart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -126,17 +127,17 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="SignalChart.xaml">
+    <Page Include="View\SignalChart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SignalSettings.xaml">
+    <Page Include="View\SignalSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Point.cs" />
+    <Compile Include="Model\Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

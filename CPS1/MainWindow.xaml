@@ -6,12 +6,15 @@
         xmlns:local="clr-namespace:CPS1"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:win32="clr-namespace:Microsoft.Win32;assembly=PresentationFramework"
+        xmlns:converters="clr-namespace:CPS1.Converters"
+        xmlns:viewModel="clr-namespace:CPS1.ViewModel"
+        xmlns:view="clr-namespace:CPS1.View"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="1000" Width="1800"
         Left="60" Top="20">
     <Window.Resources>
-        <local:ViewModelLocator x:Key="Locator" />
+        <viewModel:ViewModelLocator x:Key="Locator" />
         <Style TargetType="Control" x:Key="ChartStyle">
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="Beige" />
@@ -25,7 +28,7 @@
         <Image x:Key="SaveIcon2" Source="resources/SaveIcon.png" />
         <Image x:Key="OpenIcon1" Source="resources/OpenIcon.png" />
         <Image x:Key="OpenIcon2" Source="resources/OpenIcon.png" />
-        <local:ExpanderConverter x:Key="ExpanderConverter"/>
+        <converters:ExpanderConverter x:Key="ExpanderConverter"/>
 
 
     </Window.Resources>
@@ -68,7 +71,7 @@
                                    Text="SIGNAL TYPE" />
                         <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1"
                                   ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding FirstSignalType}" />
-                        <local:SignalSettings Grid.Row="2" DataContext="{Binding SignalFirst}" />
+                        <view:SignalSettings Grid.Row="2" DataContext="{Binding SignalFirst}" />
                         <Button Margin="0 0 0 100" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top"
                                 Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
                                 Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}" />
@@ -93,7 +96,7 @@
                                    Text="SIGNAL TYPE" />
                         <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1"
                                   ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding SecondSignalType}" />
-                        <local:SignalSettings Grid.Row="2" DataContext="{Binding SignalSecond}" />
+                        <view:SignalSettings Grid.Row="2" DataContext="{Binding SignalSecond}" />
                         <Button Margin="0 50 0 0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top"
                                 Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
                                 Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource Second}" />
@@ -103,6 +106,7 @@
                         <Button Grid.Row="4" Margin="15 15 60 15" VerticalAlignment="Bottom"
                                 HorizontalAlignment="Right" Width="30" Content="{StaticResource OpenIcon2}" Command="{Binding OpenCommand}"
                                 CommandParameter="{StaticResource Second}" BorderThickness="0" Background="White"/>
+                        <Button Content="ddf" Click="ButtonBase_OnClick"></Button>
                     </Grid>
                 </Expander>
                 <Expander Grid.Row="2" Header="Operations" ExpandDirection="Down">
@@ -115,16 +119,16 @@
                 <RowDefinition Height="50*" />
                 <RowDefinition Height="50*" />
             </Grid.RowDefinitions>
-            <local:SignalChart DataContext="{Binding SignalFirst}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
-            <local:HistogramChart DataContext="{Binding SignalFirst}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
+            <view:SignalChart DataContext="{Binding SignalFirst}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
+            <view:HistogramChart DataContext="{Binding SignalFirst}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
         </Grid>
         <Grid Grid.Column="2" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50*" />
                 <RowDefinition Height="50*" />
             </Grid.RowDefinitions>
-            <local:SignalChart DataContext="{Binding SignalSecond}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
-            <local:HistogramChart DataContext="{Binding SignalSecond}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
+            <view:SignalChart DataContext="{Binding SignalSecond}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
+            <view:HistogramChart DataContext="{Binding SignalSecond}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
         </Grid>
     </Grid>
 </Window>

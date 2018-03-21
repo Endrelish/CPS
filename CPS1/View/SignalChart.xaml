@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="CPS1.View.SignalChart"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:CPS1"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:converters="clr-namespace:IKriv.Windows.Mvvm.Converters;assembly=IKriv.Windows"
+             xmlns:converters1="clr-namespace:CPS1.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="305" d:DesignWidth="400">
+    <UserControl.Resources>
+        <converters1:ChartSettingsConverter x:Key="ChartSettingsConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <lvc:CartesianChart>
+            <lvc:CartesianChart.Series>
+                <lvc:LineSeries Values="{Binding Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointForeground="#2195f2" PointGeometrySize="3" LineSmoothness="1" StrokeThickness="{Binding Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
+            </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis Title="Signal value" Labels="{Binding Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis LabelFormatter="{Binding Formatter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            </lvc:CartesianChart.AxisY>
+        </lvc:CartesianChart>
+    </Grid>
+</UserControl>
