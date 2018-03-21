@@ -7,7 +7,6 @@
     using System.Windows.Input;
 
     using CPS1.Model;
-    using CPS1.Model.Functions;
     using CPS1.View;
 
     public class MainViewModel
@@ -31,58 +30,6 @@
             this.SignalFirst = new FunctionData();
             this.SignalSecond = new FunctionData();
 
-            var signals = new List<Tuple<Signal, string, Required>>();
-            signals.Add(
-                new Tuple<Signal, string, Required>(
-                    Signal.FullyRectifiedSine,
-                    "Fully rectified sine signal",
-                    FullyRectifiedSineWave.RequiredAttributes));
-            signals.Add(
-                new Tuple<Signal, string, Required>(
-                    Signal.NormalDistribution,
-                    "Gaussian distribution signal",
-                    NormalDistributionWave.RequiredAttributes));
-            signals.Add(
-                new Tuple<Signal, string, Required>(
-                    Signal.HalfRectifiedSine,
-                    "Half rectified sine signal",
-                    HalfRectifiedSineWave.RequiredAttributes));
-            signals.Add(
-                new Tuple<Signal, string, Required>(
-                    Signal.ImpulseNoise,
-                    "Impulse noise signal",
-                    ImpulseNoise.RequiredAttributes));
-            signals.Add(
-                new Tuple<Signal, string, Required>(
-                    Signal.KroneckerDelta,
-                    "Kronecker delta signal",
-                    KroneckerDelta.RequiredAttributes));
-            signals.Add(
-                new Tuple<Signal, string, Required>(
-                    Signal.RandomNoise,
-                    "Random noise signal",
-                    RandomNoiseWave.RequiredAttributes));
-            signals.Add(new Tuple<Signal, string, Required>(Signal.Sine, "Sine signal", SineWave.RequiredAttributes));
-            signals.Add(
-                new Tuple<Signal, string, Required>(Signal.Square, "Square signal", SquareWave.RequiredAttributes));
-            signals.Add(
-                new Tuple<Signal, string, Required>(
-                    Signal.SymmetricalSquare,
-                    "Symmetrical square signal",
-                    SymmetricalSquareWave.RequiredAttributes));
-            signals.Add(
-                new Tuple<Signal, string, Required>(
-                    Signal.Triangle,
-                    "Triangle signal",
-                    TriangleWave.RequiredAttributes));
-            signals.Add(
-                new Tuple<Signal, string, Required>(
-                    Signal.UnitStep,
-                    "Unit step signal",
-                    UnitStepWave.RequiredAttributes));
-
-            this.AvailableSignals = ImmutableList.CreateRange(signals);
-
             this.SetRequiredParameters(this.SignalFirst);
             this.SetRequiredParameters(this.SignalSecond);
 
@@ -92,16 +39,12 @@
 
         public static Func<double, string> Formatter { get; } = value => value.ToString("N");
 
-        public ImmutableList<Tuple<Signal, string, Required>> AvailableSignals { get; }
-
         public string FirstSignalType
         {
-            get => this.AvailableSignals.Where(s => s.Item1.Equals(this.firstSignalType)).Select(s => s.Item2)
-                .FirstOrDefault();
+            get => AvailableFunctions.GetDescription(this.firstSignalType);
             set
             {
-                this.firstSignalType = this.AvailableSignals.Where(s => s.Item2.Equals(value)).Select(s => s.Item1)
-                    .FirstOrDefault();
+                this.firstSignalType = AvailableFunctions.GetTypeByDescription(value);
                 this.SetRequiredParameters(this.SignalFirst);
             }
         }
@@ -121,12 +64,10 @@
 
         public string SecondSignalType
         {
-            get => this.AvailableSignals.Where(s => s.Item1.Equals(this.secondSignalType)).Select(s => s.Item2)
-                .FirstOrDefault();
+            get => AvailableFunctions.GetDescription(this.secondSignalType);
             set
             {
-                this.secondSignalType = this.AvailableSignals.Where(s => s.Item2.Equals(value)).Select(s => s.Item1)
-                    .FirstOrDefault();
+                this.secondSignalType = AvailableFunctions.GetTypeByDescription(value);
                 this.SetRequiredParameters(this.SignalSecond);
             }
         }
@@ -139,7 +80,7 @@
         {
             get
             {
-                return this.AvailableSignals.Select(p => p.Item2);
+                return AvailableFunctions.Functions.Select(p => p.Item4);
             }
         }
 
@@ -220,8 +161,7 @@
                 choice = this.secondSignalType;
             }
 
-            signal.RequiredAttributes = this.AvailableSignals.Where(s => s.Item1 == choice).Select(s => s.Item3)
-                .FirstOrDefault();
+            signal.RequiredAttributes = AvailableFunctions.GetRequiredParameters(choice);
         }
     }
 }

@@ -80,32 +80,20 @@
     <Compile Include="Converters\ExpanderConverter.cs" />
     <Compile Include="Model\FunctionAttribute.cs" />
     <Compile Include="Model\FunctionData.cs" />
-    <Compile Include="Model\Functions\FullyRectifiedSineWave.cs" />
-    <Compile Include="Model\Functions\HalfRectifiedSineWave.cs" />
-    <Compile Include="Model\Functions\ImpulseNoise.cs" />
-    <Compile Include="Model\Functions\KroneckerDelta.cs" />
     <Compile Include="Model\Required.cs" />
     <Compile Include="Model\Signal.cs" />
-    <Compile Include="Model\Functions\SquareWave.cs" />
-    <Compile Include="Model\Functions\SymmetricalSquareWave.cs" />
-    <Compile Include="Model\Functions\TriangleWave.cs" />
-    <Compile Include="Model\Functions\UnitStepWave.cs" />
     <Compile Include="Model\Generator.cs" />
     <Compile Include="Model\Histogram.cs" />
     <Compile Include="View\HistogramChart.xaml.cs">
       <DependentUpon>HistogramChart.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\Functions\Function.cs" />
     <Compile Include="ViewModel\IFileDialog.cs" />
     <Compile Include="Model\IFileSerializer.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="Model\Functions\NormalDistributionWave.cs" />
-    <Compile Include="Model\Functions\RandomNoiseWave.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="View\SignalChart.xaml.cs">
       <DependentUpon>SignalChart.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\Functions\SineWave.cs" />
     <Compile Include="View\SignalSettings.xaml.cs">
       <DependentUpon>SignalSettings.xaml</DependentUpon>
     </Compile>

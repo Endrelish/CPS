@@ -6,8 +6,7 @@
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Runtime.Serialization;
-
-    using CPS1.Model.Functions;
+    
     using CPS1.Properties;
     using CPS1.ViewModel;
 
@@ -98,8 +97,7 @@
 
         public void Add(FunctionData data)
         {
-            Type type = typeof(TriangleWave);
-            type
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
