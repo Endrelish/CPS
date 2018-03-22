@@ -11,7 +11,8 @@
     using CPS1.ViewModel;
 
     using LiveCharts;
-
+    
+    [Serializable]
     [DataContract]
     public class FunctionData : INotifyPropertyChanged
     {
@@ -77,37 +78,29 @@
 
             this.Points = new List<Point>();
             this.HistogramPoints = new List<Point>();
-            this.CompositeFunctionComponents = new List<Tuple<Operation, FunctionData>>();
-            this.CompositeFunctionComponents.Add(new Tuple<Operation, FunctionData>(Operation.Add, this));
 
             this.RequiredAttributes = new Required(false, false, false, false, false, false, false, false);
         }
-
+        [field:NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
-
+        [DataMember]
         public FunctionAttribute<double> AbsoluteAverageValue { get; set; }
-
         [DataMember]
         public FunctionAttribute<double> Amplitude { get; set; }
-
+        [DataMember]
         public FunctionAttribute<double> AveragePower { get; set; }
-
+        [DataMember]
         public FunctionAttribute<double> AverageValue { get; set; }
-
-        public List<Tuple<Operation, FunctionData>> CompositeFunctionComponents { get; }
-
+        [IgnoreDataMember]
+        public Func<FunctionData, double, double> Function { get; set; }
         [DataMember]
         public FunctionAttribute<bool> Continuous { get; set; }
-
         [DataMember]
         public FunctionAttribute<double> Duration { get; set; }
-
         [DataMember]
         public FunctionAttribute<double> DutyCycle { get; set; }
-
         [IgnoreDataMember]
         public Func<double, string> Formatter => MainViewModel.Formatter;
-
         [DataMember]
         public FunctionAttribute<int> HistogramIntervals { get; set; }
 
@@ -166,7 +159,7 @@
                 this.Continuous.Visibility = value.Continuous;
             }
         }
-
+        [DataMember]
         public FunctionAttribute<double> RootMeanSquare { get; set; }
 
         [DataMember]
@@ -186,9 +179,9 @@
                 return new ChartValues<double>(this.Points.Select(p => p.Y));
             }
         }
-
+        [DataMember]
         public FunctionAttribute<double> Variance { get; set; }
-
+        [IgnoreDataMember]
         private double Max
         {
             get
@@ -216,6 +209,12 @@
             this.Probability.AssignAttribute(data.Probability);
             this.Continuous.AssignAttribute(data.Continuous);
             this.HistogramIntervals.AssignAttribute(data.HistogramIntervals);
+            this.AverageValue.AssignAttribute(data.AverageValue);
+            this.AbsoluteAverageValue.AssignAttribute(data.AbsoluteAverageValue);
+            this.Variance.AssignAttribute(data.Variance);
+            this.RootMeanSquare.AssignAttribute(data.RootMeanSquare);
+            this.AveragePower.AssignAttribute(data.AveragePower);
+            this.Function = data.Function;
             this.Points.Clear();
             this.Points.AddRange(data.Points);
             this.PointsUpdate();
@@ -241,18 +240,11 @@
 
         public void Compose(FunctionData data, Operation operation)
         {
-            // TODO Change signals composing. Right now when composing already composed signal, the operation only applies to the first component, the rest is composed based on their previous operations. This is an unwanted situation, because the rest of the operations need to change accordingly.
             this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
+            
+            this.Function = FunctionComposer.ComposeFunction(this.Function, data.Function, data, operation);
 
-            // this.Type = Signal.Composite;
-            var comp = new Tuple<Operation, FunctionData>(operation, data.CompositeFunctionComponents[0].Item2);
-            this.CompositeFunctionComponents.Add(comp);
-            for (var i = 1; i < data.CompositeFunctionComponents.Count; i++)
-            {
-                this.CompositeFunctionComponents.Add(data.CompositeFunctionComponents[i]);
-            }
-
-            Generator.GenerateSignal(this, this.Type, this.CompositeFunctionComponents);
+            Generator.GenerateSignal(this);
 
             this.PointsUpdate();
         }

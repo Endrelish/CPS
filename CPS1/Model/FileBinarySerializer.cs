@@ -1,5 +1,6 @@
 ﻿namespace CPS1.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization.Formatters.Binary;
@@ -18,20 +19,23 @@
 
         public FunctionData Deserialize(string filename)
         {
-            FunctionData data;
+            SerializationFunctionHolder deserializedData;
             using (var stream = new FileStream(filename, FileMode.Open))
             {
-                data = (FunctionData)this.formatter.Deserialize(stream);
+                deserializedData = (SerializationFunctionHolder)this.formatter.Deserialize(stream);
             }
 
+            FunctionData data = deserializedData.Data;
+            data.Function = deserializedData.Function;
             return data;
         }
 
         public void Serialize(FunctionData data, string filename)
         {
+            var dataToSerialize = new SerializationFunctionHolder(data.Function, data);
             using (var stream = new FileStream(filename, FileMode.Create))
             {
-                this.formatter.Serialize(stream, data);
+                this.formatter.Serialize(stream, dataToSerialize);
             }
         }
     }

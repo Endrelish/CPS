@@ -83,7 +83,9 @@
     <Compile Include="Model\Exceptions\SignalNotFoundException.cs" />
     <Compile Include="Model\FileXmlSerializer.cs" />
     <Compile Include="Model\AvailableFunctions.cs" />
+    <Compile Include="Model\FunctionComposer.cs" />
     <Compile Include="Model\Operation.cs" />
+    <Compile Include="Model\SerializationFunctionHolder.cs" />
     <Compile Include="ViewModel\CommandHandler.cs" />
     <Compile Include="Model\FileBinarySerializer.cs" />
     <Compile Include="View\FileDialogWpf.cs" />

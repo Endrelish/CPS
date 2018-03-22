@@ -1,5 +1,6 @@
 ﻿namespace CPS1.Model
 {
+    using System;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using System.Runtime.Serialization;
@@ -7,6 +8,7 @@
     using CPS1.Properties;
 
     [DataContract]
+    [Serializable]
     public class FunctionAttribute<T> : INotifyPropertyChanged
         where T : struct
     {
@@ -32,7 +34,7 @@
             this.MaxValue = maxValue;
             this.Name = name;
         }
-
+        [field:NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 
         [DataMember]
