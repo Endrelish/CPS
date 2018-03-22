@@ -12,12 +12,12 @@
         static AvailableFunctions()
         {
             var list =
-                new List<Tuple<Signal, Func<double, double, double, double, double, double>, Required, string>>();
+                new List<Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>>();
 
             list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double>, Required, string>(
+                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
                     Signal.FullyRectifiedSine,
-                    (A, T, t, t1, p) =>
+                    (A, T, t1, kw, p, t) =>
                         {
                             var ret = A * Math.Sin(Math.PI * 2 * (t - t1) / T);
                             if (ret.CompareTo(0) < 0)
@@ -30,9 +30,9 @@
                     new Required(true, true, true, true, false, true, true, true),
                     "Fully rectified sine signal"));
             list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double>, Required, string>(
+                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
                     Signal.HalfRectifiedSine,
-                    (A, T, t, t1, p) =>
+                    (A, T, t1, kw, p, t) =>
                         {
                             var ret = A * Math.Sin(Math.PI * 2 * (t - t1) / T);
                             if (ret.CompareTo(0) < 0)
@@ -45,9 +45,9 @@
                     new Required(true, true, true, true, false, true, true, false),
                     "Half rectified sine signal"));
             list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double>, Required, string>(
+                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
                     Signal.ImpulseNoise,
-                    (A, T, t, t1, p) =>
+                    (A, T, t1, kw, p, t) =>
                         {
                             var random = new Random();
                             var threshold = random.NextDouble();
@@ -61,9 +61,9 @@
                     new Required(true, true, false, true, false, true, false, true),
                     "Impulse noise signal"));
             list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double>, Required, string>(
+                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
                     Signal.KroneckerDelta,
-                    (A, T, t, t1, p) =>
+                    (A, T, t1, kw, p, t) =>
                         {
                             if (Math.Abs(t - t1) < double.Epsilon)
                             {
@@ -75,9 +75,9 @@
                     new Required(true, true, false, true, false, true, false, false),
                     "Kronecker delta signal"));
             list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double>, Required, string>(
+                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
                     Signal.NormalDistribution,
-                    (A, T, t, t1, p) =>
+                    (A, T, t1, kw, p, t) =>
                         {
                             var random = new Random();
                             var y = 0d;
@@ -93,9 +93,9 @@
                     new Required(true, true, false, true, false, true, false, false),
                     "Gaussian distribution signal"));
             list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double>, Required, string>(
+                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
                     Signal.RandomNoise,
-                    (A, T, t, t1, p) =>
+                    (A, T, t1, kw, p, t) =>
                         {
                             var random = new Random();
                             var y = random.NextDouble() * (A * 2) - A;
@@ -105,15 +105,15 @@
                     new Required(true, true, false, true, false, true, false, false),
                     "Random noise signal"));
             list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double>, Required, string>(
+                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
                     Signal.Sine,
-                    (A, T, t, t1, p) => A * Math.Sin(Math.PI * 2 * (t - t1) / T),
+                    (A, T, t1, kw, p, t) => A * Math.Sin(Math.PI * 2 * (t - t1) / T),
                     new Required(true, true, true, true, false, true, true, false),
                     "Sine signal"));
             list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double>, Required, string>(
+                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
                     Signal.Square,
-                    (A, T, t1, kw, t) =>
+                    (A, T, t1, kw, p, t) =>
                         {
                             var k = (int)Math.Floor((t - t1) / T);
                             var result = t - t1 - k * T;
@@ -127,9 +127,9 @@
                     new Required(true, true, true, true, true, true, true, false),
                     "Square signal"));
             list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double>, Required, string>(
+                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
                     Signal.SymmetricalSquare,
-                    (A, T, t1, kw, t) =>
+                    (A, T, t1, kw, p, t) =>
                         {
                             var k = (int)Math.Floor((t - t1) / T);
                             var result = t - t1 - k * T;
@@ -143,9 +143,9 @@
                     new Required(true, true, true, true, true, true, true, false),
                     "Symmetrical square signal"));
             list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double>, Required, string>(
+                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
                     Signal.Triangle,
-                    (A, T, t1, kw, t) =>
+                    (A, T, t1, kw, p, t) =>
                         {
                             var k = (int)Math.Floor((t - t1) / T);
                             var result = t - t1 - k * T;
@@ -159,9 +159,9 @@
                     new Required(true, true, true, true, true, true, true, false),
                     "Triangle signal"));
             list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double>, Required, string>(
+                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
                     Signal.UnitStep,
-                    (A, T, t1, kw, t) =>
+                    (A, T, t1, kw, p, t) =>
                         {
                             if (t < t1)
                             {
@@ -182,14 +182,14 @@
         }
 
         public static
-            ImmutableList<Tuple<Signal, Func<double, double, double, double, double, double>, Required, string>> Functions { get; }
+            ImmutableList<Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>> Functions { get; }
 
         public static string GetDescription(Signal signal)
         {
             return Functions.Where(a => a.Item1 == signal).Select(a => a.Item4).FirstOrDefault();
         }
 
-        public static Func<double, double, double, double, double, double> GetFunction(Signal signal)
+        public static Func<double, double, double, double, double, double, double> GetFunction(Signal signal)
         {
             return Functions.Where(a => a.Item1 == signal).Select(a => a.Item2).FirstOrDefault();
         }

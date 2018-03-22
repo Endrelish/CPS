@@ -4,7 +4,7 @@
     {
         private static MainViewModel viewModel;
 
-        public static MainViewModel ViewModel
+        public MainViewModel ViewModel
         {
             get
             {

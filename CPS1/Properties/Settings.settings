@@ -30,7 +30,7 @@
       <Value Profile="(Default)">150</Value>
     </Setting>
     <Setting Name="DurationMin" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="DutyCycleMax" Type="System.Double" Scope="User">
       <Value Profile="(Default)">1</Value>

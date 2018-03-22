@@ -5,6 +5,7 @@
         public static void GenerateSignal(FunctionData data, Signal signal)
         {
             data.Points.Clear();
+            data.Type = signal;
 
             var function = AvailableFunctions.GetFunction(signal);
 
@@ -15,9 +16,10 @@
                 var y = function(
                     data.Amplitude.Value,
                     data.Period.Value,
-                    x,
                     data.StartTime.Value,
-                    data.Probability.Value);
+                    data.DutyCycle.Value,
+                    data.Probability.Value,
+                    x);
                 data.Points.Add(new Point(x, y));
             }
 
