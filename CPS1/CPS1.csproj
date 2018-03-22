@@ -43,6 +43,15 @@
     <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Rychusoft.NumericalLibraries.Calculator, Version=1.0.6216.39191, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Rychusoft.NumericalLibraries.Calculator.1.0.6216.39191\lib\net40\Rychusoft.NumericalLibraries.Calculator.dll</HintPath>
+    </Reference>
+    <Reference Include="Rychusoft.NumericalLibraries.Derivative, Version=1.0.6216.39191, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Rychusoft.NumericalLibraries.Derivative.1.0.6216.39191\lib\net40\Rychusoft.NumericalLibraries.Derivative.dll</HintPath>
+    </Reference>
+    <Reference Include="Rychusoft.NumericalLibraries.NumericalLibrariesCommon, Version=1.0.6216.39191, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Rychusoft.NumericalLibraries.Calculator.1.0.6216.39191\lib\net40\Rychusoft.NumericalLibraries.NumericalLibrariesCommon.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Collections.Immutable.1.4.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>

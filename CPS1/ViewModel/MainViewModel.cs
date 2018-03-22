@@ -10,6 +10,8 @@
 
     public class MainViewModel
     {
+
+        // TODO Check the continuity checkbox
         private readonly IFileDialog fileDialog;
 
         private readonly IFileSerializer serializer;

@@ -43,6 +43,7 @@
                 }
             }
 
+            data.CalculateParameters();
             data.PointsUpdate();
         }
     }

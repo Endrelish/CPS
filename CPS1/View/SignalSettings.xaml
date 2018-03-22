@@ -5,10 +5,27 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CPS1"
              xmlns:converters="clr-namespace:CPS1.Converters"
-             mc:Ignorable="d" d:DesignWidth="400" Height="463.5">
+             mc:Ignorable="d" d:DesignWidth="400" Height="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:FrequencyPeriodConverter x:Key="FrequencyPeriodConverter" />
+        <ControlTemplate x:Key="Parameter">
+            <Grid Margin="25 5 25 5" Visibility="{Binding Visibility, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="70"/>
+                    </Grid.ColumnDefinitions>
+                    <Separator />
+                    <TextBlock Grid.Column="1" Margin="10,0,0,0" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Grid>
+        </ControlTemplate>
         <ControlTemplate x:Key="Setting" TargetType="Control">
             <Grid Margin="25 5 25 5" Visibility="{Binding Visibility, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid.RowDefinitions>
@@ -39,6 +56,12 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition Height="25" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
@@ -77,5 +100,11 @@
                    VerticalAlignment="Center"
                    Text="HISTOGRAM SETTINGS" />
         <Control Grid.Row="10" Template="{StaticResource Setting}" DataContext="{Binding HistogramIntervals}"/>
+
+        <Control Grid.Row="12" Template="{StaticResource Parameter}" DataContext="{Binding AverageValue}" />
+        <Control Grid.Row="13" Template="{StaticResource Parameter}" DataContext="{Binding AbsoluteAverageValue}" />
+        <Control Grid.Row="14" Template="{StaticResource Parameter}" DataContext="{Binding AveragePower}" />
+        <Control Grid.Row="15" Template="{StaticResource Parameter}" DataContext="{Binding Variance}" />
+        <Control Grid.Row="16" Template="{StaticResource Parameter}" DataContext="{Binding RootMeanSquare}" />
     </Grid>
 </UserControl>

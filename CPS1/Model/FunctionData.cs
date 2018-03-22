@@ -69,6 +69,12 @@
                 "NUMBER OF INTERVALS");
             this.Probability = new FunctionAttribute<double>(probability, false, 0, 1, "PROBABILITY");
             this.Continuous = new FunctionAttribute<bool>(true, false, false, true, "CONTINUITY");
+            this.AverageValue = new FunctionAttribute<double>(0, true, 0, 0, "AVERAGE VALUE");
+            this.AbsoluteAverageValue = new FunctionAttribute<double>(0, true, 0, 0, "ABSOLUTE AVERAGE VALUE");
+            this.AveragePower = new FunctionAttribute<double>(0, true, 0, 0, "AVERAGE POWER");
+            this.Variance = new FunctionAttribute<double>(0, true, 0, 0, "VARIANCE");
+            this.RootMeanSquare = new FunctionAttribute<double>(0, true, 0, 0, "ROOT MEAN SQUARE");
+
             this.Points = new List<Point>();
             this.HistogramPoints = new List<Point>();
             this.CompositeFunctionComponents = new List<Tuple<Operation, FunctionData>>();
@@ -79,8 +85,14 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public FunctionAttribute<double> AbsoluteAverageValue { get; set; }
+
         [DataMember]
         public FunctionAttribute<double> Amplitude { get; set; }
+
+        public FunctionAttribute<double> AveragePower { get; set; }
+
+        public FunctionAttribute<double> AverageValue { get; set; }
 
         public List<Tuple<Operation, FunctionData>> CompositeFunctionComponents { get; }
 
@@ -155,6 +167,8 @@
             }
         }
 
+        public FunctionAttribute<double> RootMeanSquare { get; set; }
+
         [DataMember]
         public FunctionAttribute<int> Samples { get; set; }
 
@@ -170,6 +184,23 @@
             get
             {
                 return new ChartValues<double>(this.Points.Select(p => p.Y));
+            }
+        }
+
+        public FunctionAttribute<double> Variance { get; set; }
+
+        private double Max
+        {
+            get
+            {
+                var max = this.StartTime.Value + this.Duration.Value;
+                if (this.Period.Visibility)
+                {
+                    var k = Math.Floor(this.Duration.Value / this.Period.Value);
+                    max = this.StartTime.Value + k * this.Period.Value;
+                }
+
+                return max;
             }
         }
 
@@ -193,14 +224,30 @@
             this.HistogramPointsUpdate();
         }
 
+        public void CalculateParameters()
+        {
+            this.AverageValue.Value = this.Points.Where(p => p.X <= this.Max).Select(p => p.Y).Sum()
+                                / this.Points.Count(p => p.X <= this.Max);
+            this.AbsoluteAverageValue.Value = this.Points.Where(p => p.X <= this.Max).Select(p => Math.Abs(p.Y)).Sum()
+                                        / this.Points.Count(p => p.X <= this.Max);
+            this.AveragePower.Value = this.Points.Where(p => p.X <= this.Max).Select(p => p.Y * p.Y).Sum()
+                                / this.Points.Count(p => p.X <= this.Max);
+            this.Variance.Value =
+                this.Points.Where(p => p.X <= this.Max)
+                    .Select(p => (p.X - this.AverageValue.Value) * (p.X - this.AverageValue.Value)).Sum()
+                / this.Points.Count(p => p.X <= this.Max);
+            this.RootMeanSquare.Value = Math.Sqrt(this.AveragePower.Value);
+        }
+
         public void Compose(FunctionData data, Operation operation)
         {
             // TODO Change signals composing. Right now when composing already composed signal, the operation only applies to the first component, the rest is composed based on their previous operations. This is an unwanted situation, because the rest of the operations need to change accordingly.
             this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
-            //this.Type = Signal.Composite;
-            Tuple<Operation, FunctionData> comp = new Tuple<Operation, FunctionData>(operation, data.CompositeFunctionComponents[0].Item2);
+
+            // this.Type = Signal.Composite;
+            var comp = new Tuple<Operation, FunctionData>(operation, data.CompositeFunctionComponents[0].Item2);
             this.CompositeFunctionComponents.Add(comp);
-            for (int i = 1; i < data.CompositeFunctionComponents.Count; i++)
+            for (var i = 1; i < data.CompositeFunctionComponents.Count; i++)
             {
                 this.CompositeFunctionComponents.Add(data.CompositeFunctionComponents[i]);
             }
