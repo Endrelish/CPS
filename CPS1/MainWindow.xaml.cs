@@ -15,5 +15,11 @@
             System.Windows.FrameworkCompatibilityPreferences.KeepTextBoxDisplaySynchronizedWithTextProperty = false;
             this.InitializeComponent();
         }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            (new ViewModelLocator()).ViewModel.SignalFirst.Function = null;
+            (new ViewModelLocator()).ViewModel.SignalSecond.Function = null;
+        }
     }
 }

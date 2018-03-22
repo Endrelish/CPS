@@ -33,6 +33,8 @@
         private Signal secondSignalType = Signal.Sine;
 
         private ICommand subtractCommand;
+        [NonSerialized]
+        private static readonly Func<double, string> Formatter1 = value => value.ToString("N");
 
         public MainViewModel()
         {
@@ -62,7 +64,13 @@
                 };
         }
 
-        public static Func<double, string> Formatter { get; } = value => value.ToString("N");
+        public static Func<double, string> Formatter
+        {
+            get
+            {
+                return Formatter1;
+            }
+        }
 
         public ICommand AddCommand => this.addCommand
                                       ?? (this.addCommand = new CommandHandler(this.AddSignals, this.SignalsGenerated));

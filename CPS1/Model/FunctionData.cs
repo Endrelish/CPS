@@ -11,11 +11,14 @@
     using CPS1.ViewModel;
 
     using LiveCharts;
-    
+
     [Serializable]
     [DataContract]
     public class FunctionData : INotifyPropertyChanged
     {
+        [NonSerialized]
+        private Func<FunctionData, double, double> function;
+
         public FunctionData(
             double startTime = 0,
             double amplitude = 50,
@@ -81,26 +84,41 @@
 
             this.RequiredAttributes = new Required(false, false, false, false, false, false, false, false);
         }
-        [field:NonSerialized]
+
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
+
         [DataMember]
         public FunctionAttribute<double> AbsoluteAverageValue { get; set; }
+
         [DataMember]
         public FunctionAttribute<double> Amplitude { get; set; }
+
         [DataMember]
         public FunctionAttribute<double> AveragePower { get; set; }
+
         [DataMember]
         public FunctionAttribute<double> AverageValue { get; set; }
-        [IgnoreDataMember]
-        public Func<FunctionData, double, double> Function { get; set; }
+
         [DataMember]
         public FunctionAttribute<bool> Continuous { get; set; }
+
         [DataMember]
         public FunctionAttribute<double> Duration { get; set; }
+
         [DataMember]
         public FunctionAttribute<double> DutyCycle { get; set; }
+
         [IgnoreDataMember]
         public Func<double, string> Formatter => MainViewModel.Formatter;
+
+        [IgnoreDataMember]
+        public Func<FunctionData, double, double> Function
+        {
+            get => this.function;
+            set => this.function = value;
+        }
+
         [DataMember]
         public FunctionAttribute<int> HistogramIntervals { get; set; }
 
@@ -159,6 +177,7 @@
                 this.Continuous.Visibility = value.Continuous;
             }
         }
+
         [DataMember]
         public FunctionAttribute<double> RootMeanSquare { get; set; }
 
@@ -179,8 +198,10 @@
                 return new ChartValues<double>(this.Points.Select(p => p.Y));
             }
         }
+
         [DataMember]
         public FunctionAttribute<double> Variance { get; set; }
+
         [IgnoreDataMember]
         private double Max
         {
@@ -226,11 +247,11 @@
         public void CalculateParameters()
         {
             this.AverageValue.Value = this.Points.Where(p => p.X <= this.Max).Select(p => p.Y).Sum()
-                                / this.Points.Count(p => p.X <= this.Max);
+                                      / this.Points.Count(p => p.X <= this.Max);
             this.AbsoluteAverageValue.Value = this.Points.Where(p => p.X <= this.Max).Select(p => Math.Abs(p.Y)).Sum()
-                                        / this.Points.Count(p => p.X <= this.Max);
+                                              / this.Points.Count(p => p.X <= this.Max);
             this.AveragePower.Value = this.Points.Where(p => p.X <= this.Max).Select(p => p.Y * p.Y).Sum()
-                                / this.Points.Count(p => p.X <= this.Max);
+                                      / this.Points.Count(p => p.X <= this.Max);
             this.Variance.Value =
                 this.Points.Where(p => p.X <= this.Max)
                     .Select(p => (p.X - this.AverageValue.Value) * (p.X - this.AverageValue.Value)).Sum()
@@ -240,13 +261,27 @@
 
         public void Compose(FunctionData data, Operation operation)
         {
-            this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
-            
-            this.Function = FunctionComposer.ComposeFunction(this.Function, data.Function, data, operation);
+            if (this.Type != Signal.Composite)
+            {
+                this.Function = AvailableFunctions.GetFunction(this.Type);
+            }
 
-            Generator.GenerateSignal(this);
+            if (data.Type != Signal.Composite)
+            {
+                data.Function = AvailableFunctions.GetFunction(data.Type);
+            }
 
-            this.PointsUpdate();
+            if (data.Function != null && this.Function != null)
+            {
+                this.Type = Signal.Composite;
+                this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
+                this.Function = FunctionComposer.ComposeFunction(this.Function, data.Function, data, operation);
+                Generator.GenerateSignal(this);
+            }
+            else
+            {
+                this.SimpleCompose(data, operation);
+            }
         }
 
         public void HistogramPointsUpdate()
@@ -263,13 +298,203 @@
 
         public void SetAmplitude()
         {
-            this.Amplitude.Value = Math.Max(this.Points.Max(p => p.Y), Math.Abs(this.Points.Min(p => p.Y)));
+            this.Amplitude.Value = Math.Ceiling(Math.Max(this.Points.Max(p => p.Y), Math.Abs(this.Points.Min(p => p.Y))));
         }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void SimpleAdd(FunctionData data)
+        {
+            if (this.Continuous.Value && data.Continuous.Value)
+            {
+                foreach (var point in this.Points)
+                {
+                    if (data.Points.Any(p => p.X == point.X))
+                    {
+                        point.Y += data.Points.First(p => p.X == point.X).Y;
+                    }
+                    else
+                    {
+                        point.Y += (data.Points.First(a => a.X == data.Points.Where(p => p.X < point.X).Max(p => p.X)).Y
+                                    + data.Points.First(a => a.X == data.Points.Where(p => p.X > point.X).Min(p => p.X))
+                                        .Y) / 2.0d;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var point in this.Points)
+                {
+                    if (data.Points.Any(p => p.X == point.X))
+                    {
+                        point.Y += data.Points.First(p => p.X == point.X).Y;
+                    }
+                }
+
+                this.Points.AddRange(data.Points.Where(p => !this.Points.Select(a => a.X).Contains(p.X)));
+            }
+        }
+
+        private void SimpleCompose(FunctionData data, Operation operation)
+        {
+            switch (operation)
+            {
+                case Operation.Add:
+                    this.SimpleAdd(data);
+                    break;
+                case Operation.Subtract:
+                    this.SimpleSubtract(data);
+                    break;
+                case Operation.Multiply:
+                    this.SimpleMultiply(data);
+                    break;
+                case Operation.Divide:
+                    this.SimpleDivide(data);
+                    break;
+            }
+        }
+
+        private void SimpleDivide(FunctionData data)
+        {
+            if (this.Continuous.Value && data.Continuous.Value)
+            {
+                for (var i = 0; i < this.Points.Count; i++)
+                {
+                    var point = this.Points[i];
+                    if (data.Points.Any(p => Math.Abs(p.X - point.X) < double.Epsilon))
+                    {
+                        try
+                        {
+                            point.Y /= data.Points.First(p => Math.Abs(p.X - point.X) < double.Epsilon).Y;
+                        }
+                        catch (DivideByZeroException)
+                        {
+                            this.Points.RemoveAt(i--);
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            point.Y /=
+                                (data.Points.First(
+                                     a => Math.Abs(a.X - data.Points.Where(p => p.X < point.X).Max(p => p.X))
+                                          < double.Epsilon).Y + data.Points.First(
+                                     a => Math.Abs(a.X - data.Points.Where(p => p.X > point.X).Min(p => p.X))
+                                          < double.Epsilon).Y) / 2.0d;
+                        }
+                        catch (DivideByZeroException)
+                        {
+                            this.Points.RemoveAt(i--);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (var i = 0; i < this.Points.Count; i++)
+                {
+                    var point = this.Points[i];
+                    if (data.Points.Any(p => Math.Abs(p.X - point.X) < double.Epsilon))
+                    {
+                        try
+                        {
+                            point.Y /= data.Points.First(p => Math.Abs(p.X - point.X) < double.Epsilon).Y;
+                        }
+                        catch (DivideByZeroException)
+                        {
+                            this.Points.RemoveAt(i--);
+                        }
+                    }
+                    else
+                    {
+                        this.Points.RemoveAt(i--);
+                    }
+                }
+            }
+        }
+
+        private void SimpleMultiply(FunctionData data)
+        {
+            if (this.Continuous.Value && data.Continuous.Value)
+            {
+                foreach (var point in this.Points)
+                {
+                    if (data.Points.Any(p => Math.Abs(p.X - point.X) < double.Epsilon))
+                    {
+                        point.Y *= data.Points.First(p => Math.Abs(p.X - point.X) < double.Epsilon).Y;
+                    }
+                    else
+                    {
+                        point.Y *=
+                            (data.Points.First(
+                                 a => Math.Abs(a.X - data.Points.Where(p => p.X < point.X).Max(p => p.X))
+                                      < double.Epsilon).Y + data.Points.First(
+                                 a => Math.Abs(a.X - data.Points.Where(p => p.X > point.X).Min(p => p.X))
+                                      < double.Epsilon).Y) / 2.0d;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var point in this.Points)
+                {
+                    if (data.Points.Any(p => Math.Abs(p.X - point.X) < double.Epsilon))
+                    {
+                        point.Y *= data.Points.First(p => Math.Abs(p.X - point.X) < double.Epsilon).Y;
+                    }
+                    else
+                    {
+                        point.Y = 0;
+                    }
+                }
+            }
+        }
+
+        private void SimpleSubtract(FunctionData data)
+        {
+            if (this.Continuous.Value && data.Continuous.Value)
+            {
+                foreach (var point in this.Points)
+                {
+                    if (data.Points.Any(p => Math.Abs(p.X - point.X) < double.Epsilon))
+                    {
+                        point.Y -= data.Points.First(p => Math.Abs(p.X - point.X) < double.Epsilon).Y;
+                    }
+                    else
+                    {
+                        point.Y -=
+                            (data.Points.First(
+                                 a => Math.Abs(a.X - data.Points.Where(p => p.X < point.X).Max(p => p.X))
+                                      < double.Epsilon).Y + data.Points.First(
+                                 a => Math.Abs(a.X - data.Points.Where(p => p.X > point.X).Min(p => p.X))
+                                      < double.Epsilon).Y) / 2.0d;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var point in this.Points)
+                {
+                    if (data.Points.Any(p => Math.Abs(p.X - point.X) < double.Epsilon))
+                    {
+                        point.Y -= data.Points.First(p => Math.Abs(p.X - point.X) < double.Epsilon).Y;
+                    }
+                }
+
+                this.Points.AddRange(
+                    data.Points.Where(p => !this.Points.Select(a => a.X).Contains(p.X))
+                        .Select(p => new Point(p.X, p.Y * -1)));
+            }
+
+            foreach (var point in Points)
+            {
+                if (Math.Abs(point.Y) < 10E-10) point.Y = 0;
+            }
         }
     }
 }
