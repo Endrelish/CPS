@@ -172,6 +172,7 @@
         public void Add(FunctionData data)
         {
             this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
+
             foreach (var point in this.Points)
             {
                 point.Y += AvailableFunctions.GetFunction(data.Type)(
@@ -181,6 +182,8 @@
                     data.DutyCycle.Value,
                     data.Probability.Value,
                     point.X);
+
+                if (Math.Abs(point.Y) < 1.0E-10) point.Y = 0;
             }
 
             this.PointsUpdate();
@@ -218,7 +221,7 @@
                     data.DutyCycle.Value,
                     data.Probability.Value,
                     point.X);
-                if (y != 0)
+                if (Math.Abs(y) > double.Epsilon)
                 {
                     point.Y /= y;
                 }
@@ -249,6 +252,8 @@
                     data.DutyCycle.Value,
                     data.Probability.Value,
                     point.X);
+
+                if (Math.Abs(point.Y) < 1.0E-10) point.Y = 0;
             }
 
             this.PointsUpdate();
@@ -277,6 +282,8 @@
                     data.DutyCycle.Value,
                     data.Probability.Value,
                     point.X);
+
+                if (Math.Abs(point.Y) < 1.0E-10) point.Y = 0;
             }
 
             this.PointsUpdate();

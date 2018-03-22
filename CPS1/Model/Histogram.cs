@@ -7,7 +7,7 @@
         public static void GetHistogram(FunctionData data)
         {
             var max = data.StartTime.Value + data.Duration.Value;
-            if (data.Period.Visibility) max = data.Period.Value * (Math.Floor(data.Duration.Value / data.Period.Value));
+            if (data.Period.Visibility) max = data.Period.Value * (Math.Floor(data.Duration.Value / data.Period.Value)) + data.StartTime.Value;
             data.HistogramPoints.Clear();
             var step = data.Amplitude.Value * 2 / data.HistogramIntervals.Value;
             for (var i = 0; i <= data.HistogramIntervals.Value; i++)
