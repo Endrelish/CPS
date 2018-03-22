@@ -176,11 +176,7 @@
             foreach (var point in this.Points)
             {
                 point.Y += AvailableFunctions.GetFunction(data.Type)(
-                    data.Amplitude.Value,
-                    data.Period.Value,
-                    data.StartTime.Value,
-                    data.DutyCycle.Value,
-                    data.Probability.Value,
+                    this,
                     point.X);
 
                 if (Math.Abs(point.Y) < 1.0E-10)
@@ -218,11 +214,7 @@
             for (var i = 0; i < this.Points.Count; i++)
             {
                 var y = AvailableFunctions.GetFunction(data.Type)(
-                    data.Amplitude.Value,
-                    data.Period.Value,
-                    data.StartTime.Value,
-                    data.DutyCycle.Value,
-                    data.Probability.Value,
+                    this,
                     this.Points[i].X);
                 if (Math.Abs(y) > double.Epsilon)
                 {
@@ -249,11 +241,7 @@
             foreach (var point in this.Points)
             {
                 point.Y *= AvailableFunctions.GetFunction(data.Type)(
-                    data.Amplitude.Value,
-                    data.Period.Value,
-                    data.StartTime.Value,
-                    data.DutyCycle.Value,
-                    data.Probability.Value,
+                    this,
                     point.X);
 
                 if (Math.Abs(point.Y) < 1.0E-10)
@@ -282,11 +270,7 @@
             foreach (var point in this.Points)
             {
                 point.Y -= AvailableFunctions.GetFunction(data.Type)(
-                    data.Amplitude.Value,
-                    data.Period.Value,
-                    data.StartTime.Value,
-                    data.DutyCycle.Value,
-                    data.Probability.Value,
+                    this,
                     point.X);
 
                 if (Math.Abs(point.Y) < 1.0E-10)

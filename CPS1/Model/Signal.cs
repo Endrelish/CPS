@@ -12,6 +12,7 @@
         Square,
         SymmetricalSquare,
         Triangle,
-        UnitStep
+        UnitStep,
+        Composite
     }
 }

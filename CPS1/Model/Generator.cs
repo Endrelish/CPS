@@ -14,11 +14,7 @@
             {
                 var x = i * interval + data.StartTime.Value;
                 var y = function(
-                    data.Amplitude.Value,
-                    data.Period.Value,
-                    data.StartTime.Value,
-                    data.DutyCycle.Value,
-                    data.Probability.Value,
+                    data,
                     x);
                 data.Points.Add(new Point(x, y));
             }
