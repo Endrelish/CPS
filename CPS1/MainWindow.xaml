@@ -29,7 +29,6 @@
         <Image x:Key="SaveIcon2" Source="resources/SaveIcon.png" />
         <Image x:Key="OpenIcon1" Source="resources/OpenIcon.png" />
         <Image x:Key="OpenIcon2" Source="resources/OpenIcon.png" />
-        <converters:ExpanderConverter x:Key="ExpanderConverter"/>
 
 
     </Window.Resources>

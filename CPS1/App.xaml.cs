@@ -5,7 +5,12 @@
     /// <summary>
     ///     Interaction logic for App.xaml
     /// </summary>
-    public class App : Application
+    public partial class App : Application
     {
+        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show("You shouldn't have done that, look what happened: " + e.Exception.Message, "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Warning);
+            e.Handled = true;
+        }
     }
 }

@@ -183,7 +183,10 @@
                     data.Probability.Value,
                     point.X);
 
-                if (Math.Abs(point.Y) < 1.0E-10) point.Y = 0;
+                if (Math.Abs(point.Y) < 1.0E-10)
+                {
+                    point.Y = 0;
+                }
             }
 
             this.PointsUpdate();
@@ -212,22 +215,22 @@
         public void Divide(FunctionData data)
         {
             this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
-            foreach (var point in this.Points)
+            for (var i = 0; i < this.Points.Count; i++)
             {
-                   var y = AvailableFunctions.GetFunction(data.Type)(
+                var y = AvailableFunctions.GetFunction(data.Type)(
                     data.Amplitude.Value,
                     data.Period.Value,
                     data.StartTime.Value,
                     data.DutyCycle.Value,
                     data.Probability.Value,
-                    point.X);
+                    this.Points[i].X);
                 if (Math.Abs(y) > double.Epsilon)
                 {
-                    point.Y /= y;
+                    this.Points[i].Y /= y;
                 }
                 else
                 {
-                    this.Points.Remove(point);
+                    this.Points.RemoveAt(i--);
                 }
             }
 
@@ -253,7 +256,10 @@
                     data.Probability.Value,
                     point.X);
 
-                if (Math.Abs(point.Y) < 1.0E-10) point.Y = 0;
+                if (Math.Abs(point.Y) < 1.0E-10)
+                {
+                    point.Y = 0;
+                }
             }
 
             this.PointsUpdate();
@@ -283,7 +289,10 @@
                     data.Probability.Value,
                     point.X);
 
-                if (Math.Abs(point.Y) < 1.0E-10) point.Y = 0;
+                if (Math.Abs(point.Y) < 1.0E-10)
+                {
+                    point.Y = 0;
+                }
             }
 
             this.PointsUpdate();

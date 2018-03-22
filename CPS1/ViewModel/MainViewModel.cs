@@ -116,7 +116,7 @@
         {
             get
             {
-                return AvailableFunctions.Functions.Select(p => p.Item4);
+                return AvailableFunctions.Functions.Values.Select(p => p.Item3);
             }
         }
 

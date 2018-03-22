@@ -5,6 +5,7 @@
     using System.Collections.Immutable;
     using System.Linq;
 
+    using CPS1.Model.Exceptions;
     using CPS1.Properties;
 
     public static class AvailableFunctions
@@ -12,11 +13,11 @@
         static AvailableFunctions()
         {
             var list =
-                new List<Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>>();
+                new Dictionary<Signal, Tuple<Func<double, double, double, double, double, double, double>, Required, string>>();
 
-            list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
-                    Signal.FullyRectifiedSine,
+            list.Add(Signal.FullyRectifiedSine,
+                new Tuple<Func<double, double, double, double, double, double, double>, Required, string>(
+                    
                     (A, T, t1, kw, p, t) =>
                         {
                             var ret = A * Math.Sin(Math.PI * 2 * (t - t1) / T);
@@ -29,9 +30,9 @@
                         },
                     new Required(true, true, true, true, false, true, true, true),
                     "Fully rectified sine signal"));
-            list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
-                    Signal.HalfRectifiedSine,
+            list.Add(Signal.HalfRectifiedSine,
+                new Tuple<Func<double, double, double, double, double, double, double>, Required, string>(
+                    
                     (A, T, t1, kw, p, t) =>
                         {
                             var ret = A * Math.Sin(Math.PI * 2 * (t - t1) / T);
@@ -44,9 +45,9 @@
                         },
                     new Required(true, true, true, true, false, true, true, false),
                     "Half rectified sine signal"));
-            list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
-                    Signal.ImpulseNoise,
+            list.Add(Signal.ImpulseNoise,
+                new Tuple<Func<double, double, double, double, double, double, double>, Required, string>(
+                    
                     (A, T, t1, kw, p, t) =>
                         {
                             var random = new Random();
@@ -60,9 +61,9 @@
                         },
                     new Required(true, true, false, true, false, true, false, true),
                     "Impulse noise signal"));
-            list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
-                    Signal.KroneckerDelta,
+            list.Add(Signal.KroneckerDelta,
+                new Tuple<Func<double, double, double, double, double, double, double>, Required, string>(
+                    
                     (A, T, t1, kw, p, t) =>
                         {
                             if (Math.Abs(t - t1) < double.Epsilon)
@@ -74,9 +75,9 @@
                         },
                     new Required(true, true, false, true, false, true, false, false),
                     "Kronecker delta signal"));
-            list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
-                    Signal.NormalDistribution,
+            list.Add(Signal.NormalDistribution,
+                new Tuple<Func<double, double, double, double, double, double, double>, Required, string>(
+                    
                     (A, T, t1, kw, p, t) =>
                         {
                             var random = new Random();
@@ -92,9 +93,9 @@
                         },
                     new Required(true, true, false, true, false, true, false, false),
                     "Gaussian distribution signal"));
-            list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
-                    Signal.RandomNoise,
+            list.Add(Signal.RandomNoise,
+                new Tuple<Func<double, double, double, double, double, double, double>, Required, string>(
+                    
                     (A, T, t1, kw, p, t) =>
                         {
                             var random = new Random();
@@ -104,15 +105,15 @@
                         },
                     new Required(true, true, false, true, false, true, false, false),
                     "Random noise signal"));
-            list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
-                    Signal.Sine,
+            list.Add(Signal.Sine,
+                new Tuple<Func<double, double, double, double, double, double, double>, Required, string>(
+                    
                     (A, T, t1, kw, p, t) => A * Math.Sin(Math.PI * 2 * (t - t1) / T),
                     new Required(true, true, true, true, false, true, true, false),
                     "Sine signal"));
-            list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
-                    Signal.Square,
+            list.Add( Signal.Square,
+                new Tuple<Func<double, double, double, double, double, double, double>, Required, string>(
+                   
                     (A, T, t1, kw, p, t) =>
                         {
                             var k = (int)Math.Floor((t - t1) / T);
@@ -126,9 +127,9 @@
                         },
                     new Required(true, true, true, true, true, true, true, false),
                     "Square signal"));
-            list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
-                    Signal.SymmetricalSquare,
+            list.Add(Signal.SymmetricalSquare,
+                new Tuple<Func<double, double, double, double, double, double, double>, Required, string>(
+                    
                     (A, T, t1, kw, p, t) =>
                         {
                             var k = (int)Math.Floor((t - t1) / T);
@@ -142,9 +143,9 @@
                         },
                     new Required(true, true, true, true, true, true, true, false),
                     "Symmetrical square signal"));
-            list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
-                    Signal.Triangle,
+            list.Add(Signal.Triangle,
+                new Tuple<Func<double, double, double, double, double, double, double>, Required, string>(
+                    
                     (A, T, t1, kw, p, t) =>
                         {
                             var k = (int)Math.Floor((t - t1) / T);
@@ -158,9 +159,9 @@
                         },
                     new Required(true, true, true, true, true, true, true, false),
                     "Triangle signal"));
-            list.Add(
-                new Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>(
-                    Signal.UnitStep,
+            list.Add(Signal.UnitStep,
+                new Tuple<Func<double, double, double, double, double, double, double>, Required, string>(
+                    
                     (A, T, t1, kw, p, t) =>
                         {
                             if (t < t1)
@@ -178,30 +179,55 @@
                     new Required(true, true, false, true, false, true, true, false),
                     "Unit step signal"));
 
-            Functions = ImmutableList.CreateRange(list);
+            Functions = ImmutableDictionary.CreateRange(list);
         }
 
         public static
-            ImmutableList<Tuple<Signal, Func<double, double, double, double, double, double, double>, Required, string>> Functions { get; }
+            ImmutableDictionary<Signal, Tuple<Func<double, double, double, double, double, double, double>, Required, string>> Functions { get; }
 
         public static string GetDescription(Signal signal)
         {
-            return Functions.Where(a => a.Item1 == signal).Select(a => a.Item4).FirstOrDefault();
+            var found = Functions.TryGetValue(signal, out var tuple);
+            if (!found) throw new SignalNotFoundException(string.Format("Could not find {0}.", signal.ToString()));
+
+            return tuple.Item3;
         }
 
         public static Func<double, double, double, double, double, double, double> GetFunction(Signal signal)
         {
-            return Functions.Where(a => a.Item1 == signal).Select(a => a.Item2).FirstOrDefault();
+            var found = Functions.TryGetValue(signal, out var tuple);
+            if (!found) throw new SignalNotFoundException(string.Format("Could not find {0}.", signal.ToString()));
+
+            return tuple.Item1;
         }
 
         public static Required GetRequiredParameters(Signal signal)
         {
-            return Functions.Where(a => a.Item1 == signal).Select(a => a.Item3).FirstOrDefault();
+            var found = Functions.TryGetValue(signal, out var tuple);
+            if (!found) throw new SignalNotFoundException(string.Format("Could not find {0}.", signal.ToString()));
+
+            return tuple.Item2;
         }
 
         public static Signal GetTypeByDescription(string description)
         {
-            return Functions.Where(f => f.Item4 == description).Select(f => f.Item1).FirstOrDefault();
+            Signal signal;
+            try
+            {
+                signal = Functions.First(s => s.Value.Item3.Equals(description)).Key;
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new SignalNotFoundException(
+                    string.Format("Could not find signal with description: \"{0}\"", description), e);
+            }
+            catch (ArgumentNullException e)
+            {
+                throw new SignalNotFoundException(
+                    "Oh no! Something is terribly wrong. Contact the developer, it\'s all their fault!", e);
+            }
+
+            return signal;
         }
     }
 }

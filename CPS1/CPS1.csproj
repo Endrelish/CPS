@@ -71,13 +71,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\ChartSettingsConverter.cs" />
+    <Compile Include="Model\Exceptions\SignalNotFoundException.cs" />
     <Compile Include="Model\FileXmlSerializer.cs" />
     <Compile Include="Model\AvailableFunctions.cs" />
     <Compile Include="ViewModel\CommandHandler.cs" />
     <Compile Include="Model\FileBinarySerializer.cs" />
     <Compile Include="View\FileDialogWpf.cs" />
     <Compile Include="Converters\FrequencyPeriodConverter.cs" />
-    <Compile Include="Converters\ExpanderConverter.cs" />
     <Compile Include="Model\FunctionAttribute.cs" />
     <Compile Include="Model\FunctionData.cs" />
     <Compile Include="Model\Required.cs" />
