@@ -166,14 +166,17 @@
         {
             if (parameter is short chart)
             {
+                // TODO Bind firstSignalType to SignalFirst.Type - for second signal too.
                 if (chart == 1)
                 {
-                    Generator.GenerateSignal(this.SignalFirst, this.firstSignalType);
+                    SignalFirst.Type = this.firstSignalType;
+                    Generator.GenerateSignal(this.SignalFirst);
                     Histogram.GetHistogram(this.SignalFirst);
                 }
                 else if (chart == 2)
                 {
-                    Generator.GenerateSignal(this.SignalSecond, this.secondSignalType);
+                    SignalSecond.Type = this.secondSignalType;
+                    Generator.GenerateSignal(this.SignalSecond);
                     Histogram.GetHistogram(this.SignalSecond);
                 }
             }

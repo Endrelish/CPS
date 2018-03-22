@@ -5,24 +5,14 @@
 
     public static class Generator
     {
-        public static void GenerateSignal(
-            FunctionData data,
-            Signal signal,
-            List<Tuple<Operation, FunctionData>> composite = null)
+        public static void GenerateSignal(FunctionData data)
         {
             data.Points.Clear();
-            data.Type = signal;
-            Func<FunctionData, double, double> function;
-            if (composite == null || composite.Count == 1)
+            if (data.Type != Signal.Composite)
             {
-                function = AvailableFunctions.GetFunction(signal);
-                data.CompositeFunctionComponents.Clear();
-                data.CompositeFunctionComponents.Add(new Tuple<Operation, FunctionData>(Operation.Add, data));
+                data.OperationData = new OperationData(AvailableFunctions.GetFunction(data.Type));
             }
-            else
-            {
-                function = AvailableFunctions.GetComposite(composite);
-            }
+            Func<FunctionData, double, double> function = data.OperationData.Compose(data, null);
 
             var interval = data.Duration.Value / (data.Samples.Value - 1);
             for (var i = 0; i < data.Samples.Value; i++)

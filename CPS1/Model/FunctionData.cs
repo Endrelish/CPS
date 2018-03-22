@@ -15,6 +15,10 @@
     [DataContract]
     public class FunctionData : INotifyPropertyChanged
     {
+        private Signal type;
+
+        public OperationData OperationData { get; set; }
+
         public FunctionData(
             double startTime = 0,
             double amplitude = 50,
@@ -74,6 +78,7 @@
             this.AveragePower = new FunctionAttribute<double>(0, true, 0, 0, "AVERAGE POWER");
             this.Variance = new FunctionAttribute<double>(0, true, 0, 0, "VARIANCE");
             this.RootMeanSquare = new FunctionAttribute<double>(0, true, 0, 0, "ROOT MEAN SQUARE");
+            this.OperationData = new OperationData(AvailableFunctions.GetFunction(this.Type));
 
             this.Points = new List<Point>();
             this.HistogramPoints = new List<Point>();
@@ -244,16 +249,15 @@
             // TODO Change signals composing. Right now when composing already composed signal, the operation only applies to the first component, the rest is composed based on their previous operations. This is an unwanted situation, because the rest of the operations need to change accordingly.
             this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
 
-            // this.Type = Signal.Composite;
-            var comp = new Tuple<Operation, FunctionData>(operation, data.CompositeFunctionComponents[0].Item2);
-            this.CompositeFunctionComponents.Add(comp);
-            for (var i = 1; i < data.CompositeFunctionComponents.Count; i++)
-            {
-                this.CompositeFunctionComponents.Add(data.CompositeFunctionComponents[i]);
-            }
+            this.OperationData.SecondOperand = data.OperationData.Compose(data, null);
+            this.OperationData.Operation = operation;
 
-            Generator.GenerateSignal(this, this.Type, this.CompositeFunctionComponents);
+            var function = OperationData.Compose(this, data);
 
+            OperationData = new OperationData(function);
+            this.Type = Signal.Composite;
+            Generator.GenerateSignal(this);
+            
             this.PointsUpdate();
         }
 

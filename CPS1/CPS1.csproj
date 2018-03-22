@@ -84,6 +84,7 @@
     <Compile Include="Model\FileXmlSerializer.cs" />
     <Compile Include="Model\AvailableFunctions.cs" />
     <Compile Include="Model\Operation.cs" />
+    <Compile Include="Model\OperationData.cs" />
     <Compile Include="ViewModel\CommandHandler.cs" />
     <Compile Include="Model\FileBinarySerializer.cs" />
     <Compile Include="View\FileDialogWpf.cs" />
