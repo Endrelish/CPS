@@ -1,6 +1,6 @@
 ﻿namespace CPS1.Model
 {
-    public enum Operations
+    public enum Operation
     {
         Add,
         Subtract,

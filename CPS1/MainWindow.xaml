@@ -108,7 +108,7 @@
                                 CommandParameter="{StaticResource Second}" BorderThickness="0" Background="White"/>
                     </Grid>
                 </Expander>
-                <Expander Grid.Row="2" Header="Operations" ExpandDirection="Down">
+                <Expander Grid.Row="2" Header="Operation" ExpandDirection="Down">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="8*"/>

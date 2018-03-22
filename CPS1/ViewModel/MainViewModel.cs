@@ -136,11 +136,11 @@
             {
                 if (no == 1)
                 {
-                    this.SignalFirst.Add(this.SignalSecond);
+                    this.SignalFirst.Compose(this.SignalSecond, Operation.Add);
                 }
                 else
                 {
-                    this.SignalSecond.Add(this.SignalFirst);
+                    this.SignalSecond.Compose(this.SignalFirst, Operation.Add);
                 }
             }
         }
@@ -151,11 +151,11 @@
             {
                 if (no == 1)
                 {
-                    this.SignalFirst.Divide(this.SignalSecond);
+                    this.SignalFirst.Compose(this.SignalSecond, Operation.Divide);
                 }
                 else
                 {
-                    this.SignalSecond.Divide(this.SignalFirst);
+                    this.SignalSecond.Compose(this.SignalFirst, Operation.Divide);
                 }
             }
         }
@@ -183,11 +183,11 @@
             {
                 if (no == 1)
                 {
-                    this.SignalFirst.Multiply(this.SignalSecond);
+                    this.SignalFirst.Compose(this.SignalSecond, Operation.Multiply);
                 }
                 else
                 {
-                    this.SignalSecond.Multiply(this.SignalFirst);
+                    this.SignalSecond.Compose(this.SignalFirst, Operation.Multiply);
                 }
             }
         }
@@ -263,11 +263,11 @@
             {
                 if (no == 1)
                 {
-                    this.SignalFirst.Subtract(this.SignalSecond);
+                    this.SignalFirst.Compose(this.SignalSecond, Operation.Subtract);
                 }
                 else
                 {
-                    this.SignalSecond.Subtract(this.SignalFirst);
+                    this.SignalSecond.Compose(this.SignalFirst, Operation.Subtract);
                 }
             }
         }

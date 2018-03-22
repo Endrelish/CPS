@@ -243,5 +243,36 @@
 
             return signal;
         }
+
+        public static Func<FunctionData, double, double> GetComposite(List<Tuple<Operation, FunctionData>> composite)
+        {
+            var compositeFunction = AvailableFunctions.GetFunction(composite[0].Item2.Type);
+            for (int i = 1; i < composite.Count; i++)
+            {
+                compositeFunction = Compose(compositeFunction, composite[i].Item1, GetFunction(composite[i].Item2.Type), composite[i].Item2);
+            }
+
+            return compositeFunction;
+        }
+
+        private static Func<FunctionData, double, double> Compose(
+            Func<FunctionData, double, double> composite,
+            Operation operation,
+            Func<FunctionData, double, double> function,
+            FunctionData functionData)
+        {
+            switch (operation)
+            {
+                case Operation.Add:
+                    return (data, d) => composite(data, d) + function(functionData, d);
+                case Operation.Multiply:
+                    return (data, d) => composite(data, d) * function(functionData, d);
+                case Operation.Subtract:
+                    return (data, d) => composite(data, d) - function(functionData, d);
+                case Operation.Divide:
+                    return (data, d) => composite(data, d) / function(functionData, d);
+            }
+            return composite;
+        }
     }
 }

@@ -71,6 +71,8 @@
             this.Continuous = new FunctionAttribute<bool>(true, false, false, true, "CONTINUITY");
             this.Points = new List<Point>();
             this.HistogramPoints = new List<Point>();
+            this.CompositeFunctionComponents = new List<Tuple<Operation, FunctionData>>();
+            this.CompositeFunctionComponents.Add(new Tuple<Operation, FunctionData>(Operation.Add, this));
 
             this.RequiredAttributes = new Required(false, false, false, false, false, false, false, false);
         }
@@ -79,6 +81,8 @@
 
         [DataMember]
         public FunctionAttribute<double> Amplitude { get; set; }
+
+        public List<Tuple<Operation, FunctionData>> CompositeFunctionComponents { get; }
 
         [DataMember]
         public FunctionAttribute<bool> Continuous { get; set; }
@@ -169,25 +173,6 @@
             }
         }
 
-        public void Add(FunctionData data)
-        {
-            this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
-
-            foreach (var point in this.Points)
-            {
-                point.Y += AvailableFunctions.GetFunction(data.Type)(
-                    this,
-                    point.X);
-
-                if (Math.Abs(point.Y) < 1.0E-10)
-                {
-                    point.Y = 0;
-                }
-            }
-
-            this.PointsUpdate();
-        }
-
         public void AssignSignal(FunctionData data)
         {
             this.Amplitude.AssignAttribute(data.Amplitude);
@@ -208,23 +193,19 @@
             this.HistogramPointsUpdate();
         }
 
-        public void Divide(FunctionData data)
+        public void Compose(FunctionData data, Operation operation)
         {
+            // TODO Change signals composing. Right now when composing already composed signal, the operation only applies to the first component, the rest is composed based on their previous operations. This is an unwanted situation, because the rest of the operations need to change accordingly.
             this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
-            for (var i = 0; i < this.Points.Count; i++)
+            //this.Type = Signal.Composite;
+            Tuple<Operation, FunctionData> comp = new Tuple<Operation, FunctionData>(operation, data.CompositeFunctionComponents[0].Item2);
+            this.CompositeFunctionComponents.Add(comp);
+            for (int i = 1; i < data.CompositeFunctionComponents.Count; i++)
             {
-                var y = AvailableFunctions.GetFunction(data.Type)(
-                    this,
-                    this.Points[i].X);
-                if (Math.Abs(y) > double.Epsilon)
-                {
-                    this.Points[i].Y /= y;
-                }
-                else
-                {
-                    this.Points.RemoveAt(i--);
-                }
+                this.CompositeFunctionComponents.Add(data.CompositeFunctionComponents[i]);
             }
+
+            Generator.GenerateSignal(this, this.Type, this.CompositeFunctionComponents);
 
             this.PointsUpdate();
         }
@@ -233,24 +214,6 @@
         {
             this.OnPropertyChanged(nameof(this.HistogramValues));
             this.OnPropertyChanged(nameof(this.HistogramLabels));
-        }
-
-        public void Multiply(FunctionData data)
-        {
-            this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
-            foreach (var point in this.Points)
-            {
-                point.Y *= AvailableFunctions.GetFunction(data.Type)(
-                    this,
-                    point.X);
-
-                if (Math.Abs(point.Y) < 1.0E-10)
-                {
-                    point.Y = 0;
-                }
-            }
-
-            this.PointsUpdate();
         }
 
         public void PointsUpdate()
@@ -262,24 +225,6 @@
         public void SetAmplitude()
         {
             this.Amplitude.Value = Math.Max(this.Points.Max(p => p.Y), Math.Abs(this.Points.Min(p => p.Y)));
-        }
-
-        public void Subtract(FunctionData data)
-        {
-            this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
-            foreach (var point in this.Points)
-            {
-                point.Y -= AvailableFunctions.GetFunction(data.Type)(
-                    this,
-                    point.X);
-
-                if (Math.Abs(point.Y) < 1.0E-10)
-                {
-                    point.Y = 0;
-                }
-            }
-
-            this.PointsUpdate();
         }
 
         [NotifyPropertyChangedInvocator]
