@@ -13,6 +13,7 @@
             {
                 ret = 1.0d / period;
             }
+
             return ret;
         }
 
@@ -23,6 +24,7 @@
             {
                 ret = 1.0d / frequency;
             }
+
             return ret;
         }
     }

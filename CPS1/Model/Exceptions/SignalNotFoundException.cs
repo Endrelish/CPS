@@ -9,15 +9,18 @@
         {
         }
 
-        public SignalNotFoundException(string message) : base(message)
+        public SignalNotFoundException(string message)
+            : base(message)
         {
         }
 
-        public SignalNotFoundException(string message, Exception innerException) : base(message, innerException)
+        public SignalNotFoundException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
 
-        protected SignalNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected SignalNotFoundException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }
