@@ -5,7 +5,7 @@
 
     [DataContract]
     [Serializable]
-    public class Point
+    public class Point : IComparable
     {
         public Point()
         {
@@ -19,5 +19,10 @@
         public double X { get; set; }
         [DataMember]
         public double Y { get; set; }
+
+        public int CompareTo(object obj)
+        {
+                return this.X.CompareTo(((Point)obj).X);
+        }
     }
 }

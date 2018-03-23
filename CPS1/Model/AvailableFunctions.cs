@@ -10,6 +10,7 @@
 
     public static class AvailableFunctions
     {
+        private static Random random = new Random();
         static AvailableFunctions()
         {
             var list =
@@ -50,7 +51,6 @@
                 new Tuple<Func<FunctionData, double, double>, Required, string>(
                     (data, t) =>
                         {
-                            var random = new Random();
                             var threshold = random.NextDouble();
                             if (data.Probability.Value <= threshold)
                             {
@@ -80,7 +80,6 @@
                 new Tuple<Func<FunctionData, double, double>, Required, string>(
                     (data, t) =>
                         {
-                            var random = new Random();
                             var y = 0d;
                             for (var j = 0; j < Settings.Default.NumbersPerSample; j++)
                             {
@@ -98,7 +97,6 @@
                 new Tuple<Func<FunctionData, double, double>, Required, string>(
                     (data, t) =>
                         {
-                            var random = new Random();
                             var y = random.NextDouble() * (data.Amplitude.Value * 2) - data.Amplitude.Value;
 
                             return y;

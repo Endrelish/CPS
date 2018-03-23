@@ -262,6 +262,9 @@
 
         public void Compose(FunctionData data, Operation operation)
         {
+            
+            if (operation == Operation.Divide && data.Points.Any(p => Math.Abs(p.Y) < double.Epsilon))
+                this.Continuous.Value = false;
             if (this.Type != Signal.Composite)
             {
                 this.Function = AvailableFunctions.GetFunction(this.Type);
@@ -272,7 +275,7 @@
                 data.Function = AvailableFunctions.GetFunction(data.Type);
             }
 
-            if (data.Function != null && this.Function != null)
+            if (data.Function != null && this.Function != null) // TODO Think about a proper way of implementing this feature
             {
                 this.Type = Signal.Composite;
                 this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
@@ -282,6 +285,8 @@
             else
             {
                 this.SimpleCompose(data, operation);
+                this.PointsUpdate();
+                Histogram.GetHistogram(this);
             }
         }
 

@@ -21,7 +21,34 @@
                         composition = (data, x) => first(data, x) * second(secondData, x);
                         break;
                     case Operation.Divide:
-                        composition = (data, x) => first(data, x) / second(secondData, x);
+                        composition = (data, x) =>
+                            {
+                                var y1 = first(data, x);
+                                var y2 = second(secondData, x);
+
+                                if (double.IsPositiveInfinity(y1))
+                                {
+                                    return double.MaxValue;
+                                }
+                                else if (double.IsNegativeInfinity(y1))
+                                {
+                                    return double.MinValue;
+                                }
+                                else if (double.IsNaN(y1))
+                                {
+                                    return 0;
+                                }
+
+                                if (double.IsInfinity(y2))
+                                {
+                                    return 0;
+                                }
+                                else if (double.IsNaN(y2))
+                                {
+                                    return y1 > 0 ? double.MaxValue : double.MinValue;
+                                }
+                                return y1 / y2;
+                            };
                         break;
             }
 
