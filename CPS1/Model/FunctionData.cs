@@ -175,6 +175,7 @@
                 this.Samples.Visibility = value.Samples;
                 this.Probability.Visibility = value.Probability;
                 this.Continuous.Visibility = value.Continuous;
+                this.Continuous.Value = value.Continuous;
             }
         }
 

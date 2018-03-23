@@ -42,7 +42,6 @@
             <RowDefinition Height="25" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Button Content="MAGIC" Click="ButtonBase_OnClick" />
         <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Text="MENU" />
@@ -53,13 +52,8 @@
                    VerticalAlignment="Center"
                    Text="SECOND SIGNAL GRAPH AND HISTOGRAM" />
         <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Expander Header="First signal" Grid.Row="0" ExpandDirection="Down">
+            <TabControl Grid.Row="0">
+                <TabItem Header="First signal">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -69,22 +63,22 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
-                                   Text="SIGNAL TYPE" />
+                                       Text="SIGNAL TYPE" />
                         <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1"
-                                  ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding FirstSignalType}" />
+                                      ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding FirstSignalType}" />
                         <view:SignalSettings Grid.Row="2" DataContext="{Binding SignalFirst}" />
-                        <Button Margin="0 0 0 100" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top"
-                                Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
-                                Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}" />
+                        <Button Margin="0 0 0 0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                    Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
+                                    Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}" />
                         <Button Grid.Row="4" Margin="15 15 15 15" VerticalAlignment="Bottom"
-                                HorizontalAlignment="Right" Width="30" Content="{StaticResource SaveIcon1}"
-                                Command="{Binding SaveCommand}" CommandParameter="{StaticResource First}" BorderThickness="0" Background="White"/>
+                                    HorizontalAlignment="Right" Width="30" Content="{StaticResource SaveIcon1}"
+                                    Command="{Binding SaveCommand}" CommandParameter="{StaticResource First}" BorderThickness="0" Background="White"/>
                         <Button Grid.Row="4" Margin="15 15 60 15" VerticalAlignment="Bottom"
-                                HorizontalAlignment="Right" Width="30" Content="{StaticResource OpenIcon1}" Command="{Binding OpenCommand}"
-                                CommandParameter="{StaticResource First}" BorderThickness="0" Background="White"/>
+                                    HorizontalAlignment="Right" Width="30" Content="{StaticResource OpenIcon1}" Command="{Binding OpenCommand}"
+                                    CommandParameter="{StaticResource First}" BorderThickness="0" Background="White"/>
                     </Grid>
-                </Expander>
-                <Expander Grid.Row="1" Header="Second signal" ExpandDirection="Down">
+                </TabItem>
+                <TabItem Header="Second signal">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -98,7 +92,7 @@
                         <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1"
                                   ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding SecondSignalType}" />
                         <view:SignalSettings Grid.Row="2" DataContext="{Binding SignalSecond}" />
-                        <Button Margin="0 50 0 0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top"
+                        <Button Margin="0 0 0 0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top"
                                 Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
                                 Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource Second}" />
                         <Button Grid.Row="4" Margin="15 15 15 15" VerticalAlignment="Bottom"
@@ -108,21 +102,22 @@
                                 HorizontalAlignment="Right" Width="30" Content="{StaticResource OpenIcon2}" Command="{Binding OpenCommand}"
                                 CommandParameter="{StaticResource Second}" BorderThickness="0" Background="White"/>
                     </Grid>
-                </Expander>
-                <Expander Grid.Row="2" Header="Operation" ExpandDirection="Down">
+                </TabItem>
+                <TabItem Header="Operations">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="8*"/>
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Column="0" Grid.Row="0" Margin="10 10 10 10" Text="FIRST = FIRST + SECOND"/>
@@ -142,8 +137,8 @@
                         <Button Grid.Column="1" Grid.Row="6" Margin="1 1 1 1" Content="COMPUTE" Command="{Binding DivideCommand}" CommandParameter="{StaticResource First}"/>
                         <Button Grid.Column="1" Grid.Row="7" Margin="1 1 1 1" Content="COMPUTE" Command="{Binding DivideCommand}" CommandParameter="{StaticResource Second}"/>
                     </Grid>
-                </Expander>
-            </Grid>
+                </TabItem>
+            </TabControl>
         </ScrollViewer>
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>

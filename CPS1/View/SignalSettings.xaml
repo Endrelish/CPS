@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CPS1"
              xmlns:converters="clr-namespace:CPS1.Converters"
-             mc:Ignorable="d" d:DesignWidth="400" Height="800">
+             mc:Ignorable="d" d:DesignWidth="400" Height="750">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:FrequencyPeriodConverter x:Key="FrequencyPeriodConverter" />
@@ -100,7 +100,7 @@
                    VerticalAlignment="Center"
                    Text="HISTOGRAM SETTINGS" />
         <Control Grid.Row="10" Template="{StaticResource Setting}" DataContext="{Binding HistogramIntervals}"/>
-
+        <Control Grid.Row="11" Height="50" />
         <Control Grid.Row="12" Template="{StaticResource Parameter}" DataContext="{Binding AverageValue}" />
         <Control Grid.Row="13" Template="{StaticResource Parameter}" DataContext="{Binding AbsoluteAverageValue}" />
         <Control Grid.Row="14" Template="{StaticResource Parameter}" DataContext="{Binding AveragePower}" />
