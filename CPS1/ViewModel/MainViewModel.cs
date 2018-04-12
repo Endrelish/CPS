@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Windows.Input;
 
@@ -11,8 +10,9 @@
 
     public class MainViewModel
     {
+        [NonSerialized]
+        private static readonly Func<double, string> Formatter1 = value => value.ToString("N");
 
-        // TODO Check the continuity checkbox
         private readonly IFileDialog fileDialog;
 
         private readonly IFileSerializer serializer;
@@ -25,145 +25,31 @@
 
         private ICommand generateSignalCommand;
 
+        private ICommand holdCommand;
+
+        private ICommand mdCommand;
+
+        private ICommand mseCommand;
+
         private ICommand multiplyCommand;
 
         private ICommand openCommand;
+
+        private ICommand psnrCommand;
+
+        private ICommand quantizationCommand;
+
+        private ICommand samplingCommand;
 
         private ICommand saveCommand;
 
         private Signal secondSignalType = Signal.Sine;
 
-        private ICommand subtractCommand;
-
-        private ICommand samplingCommand;
-
-        public ICommand SamplingCommand
-        {
-            get
-            {
-                return this.samplingCommand ?? (this.samplingCommand = new CommandHandler((obj) => this.Sampling(), () => SignalFirst.Continuous.Value));
-            }
-        }
-
-        private ICommand quantizationCommand;
-
-        public ICommand QuantizationCommand
-        {
-            get
-            {
-                return this.quantizationCommand
-                       ?? (this.quantizationCommand = new CommandHandler(obj => Quantization(), () => SignalFirst.Continuous.Value));
-            }
-        }
-
-        private ICommand holdCommand;
-
-        public ICommand HoldCommand
-        {
-            get
-            {
-                return this.holdCommand ?? (this.holdCommand = new CommandHandler(obj => ZeroOrderHold(), () => SignalFirst.Continuous.Value));
-            }
-        }
-
         private ICommand sincCommand;
-
-        public ICommand SincCommand
-        {
-            get
-            {
-                return this.sincCommand ?? (this.sincCommand = new CommandHandler(
-                                                obj => Sinc(),
-                                                () => SignalFirst.Continuous.Value));
-            }
-        }
-
-        private ICommand mseCommand;
-        public ICommand MseCommand { get
-        {
-            return this.mseCommand ?? (this.mseCommand = new CommandHandler(
-                                           obj => Mse(),
-                                           () => !SignalFirst.Continuous.Value));
-        } }
 
         private ICommand snrCommand;
 
-        public ICommand SnrCommand
-        {
-            get
-            {
-                return this.snrCommand ?? (this.snrCommand = new CommandHandler(
-                                               obj => Snr(),
-                                               () => !SignalFirst.Continuous.Value));
-            }
-        }
-
-        private void Snr()
-        {
-            throw new NotImplementedException();
-        }
-
-        private ICommand psnrCommand;
-
-        public ICommand PsnrCommand
-        {
-            get
-            {
-                return this.psnrCommand ?? (this.psnrCommand = new CommandHandler(
-                                                obj => Psnr(),
-                                                () => !SignalFirst.Continuous.Value));
-            }
-        }
-
-        private ICommand mdCommand;
-
-        public ICommand MdCommand
-        {
-            get
-            {
-                return this.mdCommand ?? (this.mdCommand = new CommandHandler(
-                                              obj => Md(),
-                                              () => !SignalFirst.Continuous.Value));
-            }
-        }
-
-        private void Md()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Psnr()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Mse()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Sinc()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ZeroOrderHold()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Quantization()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Sampling()
-        {
-            throw new NotImplementedException();
-        }
-
-        [NonSerialized]
-        private static readonly Func<double, string> Formatter1 = value => value.ToString("N");
+        private ICommand subtractCommand;
 
         public MainViewModel()
         {
@@ -193,13 +79,7 @@
                 };
         }
 
-        public static Func<double, string> Formatter
-        {
-            get
-            {
-                return Formatter1;
-            }
-        }
+        public static Func<double, string> Formatter => Formatter1;
 
         public ICommand AddCommand => this.addCommand
                                       ?? (this.addCommand = new CommandHandler(this.AddSignals, this.SignalsGenerated));
@@ -224,6 +104,36 @@
                                                          this.GenerateSignal,
                                                          () => true));
 
+        public ICommand HoldCommand
+        {
+            get
+            {
+                return this.holdCommand ?? (this.holdCommand = new CommandHandler(
+                                                obj => this.ZeroOrderHold(),
+                                                () => this.SignalFirst.Continuous.Value));
+            }
+        }
+
+        public ICommand MdCommand
+        {
+            get
+            {
+                return this.mdCommand ?? (this.mdCommand = new CommandHandler(
+                                              obj => this.Md(),
+                                              () => !this.SignalFirst.Continuous.Value));
+            }
+        }
+
+        public ICommand MseCommand
+        {
+            get
+            {
+                return this.mseCommand ?? (this.mseCommand = new CommandHandler(
+                                               obj => this.Mse(),
+                                               () => !this.SignalFirst.Continuous.Value));
+            }
+        }
+
         public ICommand MultiplyCommand => this.multiplyCommand ?? (this.multiplyCommand = new CommandHandler(
                                                                         this.MultiplySignals,
                                                                         () => this.SignalFirst.Points.Count > 0
@@ -233,6 +143,36 @@
             this.openCommand ?? (this.openCommand = new CommandHandler(this.OpenSignal, () => true));
 
         public int Param { get; } = 2;
+
+        public ICommand PsnrCommand
+        {
+            get
+            {
+                return this.psnrCommand ?? (this.psnrCommand = new CommandHandler(
+                                                obj => this.Psnr(),
+                                                () => !this.SignalFirst.Continuous.Value));
+            }
+        }
+
+        public ICommand QuantizationCommand
+        {
+            get
+            {
+                return this.quantizationCommand ?? (this.quantizationCommand = new CommandHandler(
+                                                        obj => this.Quantization(),
+                                                        () => this.SignalFirst.Continuous.Value));
+            }
+        }
+
+        public ICommand SamplingCommand
+        {
+            get
+            {
+                return this.samplingCommand ?? (this.samplingCommand = new CommandHandler(
+                                                    obj => this.Sampling(),
+                                                    () => this.SignalFirst.Continuous.Value));
+            }
+        }
 
         public ICommand SaveCommand =>
             this.saveCommand ?? (this.saveCommand = new CommandHandler(this.SaveSignal, () => true));
@@ -256,6 +196,26 @@
             get
             {
                 return AvailableFunctions.Functions.Values.Select(p => p.Item3);
+            }
+        }
+
+        public ICommand SincCommand
+        {
+            get
+            {
+                return this.sincCommand ?? (this.sincCommand = new CommandHandler(
+                                                obj => this.Sinc(),
+                                                () => this.SignalFirst.Continuous.Value));
+            }
+        }
+
+        public ICommand SnrCommand
+        {
+            get
+            {
+                return this.snrCommand ?? (this.snrCommand = new CommandHandler(
+                                               obj => this.Snr(),
+                                               () => !this.SignalFirst.Continuous.Value));
             }
         }
 
@@ -305,19 +265,29 @@
             {
                 if (chart == 1)
                 {
-                    SignalFirst.Type = this.firstSignalType;
-                    SignalFirst.Function = AvailableFunctions.GetFunction(SignalFirst.Type);
+                    this.SignalFirst.Type = this.firstSignalType;
+                    this.SignalFirst.Function = AvailableFunctions.GetFunction(this.SignalFirst.Type);
                     Generator.GenerateSignal(this.SignalFirst);
                     Histogram.GetHistogram(this.SignalFirst);
                 }
                 else if (chart == 2)
                 {
-                    SignalSecond.Type = this.secondSignalType;
-                    SignalSecond.Function = AvailableFunctions.GetFunction(SignalSecond.Type);
+                    this.SignalSecond.Type = this.secondSignalType;
+                    this.SignalSecond.Function = AvailableFunctions.GetFunction(this.SignalSecond.Type);
                     Generator.GenerateSignal(this.SignalSecond);
                     Histogram.GetHistogram(this.SignalSecond);
                 }
             }
+        }
+
+        private void Md()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Mse()
+        {
+            throw new NotImplementedException();
         }
 
         private void MultiplySignals(object obj)
@@ -368,6 +338,22 @@
             }
         }
 
+        private void Psnr()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Quantization()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Sampling()
+        {
+            this.SignalSecond.AssignSignal(this.SignalFirst);
+            this.SignalSecond.Continuous.Value = false;
+        }
+
         private void SaveSignal(object parameter)
         {
             if (parameter is short chart)
@@ -400,6 +386,16 @@
             signal.RequiredAttributes = AvailableFunctions.GetRequiredParameters(choice);
         }
 
+        private void Sinc()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Snr()
+        {
+            throw new NotImplementedException();
+        }
+
         private void SubtractSignals(object obj)
         {
             if (obj is short no)
@@ -413,6 +409,11 @@
                     this.SignalSecond.Compose(this.SignalFirst, Operation.Subtract);
                 }
             }
+        }
+
+        private void ZeroOrderHold()
+        {
+            throw new NotImplementedException();
         }
     }
 }
