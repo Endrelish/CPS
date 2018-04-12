@@ -33,7 +33,7 @@
         <converters:VisibilityInvertionConverter x:Key="VIC" />
 
     </Window.Resources>
-    <TabControl DataContext="{Binding ViewModel, Source={StaticResource Locator}}">
+    <TabControl DataContext="{Binding ViewModel, Source={StaticResource Locator}}" SelectedIndex="1">
         <TabItem Header="Operations on signals">
             <Grid Margin="5 5 5 5">
                 <Grid.ColumnDefinitions>
@@ -227,17 +227,20 @@
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
                                     
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="10 10 10 10" Text="UNIFORM SAMPLING" />
-                                    <Button Grid.Row="0" Grid.Column="1" Content="COMPUTE" Command="{Binding SamplingCommand}"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="10 10 10 10" Text="NUMBER OF SAMPLES"/>
+                                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SamplingFrequency}" />
                                     
-                                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="10 10 10 10" Text="UNIFORM QUANTIZATION" />
-                                    <Button Grid.Row="1" Grid.Column="1" Content="COMPUTE" Command="{Binding QuantizationCommand}"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="10 10 10 10" Text="UNIFORM SAMPLING" />
+                                    <Button Grid.Row="1" Grid.Column="1" Content="COMPUTE" Command="{Binding SamplingCommand}"/>
                                     
-                                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="10 10 10 10" Text="ZERO-ORDER HOLD" />
-                                    <Button Grid.Row="2" Grid.Column="1" Content="COMPUTE" Command="{Binding HoldCommand}"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="10 10 10 10" Text="UNIFORM QUANTIZATION" />
+                                    <Button Grid.Row="2" Grid.Column="1" Content="COMPUTE" Command="{Binding QuantizationCommand}"/>
+                                    
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Margin="10 10 10 10" Text="ZERO-ORDER HOLD" />
+                                    <Button Grid.Row="3" Grid.Column="1" Content="COMPUTE" Command="{Binding HoldCommand}"/>
 
-                                    <TextBlock Grid.Row="3" Grid.Column="0" Margin="10 10 10 10" Text="SINC RECONSTRUCTION" />
-                                    <Button Grid.Row="3" Grid.Column="1" Content="COMPUTE" Command="{Binding SincCommand}"/>
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Margin="10 10 10 10" Text="SINC RECONSTRUCTION" />
+                                    <Button Grid.Row="4" Grid.Column="1" Content="COMPUTE" Command="{Binding SincCommand}"/>
                                 </Grid>
 
                                 <TextBlock Grid.Row="2" Name="DaTextBlock" Visibility="{Binding ElementName=AdTextBlock, Path=Visibility, Converter={StaticResource VIC}}" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"

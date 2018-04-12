@@ -77,6 +77,8 @@
                     ((CommandHandler)this.MultiplyCommand).RaiseCanExecuteChanged();
                     ((CommandHandler)this.DivideCommand).RaiseCanExecuteChanged();
                 };
+
+            this.SamplingFrequency = 0.1d / this.SignalFirst.Period.Value;
         }
 
         public static Func<double, string> Formatter => Formatter1;
@@ -173,6 +175,8 @@
                                                     () => this.SignalFirst.Continuous.Value));
             }
         }
+
+        public double SamplingFrequency { get; set; }
 
         public ICommand SaveCommand =>
             this.saveCommand ?? (this.saveCommand = new CommandHandler(this.SaveSignal, () => true));
@@ -352,6 +356,8 @@
         {
             this.SignalSecond.AssignSignal(this.SignalFirst);
             this.SignalSecond.Continuous.Value = false;
+            this.SignalSecond.Period.Value = 1.0d / this.SamplingFrequency;
+            Generator.GenerateSignal(this.SignalSecond);
         }
 
         private void SaveSignal(object parameter)
