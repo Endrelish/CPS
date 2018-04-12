@@ -28,18 +28,12 @@
                 }
 
                 var index = (int)((point.Y + data.Amplitude.Value) / step);
-                if (Math.Abs(step) < double.Epsilon)
-                {
-                    index = 0;
-                }
+                if (Math.Abs(step) < double.Epsilon) index = 0;
 
                 try
                 {
                     data.HistogramPoints[index].Y++;
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                }
+                } catch(ArgumentOutOfRangeException) { }
             }
 
             foreach (var point in data.HistogramPoints)

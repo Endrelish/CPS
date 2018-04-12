@@ -34,8 +34,7 @@
             this.MaxValue = maxValue;
             this.Name = name;
         }
-
-        [field: NonSerialized]
+        [field:NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 
         [DataMember]
@@ -117,7 +116,7 @@
                 this.OnPropertyChanged();
             }
         }
-
+        
         public void AssignAttribute(FunctionAttribute<T> attribute)
         {
             this.MaxValue = attribute.MaxValue;
