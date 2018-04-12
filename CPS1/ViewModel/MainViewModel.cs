@@ -79,6 +79,7 @@
                 };
 
             this.SamplingFrequency = 0.1d / this.SignalFirst.Period.Value;
+            this.QuantizationLevels = 25;
         }
 
         public static Func<double, string> Formatter => Formatter1;
@@ -349,8 +350,22 @@
 
         private void Quantization()
         {
-            throw new NotImplementedException();
+            var levels = new List<double>();
+            var step = SignalFirst.Amplitude.Value * 2.0d / QuantizationLevels;
+            for (int i = 0; i <= QuantizationLevels; i++)
+            {
+                levels.Add(-SignalFirst.Amplitude.Value + i * step);
+            }
+            this.SignalSecond.AssignSignal(this.SignalFirst);
+
+            foreach (var point in SignalSecond.Points)
+            {
+                point.Y = levels.OrderBy(l => Math.Abs(point.Y - l)).First(); // TODO This might be wrong
+            }
+            SignalSecond.PointsUpdate();
         }
+
+        public int QuantizationLevels { get; set; }
 
         private void Sampling()
         {

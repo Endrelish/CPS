@@ -124,6 +124,7 @@
             this.Name = attribute.Name;
             this.Visibility = attribute.Visibility;
             this.Value = attribute.Value;
+            //attribute.Value = this.Value; // 
         }
 
         [NotifyPropertyChangedInvocator]

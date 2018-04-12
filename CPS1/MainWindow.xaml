@@ -224,20 +224,26 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
                                     
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="10 10 10 10" Text="NUMBER OF SAMPLES"/>
-                                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SamplingFrequency}" />
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="10 10 10 10" Text="SAMPLING FREQUENCY"/>
+                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="10 10 10 10" Text="{Binding SamplingFrequency}" />
                                     
                                     <TextBlock Grid.Row="1" Grid.Column="0" Margin="10 10 10 10" Text="UNIFORM SAMPLING" />
                                     <Button Grid.Row="1" Grid.Column="1" Content="COMPUTE" Command="{Binding SamplingCommand}"/>
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="10 10 10 10" Text="QUANTIZATION LEVELS"/>
+                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="10 10 10 10" Text="{Binding QuantizationLevels}" />
+
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Margin="10 10 10 10" Text="UNIFORM QUANTIZATION" />
+                                    <Button Grid.Row="3" Grid.Column="1" Content="COMPUTE" Command="{Binding QuantizationCommand}"/>
                                     
-                                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="10 10 10 10" Text="UNIFORM QUANTIZATION" />
-                                    <Button Grid.Row="2" Grid.Column="1" Content="COMPUTE" Command="{Binding QuantizationCommand}"/>
-                                    
-                                    <TextBlock Grid.Row="3" Grid.Column="0" Margin="10 10 10 10" Text="ZERO-ORDER HOLD" />
-                                    <Button Grid.Row="3" Grid.Column="1" Content="COMPUTE" Command="{Binding HoldCommand}"/>
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Margin="10 10 10 10" Text="ZERO-ORDER HOLD" />
+                                    <Button Grid.Row="4" Grid.Column="1" Content="COMPUTE" Command="{Binding HoldCommand}"/>
 
                                     <TextBlock Grid.Row="4" Grid.Column="0" Margin="10 10 10 10" Text="SINC RECONSTRUCTION" />
                                     <Button Grid.Row="4" Grid.Column="1" Content="COMPUTE" Command="{Binding SincCommand}"/>
