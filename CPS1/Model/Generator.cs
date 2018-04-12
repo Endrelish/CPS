@@ -15,6 +15,7 @@
                 try
                 {
                     var y = data.Function(data, x);
+                   
 
                     if (Math.Abs(y) < 10E-10)
                     {

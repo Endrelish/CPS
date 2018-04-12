@@ -5,5 +5,6 @@
         string GetOpenFilePath(string format);
 
         string GetSaveFilePath(string format);
+
     }
 }

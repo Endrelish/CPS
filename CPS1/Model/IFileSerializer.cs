@@ -1,11 +1,12 @@
 ﻿namespace CPS1.Model
 {
+    using System.Collections.Generic;
+
     public interface IFileSerializer
     {
-        string Format { get; }
+        void Serialize(FunctionData data, string filename);
 
         FunctionData Deserialize(string filename);
-
-        void Serialize(FunctionData data, string filename);
+        string Format { get; }
     }
 }
