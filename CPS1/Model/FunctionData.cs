@@ -229,7 +229,7 @@
             this.DutyCycle.AssignAttribute(data.DutyCycle);
             this.Samples.AssignAttribute(data.Samples);
             this.Probability.AssignAttribute(data.Probability);
-            this.Continuous.AssignAttribute(data.Continuous);
+            //this.Continuous.AssignAttribute(data.Continuous);
             this.HistogramIntervals.AssignAttribute(data.HistogramIntervals);
             this.AverageValue.AssignAttribute(data.AverageValue);
             this.AbsoluteAverageValue.AssignAttribute(data.AbsoluteAverageValue);

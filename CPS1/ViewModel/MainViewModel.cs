@@ -21,7 +21,7 @@
 
         private ICommand divideCommand;
 
-        private Signal firstSignalType = Signal.Sine;
+        private Signal firstSignalType;
 
         private ICommand generateSignalCommand;
 
@@ -43,7 +43,7 @@
 
         private ICommand saveCommand;
 
-        private Signal secondSignalType = Signal.Sine;
+        private Signal secondSignalType;
 
         private ICommand sincCommand;
 
@@ -55,6 +55,12 @@
         {
             this.SignalFirst = new FunctionData();
             this.SignalSecond = new FunctionData();
+            this.firstSignalType = Signal.Sine;
+            this.secondSignalType = Signal.Sine;
+            this.SignalFirst.Type = this.firstSignalType;
+            this.SignalSecond.Type = this.secondSignalType;
+            this.SignalFirst.Continuous.Value = true;
+            this.SignalSecond.Continuous.Value = true;
 
             this.SetRequiredParameters(this.SignalFirst);
             this.SetRequiredParameters(this.SignalSecond);
@@ -156,6 +162,8 @@
                                                 () => !this.SignalFirst.Continuous.Value));
             }
         }
+
+        public int QuantizationLevels { get; set; }
 
         public ICommand QuantizationCommand
         {
@@ -351,21 +359,21 @@
         private void Quantization()
         {
             var levels = new List<double>();
-            var step = SignalFirst.Amplitude.Value * 2.0d / QuantizationLevels;
-            for (int i = 0; i <= QuantizationLevels; i++)
+            var step = this.SignalFirst.Amplitude.Value * 2.0d / this.QuantizationLevels;
+            for (var i = 0; i <= this.QuantizationLevels; i++)
             {
-                levels.Add(-SignalFirst.Amplitude.Value + i * step);
+                levels.Add(-this.SignalFirst.Amplitude.Value + i * step);
             }
+
             this.SignalSecond.AssignSignal(this.SignalFirst);
 
-            foreach (var point in SignalSecond.Points)
+            foreach (var point in this.SignalSecond.Points)
             {
                 point.Y = levels.OrderBy(l => Math.Abs(point.Y - l)).First(); // TODO This might be wrong
             }
-            SignalSecond.PointsUpdate();
-        }
 
-        public int QuantizationLevels { get; set; }
+            this.SignalSecond.PointsUpdate();
+        }
 
         private void Sampling()
         {
