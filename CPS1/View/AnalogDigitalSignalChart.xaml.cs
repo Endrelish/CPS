@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace CPS1.View
 {
     /// <summary>
-    /// Interaction logic for SignalChart.xaml
+    /// Interaction logic for AnalogDigitalSignalChart.xaml
     /// </summary>
-    public partial class SignalChart : UserControl
+    public partial class AnalogDigitalSignalChart : UserControl
     {
-        public SignalChart()
+        public AnalogDigitalSignalChart()
         {
             InitializeComponent();
         }

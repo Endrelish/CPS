@@ -80,6 +80,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\ChartSettingsConverter.cs" />
+    <Compile Include="Converters\VisibilityInvertionConverter.cs" />
     <Compile Include="Model\Exceptions\SignalNotFoundException.cs" />
     <Compile Include="Model\FileXmlSerializer.cs" />
     <Compile Include="Model\AvailableFunctions.cs" />
@@ -88,6 +89,9 @@
     <Compile Include="Model\SerializationFunctionHolder.cs" />
     <Compile Include="ViewModel\CommandHandler.cs" />
     <Compile Include="Model\FileBinarySerializer.cs" />
+    <Compile Include="View\AnalogDigitalSignalChart.xaml.cs">
+      <DependentUpon>AnalogDigitalSignalChart.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\FileDialogWpf.cs" />
     <Compile Include="Converters\FrequencyPeriodConverter.cs" />
     <Compile Include="Model\FunctionAttribute.cs" />
@@ -111,6 +115,10 @@
     </Compile>
     <Compile Include="Converters\StringToDoubleConverter.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Page Include="View\AnalogDigitalSignalChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\HistogramChart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
