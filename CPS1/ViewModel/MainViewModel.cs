@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Windows.Input;
 
@@ -33,6 +34,134 @@
         private Signal secondSignalType = Signal.Sine;
 
         private ICommand subtractCommand;
+
+        private ICommand samplingCommand;
+
+        public ICommand SamplingCommand
+        {
+            get
+            {
+                return this.samplingCommand ?? (this.samplingCommand = new CommandHandler((obj) => this.Sampling(), () => SignalFirst.Continuous.Value));
+            }
+        }
+
+        private ICommand quantizationCommand;
+
+        public ICommand QuantizationCommand
+        {
+            get
+            {
+                return this.quantizationCommand
+                       ?? (this.quantizationCommand = new CommandHandler(obj => Quantization(), () => SignalFirst.Continuous.Value));
+            }
+        }
+
+        private ICommand holdCommand;
+
+        public ICommand HoldCommand
+        {
+            get
+            {
+                return this.holdCommand ?? (this.holdCommand = new CommandHandler(obj => ZeroOrderHold(), () => SignalFirst.Continuous.Value));
+            }
+        }
+
+        private ICommand sincCommand;
+
+        public ICommand SincCommand
+        {
+            get
+            {
+                return this.sincCommand ?? (this.sincCommand = new CommandHandler(
+                                                obj => Sinc(),
+                                                () => SignalFirst.Continuous.Value));
+            }
+        }
+
+        private ICommand mseCommand;
+        public ICommand MseCommand { get
+        {
+            return this.mseCommand ?? (this.mseCommand = new CommandHandler(
+                                           obj => Mse(),
+                                           () => !SignalFirst.Continuous.Value));
+        } }
+
+        private ICommand snrCommand;
+
+        public ICommand SnrCommand
+        {
+            get
+            {
+                return this.snrCommand ?? (this.snrCommand = new CommandHandler(
+                                               obj => Snr(),
+                                               () => !SignalFirst.Continuous.Value));
+            }
+        }
+
+        private void Snr()
+        {
+            throw new NotImplementedException();
+        }
+
+        private ICommand psnrCommand;
+
+        public ICommand PsnrCommand
+        {
+            get
+            {
+                return this.psnrCommand ?? (this.psnrCommand = new CommandHandler(
+                                                obj => Psnr(),
+                                                () => !SignalFirst.Continuous.Value));
+            }
+        }
+
+        private ICommand mdCommand;
+
+        public ICommand MdCommand
+        {
+            get
+            {
+                return this.mdCommand ?? (this.mdCommand = new CommandHandler(
+                                              obj => Md(),
+                                              () => !SignalFirst.Continuous.Value));
+            }
+        }
+
+        private void Md()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Psnr()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Mse()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Sinc()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ZeroOrderHold()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Quantization()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Sampling()
+        {
+            throw new NotImplementedException();
+        }
+
         [NonSerialized]
         private static readonly Func<double, string> Formatter1 = value => value.ToString("N");
 
