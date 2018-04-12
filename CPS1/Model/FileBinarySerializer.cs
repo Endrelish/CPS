@@ -1,7 +1,5 @@
 ﻿namespace CPS1.Model
 {
-    using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization.Formatters.Binary;
 
@@ -9,13 +7,13 @@
     {
         private readonly BinaryFormatter formatter;
 
-        public string Format { get; }
-
         public FileBinarySerializer()
         {
             this.formatter = new BinaryFormatter();
-            Format = "Binary files (*.bin)|*.bin";
+            this.Format = "Binary files (*.bin)|*.bin";
         }
+
+        public string Format { get; }
 
         public FunctionData Deserialize(string filename)
         {
@@ -24,7 +22,7 @@
             {
                 data = (FunctionData)this.formatter.Deserialize(stream);
             }
-            
+
             return data;
         }
 
@@ -34,7 +32,6 @@
             {
                 this.formatter.Serialize(stream, data);
             }
-            
         }
     }
 }

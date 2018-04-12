@@ -10,18 +10,19 @@
 
     public static class AvailableFunctions
     {
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
+
         static AvailableFunctions()
         {
-            var list =
-                new Dictionary<Signal, Tuple<Func<FunctionData, double, double>, Required, string>>();
+            var list = new Dictionary<Signal, Tuple<Func<FunctionData, double, double>, Required, string>>();
 
             list.Add(
                 Signal.FullyRectifiedSine,
                 new Tuple<Func<FunctionData, double, double>, Required, string>(
                     (data, t) =>
                         {
-                            var ret = data.Amplitude.Value* Math.Sin(Math.PI * 2 * (t - data.StartTime.Value) / data.Period.Value);
+                            var ret = data.Amplitude.Value * Math.Sin(
+                                          Math.PI * 2 * (t - data.StartTime.Value) / data.Period.Value);
                             if (ret.CompareTo(0) < 0)
                             {
                                 ret *= -1;
@@ -36,7 +37,8 @@
                 new Tuple<Func<FunctionData, double, double>, Required, string>(
                     (data, t) =>
                         {
-                            var ret = data.Amplitude.Value* Math.Sin(Math.PI * 2 * (t - data.StartTime.Value) / data.Period.Value);
+                            var ret = data.Amplitude.Value * Math.Sin(
+                                          Math.PI * 2 * (t - data.StartTime.Value) / data.Period.Value);
                             if (ret.CompareTo(0) < 0)
                             {
                                 ret = 0;
@@ -106,7 +108,8 @@
             list.Add(
                 Signal.Sine,
                 new Tuple<Func<FunctionData, double, double>, Required, string>(
-                    (data, t) => data.Amplitude.Value* Math.Sin(Math.PI * 2 * (t - data.StartTime.Value) / data.Period.Value),
+                    (data, t) =>
+                        data.Amplitude.Value * Math.Sin(Math.PI * 2 * (t - data.StartTime.Value) / data.Period.Value),
                     new Required(true, true, true, true, false, true, true, false),
                     "Sine signal"));
             list.Add(
@@ -150,10 +153,13 @@
                             var result = t - data.StartTime.Value - k * data.Period.Value;
                             if (result < data.DutyCycle.Value * data.Period.Value)
                             {
-                                return data.Amplitude.Value* (t - k * data.Period.Value - data.StartTime.Value) / (data.DutyCycle.Value * data.Period.Value);
+                                return data.Amplitude.Value * (t - k * data.Period.Value - data.StartTime.Value)
+                                       / (data.DutyCycle.Value * data.Period.Value);
                             }
 
-                            return -data.Amplitude.Value * (t - k * data.Period.Value - data.StartTime.Value) / ((1 - data.DutyCycle.Value) * data.Period.Value) + data.Amplitude.Value/ (1 - data.DutyCycle.Value);
+                            return -data.Amplitude.Value * (t - k * data.Period.Value - data.StartTime.Value)
+                                   / ((1 - data.DutyCycle.Value) * data.Period.Value)
+                                   + data.Amplitude.Value / (1 - data.DutyCycle.Value);
                         },
                     new Required(true, true, true, true, true, true, true, false),
                     "Triangle signal"));
@@ -169,7 +175,7 @@
 
                             if (Math.Abs(t - data.StartTime.Value) < double.Epsilon)
                             {
-                                return data.Amplitude.Value* 0.5d;
+                                return data.Amplitude.Value * 0.5d;
                             }
 
                             return data.Amplitude.Value;
@@ -180,10 +186,24 @@
             Functions = ImmutableDictionary.CreateRange(list);
         }
 
-        public static
-            ImmutableDictionary<Signal, Tuple<Func<FunctionData, double, double>, Required, string>> Functions
+        public static ImmutableDictionary<Signal, Tuple<Func<FunctionData, double, double>, Required, string>> Functions
         {
             get;
+        }
+
+        public static Func<FunctionData, double, double> GetComposite(List<Tuple<Operation, FunctionData>> composite)
+        {
+            var compositeFunction = GetFunction(composite[0].Item2.Type);
+            for (var i = 1; i < composite.Count; i++)
+            {
+                compositeFunction = Compose(
+                    compositeFunction,
+                    composite[i].Item1,
+                    GetFunction(composite[i].Item2.Type),
+                    composite[i].Item2);
+            }
+
+            return compositeFunction;
         }
 
         public static string GetDescription(Signal signal)
@@ -240,17 +260,6 @@
             }
 
             return signal;
-        }
-
-        public static Func<FunctionData, double, double> GetComposite(List<Tuple<Operation, FunctionData>> composite)
-        {
-            var compositeFunction = AvailableFunctions.GetFunction(composite[0].Item2.Type);
-            for (int i = 1; i < composite.Count; i++)
-            {
-                compositeFunction = Compose(compositeFunction, composite[i].Item1, GetFunction(composite[i].Item2.Type), composite[i].Item2);
-            }
-
-            return compositeFunction;
         }
 
         private static Func<FunctionData, double, double> Compose(

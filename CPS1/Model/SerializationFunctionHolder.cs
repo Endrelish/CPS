@@ -8,12 +8,14 @@
     {
         public SerializationFunctionHolder(Func<FunctionData, double, double> function, FunctionData data)
         {
-            Data = data;
-            Function = function;
+            this.Data = data;
+            this.Function = function;
         }
-        [DataMember]
-        public Func<FunctionData, double, double> Function { get; set; }
+
         [DataMember]
         public FunctionData Data { get; set; }
+
+        [DataMember]
+        public Func<FunctionData, double, double> Function { get; set; }
     }
 }

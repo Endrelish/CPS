@@ -13,6 +13,7 @@
             {
                 double.TryParse(str, out ret);
             }
+
             return ret;
         }
 
@@ -22,6 +23,7 @@
             {
                 return val.ToString();
             }
+
             return null;
         }
     }

@@ -262,9 +262,11 @@
 
         public void Compose(FunctionData data, Operation operation)
         {
-            
             if (operation == Operation.Divide && data.Points.Any(p => Math.Abs(p.Y) < double.Epsilon))
+            {
                 this.Continuous.Value = false;
+            }
+
             if (this.Type != Signal.Composite)
             {
                 this.Function = AvailableFunctions.GetFunction(this.Type);
@@ -275,8 +277,10 @@
                 data.Function = AvailableFunctions.GetFunction(data.Type);
             }
 
-            if (data.Function != null && this.Function != null) // TODO Think about a proper way of implementing this feature
+            if (data.Function != null && this.Function != null
+            )
             {
+                // TODO Think about a proper way of implementing this feature
                 this.Type = Signal.Composite;
                 this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
                 this.Function = FunctionComposer.ComposeFunction(this.Function, data.Function, data, operation);
@@ -304,7 +308,8 @@
 
         public void SetAmplitude()
         {
-            this.Amplitude.Value = Math.Ceiling(Math.Max(this.Points.Max(p => p.Y), Math.Abs(this.Points.Min(p => p.Y))));
+            this.Amplitude.Value =
+                Math.Ceiling(Math.Max(this.Points.Max(p => p.Y), Math.Abs(this.Points.Min(p => p.Y))));
         }
 
         [NotifyPropertyChangedInvocator]
@@ -497,9 +502,12 @@
                         .Select(p => new Point(p.X, p.Y * -1)));
             }
 
-            foreach (var point in Points)
+            foreach (var point in this.Points)
             {
-                if (Math.Abs(point.Y) < 10E-10) point.Y = 0;
+                if (Math.Abs(point.Y) < 10E-10)
+                {
+                    point.Y = 0;
+                }
             }
         }
     }

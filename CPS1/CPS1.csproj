@@ -88,6 +88,7 @@
     <Compile Include="Model\SerializationFunctionHolder.cs" />
     <Compile Include="ViewModel\CommandHandler.cs" />
     <Compile Include="Model\FileBinarySerializer.cs" />
+    <Compile Include="ViewModel\SignalViewModel.cs" />
     <Compile Include="View\FileDialogWpf.cs" />
     <Compile Include="Converters\FrequencyPeriodConverter.cs" />
     <Compile Include="Model\FunctionAttribute.cs" />
