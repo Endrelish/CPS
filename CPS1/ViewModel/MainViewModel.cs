@@ -122,10 +122,10 @@
             {
                 return this.computeCommand ?? (this.computeCommand = new CommandHandler(
                                                    obj => this.Compute(obj),
-                                                   () => (this.SignalFirst.Continuous.Value
-                                                         && this.AdOperation.Length > 0)
-                                                         || (!this.SignalFirst.Continuous.Value
-                                                         && this.DaOperation.Length > 0)));
+                                                   () => this.SignalFirst.Continuous.Value
+                                                         && this.AdOperation.Length > 0
+                                                         || !this.SignalFirst.Continuous.Value
+                                                         && this.DaOperation.Length > 0));
             }
         }
 
@@ -138,7 +138,8 @@
                 {
                     return;
                 }
-                SetParametersVisibility(value);
+
+                this.SetParametersVisibility(value);
                 this.daOperation = value;
                 ((CommandHandler)this.ComputeCommand).RaiseCanExecuteChanged();
                 this.OnPropertyChanged();
@@ -400,7 +401,7 @@
 
             foreach (var point in this.SignalSecond.Points)
             {
-                point.Y = levels.OrderBy(l => Math.Abs(point.Y - l)).First(); // TODO This might be wrong
+                point.Y = levels.OrderBy(l => Math.Abs(point.Y - l)).First();
             }
 
             this.SignalSecond.PointsUpdate();
@@ -410,7 +411,7 @@
         {
             this.SignalSecond.AssignSignal(this.SignalFirst);
             this.SignalSecond.Continuous.Value = false;
-            //this.SignalSecond.Samples.Value = (int)(SignalSecond.Duration.Value * this.SamplingFrequency);
+            this.SignalSecond.Samples.Value = (int)(this.SignalSecond.Duration.Value * this.SamplingFrequency);
             Generator.GenerateSignal(this.SignalSecond);
         }
 

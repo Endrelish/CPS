@@ -16,11 +16,12 @@
     <Grid DataContext="{Binding ViewModel, Source={StaticResource ViewModelLocator}}">
         <wpf:CartesianChart>
             <wpf:CartesianChart.Series>
-                <wpf:LineSeries Values="{Binding SignalFirst.Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointForeground="#2195f2" Fill="Transparent"  PointGeometrySize="3" LineSmoothness="1" StrokeThickness="{Binding SignalFirst.Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
-                <wpf:LineSeries Values="{Binding SignalSecond.Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointForeground="#f34436" Fill="Transparent" PointGeometrySize="3" LineSmoothness="1" StrokeThickness="{Binding SignalSecond.Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
+                <wpf:LineSeries ScalesXAt="0" Values="{Binding SignalFirst.Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointForeground="#2195f2" Fill="Transparent"  PointGeometrySize="3" LineSmoothness="1" StrokeThickness="{Binding SignalFirst.Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
+                <wpf:LineSeries ScalesXAt="1" Values="{Binding SignalSecond.Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointForeground="#f34436" Fill="Transparent" PointGeometrySize="3" LineSmoothness="1" StrokeThickness="{Binding SignalSecond.Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
             </wpf:CartesianChart.Series>
             <wpf:CartesianChart.AxisX>
                 <wpf:Axis Title="Signal value" Labels="{Binding SignalFirst.Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                <wpf:Axis Title="Signal value" Visibility="Collapsed" Labels="{Binding SignalSecond.Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </wpf:CartesianChart.AxisX>
             <wpf:CartesianChart.AxisY>
                 <wpf:Axis LabelFormatter="{Binding SignalFirst.Formatter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />

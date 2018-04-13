@@ -9,13 +9,12 @@
             data.Points.Clear();
 
             var interval = data.Duration.Value / (data.Samples.Value - 1);
-            for (var i = -data.Samples.Value / 2; i < data.Samples.Value / 2; i++)
+            for (var i = 0; i < data.Samples.Value; i++)
             {
-                var x = i * interval + data.StartTime.Value;
+                var x = i * interval + data.StartTime.Value - data.Duration.Value / 2.0d;
                 try
                 {
                     var y = data.Function(data, x);
-                   
 
                     if (Math.Abs(y) < 10E-10)
                     {
@@ -30,7 +29,7 @@
                 }
             }
 
-            data.Points.Sort();
+            data.Points.Sort(); // No idea why I put it here, seems not to have any influence, but better don't remove.
 
             data.CalculateParameters();
             data.PointsUpdate();
