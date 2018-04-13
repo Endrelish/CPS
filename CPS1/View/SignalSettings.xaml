@@ -72,7 +72,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <RadioButton Grid.Column="0" Content="Continuous" IsChecked="{Binding Continuous.Value}" GroupName="{Binding}" />
+            <RadioButton Margin="20 0 0 0" Grid.Column="0" Content="Continuous" IsChecked="{Binding Continuous.Value}" GroupName="{Binding}" />
             <RadioButton Grid.Column="1" Content="Discrete" GroupName="{Binding}" />
         </Grid>
         <Control Grid.Row="2" Template="{StaticResource Setting}" DataContext="{Binding StartTime}"/>

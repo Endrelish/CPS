@@ -2,13 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Windows.Input;
 
+    using CPS1.Annotations;
     using CPS1.Model;
     using CPS1.View;
 
-    public class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
         [NonSerialized]
         private static readonly Func<double, string> Formatter1 = value => value.ToString("N");
@@ -19,35 +22,29 @@
 
         private ICommand addCommand;
 
+        private string adOperation;
+
+        private ICommand computeCommand;
+
+        private string daOperation;
+
         private ICommand divideCommand;
 
         private Signal firstSignalType;
 
         private ICommand generateSignalCommand;
 
-        private ICommand holdCommand;
-
-        private ICommand mdCommand;
-
-        private ICommand mseCommand;
-
         private ICommand multiplyCommand;
 
         private ICommand openCommand;
 
-        private ICommand psnrCommand;
+        private bool quantizationLevelsVisibility;
 
-        private ICommand quantizationCommand;
-
-        private ICommand samplingCommand;
+        private bool samplingFrequencyVisibility;
 
         private ICommand saveCommand;
 
         private Signal secondSignalType;
-
-        private ICommand sincCommand;
-
-        private ICommand snrCommand;
 
         private ICommand subtractCommand;
 
@@ -84,14 +81,71 @@
                     ((CommandHandler)this.DivideCommand).RaiseCanExecuteChanged();
                 };
 
-            this.SamplingFrequency = 0.1d / this.SignalFirst.Period.Value;
+            this.SamplingFrequency = 10 / this.SignalFirst.Period.Value;
             this.QuantizationLevels = 25;
+
+            this.AdOperations = new List<string> { "UNIFORM SAMPLING", "UNIFORM QUANTIZATION" };
+            this.DaOperations = new List<string> { "ZERO-ORDER HOLD", "SINC RECONSTRUCTION" };
+            this.AdOperation = string.Empty;
+            this.DaOperation = string.Empty;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public static Func<double, string> Formatter => Formatter1;
 
         public ICommand AddCommand => this.addCommand
                                       ?? (this.addCommand = new CommandHandler(this.AddSignals, this.SignalsGenerated));
+
+        public string AdOperation
+        {
+            get => this.adOperation;
+            set
+            {
+                if (value == this.adOperation)
+                {
+                    return;
+                }
+
+                this.SetParametersVisibility(value);
+                this.adOperation = value;
+                ((CommandHandler)this.ComputeCommand).RaiseCanExecuteChanged();
+                this.OnPropertyChanged();
+            }
+        }
+
+        public List<string> AdOperations { get; }
+
+        public ICommand ComputeCommand
+        {
+            get
+            {
+                return this.computeCommand ?? (this.computeCommand = new CommandHandler(
+                                                   obj => this.Compute(obj),
+                                                   () => (this.SignalFirst.Continuous.Value
+                                                         && this.AdOperation.Length > 0)
+                                                         || (!this.SignalFirst.Continuous.Value
+                                                         && this.DaOperation.Length > 0)));
+            }
+        }
+
+        public string DaOperation
+        {
+            get => this.daOperation;
+            set
+            {
+                if (value == this.daOperation)
+                {
+                    return;
+                }
+                SetParametersVisibility(value);
+                this.daOperation = value;
+                ((CommandHandler)this.ComputeCommand).RaiseCanExecuteChanged();
+                this.OnPropertyChanged();
+            }
+        }
+
+        public List<string> DaOperations { get; }
 
         public ICommand DivideCommand => this.divideCommand
                                          ?? (this.divideCommand = new CommandHandler(
@@ -113,36 +167,6 @@
                                                          this.GenerateSignal,
                                                          () => true));
 
-        public ICommand HoldCommand
-        {
-            get
-            {
-                return this.holdCommand ?? (this.holdCommand = new CommandHandler(
-                                                obj => this.ZeroOrderHold(),
-                                                () => this.SignalFirst.Continuous.Value));
-            }
-        }
-
-        public ICommand MdCommand
-        {
-            get
-            {
-                return this.mdCommand ?? (this.mdCommand = new CommandHandler(
-                                              obj => this.Md(),
-                                              () => !this.SignalFirst.Continuous.Value));
-            }
-        }
-
-        public ICommand MseCommand
-        {
-            get
-            {
-                return this.mseCommand ?? (this.mseCommand = new CommandHandler(
-                                               obj => this.Mse(),
-                                               () => !this.SignalFirst.Continuous.Value));
-            }
-        }
-
         public ICommand MultiplyCommand => this.multiplyCommand ?? (this.multiplyCommand = new CommandHandler(
                                                                         this.MultiplySignals,
                                                                         () => this.SignalFirst.Points.Count > 0
@@ -153,39 +177,39 @@
 
         public int Param { get; } = 2;
 
-        public ICommand PsnrCommand
-        {
-            get
-            {
-                return this.psnrCommand ?? (this.psnrCommand = new CommandHandler(
-                                                obj => this.Psnr(),
-                                                () => !this.SignalFirst.Continuous.Value));
-            }
-        }
-
         public int QuantizationLevels { get; set; }
 
-        public ICommand QuantizationCommand
+        public bool QuantizationLevelsVisibility
         {
-            get
+            get => this.quantizationLevelsVisibility;
+            set
             {
-                return this.quantizationCommand ?? (this.quantizationCommand = new CommandHandler(
-                                                        obj => this.Quantization(),
-                                                        () => this.SignalFirst.Continuous.Value));
-            }
-        }
+                if (value == this.quantizationLevelsVisibility)
+                {
+                    return;
+                }
 
-        public ICommand SamplingCommand
-        {
-            get
-            {
-                return this.samplingCommand ?? (this.samplingCommand = new CommandHandler(
-                                                    obj => this.Sampling(),
-                                                    () => this.SignalFirst.Continuous.Value));
+                this.quantizationLevelsVisibility = value;
+                this.OnPropertyChanged();
             }
         }
 
         public double SamplingFrequency { get; set; }
+
+        public bool SamplingFrequencyVisibility
+        {
+            get => this.samplingFrequencyVisibility;
+            set
+            {
+                if (value == this.samplingFrequencyVisibility)
+                {
+                    return;
+                }
+
+                this.samplingFrequencyVisibility = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public ICommand SaveCommand =>
             this.saveCommand ?? (this.saveCommand = new CommandHandler(this.SaveSignal, () => true));
@@ -212,26 +236,6 @@
             }
         }
 
-        public ICommand SincCommand
-        {
-            get
-            {
-                return this.sincCommand ?? (this.sincCommand = new CommandHandler(
-                                                obj => this.Sinc(),
-                                                () => this.SignalFirst.Continuous.Value));
-            }
-        }
-
-        public ICommand SnrCommand
-        {
-            get
-            {
-                return this.snrCommand ?? (this.snrCommand = new CommandHandler(
-                                               obj => this.Snr(),
-                                               () => !this.SignalFirst.Continuous.Value));
-            }
-        }
-
         public ICommand SubtractCommand => this.subtractCommand ?? (this.subtractCommand = new CommandHandler(
                                                                         this.SubtractSignals,
                                                                         () => this.SignalFirst.Points.Count > 0
@@ -240,6 +244,12 @@
         public bool SignalsGenerated()
         {
             return this.SignalFirst.Points.Count > 0 && this.SignalSecond.Points.Count > 0;
+        }
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void AddSignals(object obj)
@@ -253,6 +263,25 @@
                 else
                 {
                     this.SignalSecond.Compose(this.SignalFirst, Operation.Add);
+                }
+            }
+        }
+
+        private void Compute(object parameter)
+        {
+            if (parameter is string type)
+            {
+                if (type.Equals("AD"))
+                {
+                    switch (this.AdOperation)
+                    {
+                        case "UNIFORM SAMPLING":
+                            this.Sampling();
+                            break;
+                        case "UNIFORM QUANTIZATION":
+                            this.Quantization();
+                            break;
+                    }
                 }
             }
         }
@@ -290,6 +319,8 @@
                     Generator.GenerateSignal(this.SignalSecond);
                     Histogram.GetHistogram(this.SignalSecond);
                 }
+
+                ((CommandHandler)this.ComputeCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -379,7 +410,7 @@
         {
             this.SignalSecond.AssignSignal(this.SignalFirst);
             this.SignalSecond.Continuous.Value = false;
-            this.SignalSecond.Period.Value = 1.0d / this.SamplingFrequency;
+            //this.SignalSecond.Samples.Value = (int)(SignalSecond.Duration.Value * this.SamplingFrequency);
             Generator.GenerateSignal(this.SignalSecond);
         }
 
@@ -401,6 +432,21 @@
                 {
                     this.serializer.Serialize(this.SignalSecond, filename);
                 }
+            }
+        }
+
+        private void SetParametersVisibility(string value)
+        {
+            switch (value)
+            {
+                case "UNIFORM SAMPLING":
+                    this.SamplingFrequencyVisibility = true;
+                    this.QuantizationLevelsVisibility = false;
+                    break;
+                case "UNIFORM QUANTIZATION":
+                    this.SamplingFrequencyVisibility = false;
+                    this.QuantizationLevelsVisibility = true;
+                    break;
             }
         }
 
@@ -442,7 +488,7 @@
 
         private void ZeroOrderHold()
         {
-            throw new NotImplementedException();
+            this.SignalSecond.AssignSignal(this.SignalFirst);
         }
     }
 }
