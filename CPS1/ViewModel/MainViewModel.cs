@@ -1,6 +1,7 @@
 ﻿namespace CPS1.ViewModel
 {
     using System;
+    using System.CodeDom;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
@@ -19,6 +20,16 @@
         private readonly IFileDialog fileDialog;
 
         private readonly IFileSerializer serializer;
+
+        private readonly Func<double, double> sincFunc = t =>
+            {
+                if (t == 0)
+                {
+                    return 1;
+                }
+
+                return Math.Sin(Math.PI * t) / (Math.PI * t);
+            };
 
         private ICommand addCommand;
 
@@ -291,6 +302,9 @@
                         case "ZERO-ORDER HOLD":
                             this.ZeroOrderHold();
                             break;
+                        case "SINC RECONSTRUCTION":
+                            this.Sinc();
+                            break;
                     }
                 }
             }
@@ -399,9 +413,11 @@
 
         private void Quantization()
         {
+            // TODO Number of bits in GUI
+            // BUG Quantization after sampling
             var levels = new List<double>();
-            var step = this.SignalFirst.Amplitude.Value * 2.0d / this.QuantizationLevels;
-            for (var i = 0; i <= this.QuantizationLevels; i++)
+            var step = this.SignalFirst.Amplitude.Value * 2.0d / (this.QuantizationLevels - 1);
+            for (var i = 0; i <= this.QuantizationLevels - 1; i++)
             {
                 levels.Add(-this.SignalFirst.Amplitude.Value + i * step);
             }
@@ -457,6 +473,14 @@
                     this.SamplingFrequencyVisibility = false;
                     this.QuantizationLevelsVisibility = true;
                     break;
+                case "ZERO-ORDER HOLD":
+                    this.SamplingFrequencyVisibility = false;
+                    this.QuantizationLevelsVisibility = false;
+                    break;
+                case "SINC RECONSTRUCTION":
+                    this.SamplingFrequencyVisibility = false;
+                    this.QuantizationLevelsVisibility = true;
+                    break;
             }
         }
 
@@ -473,7 +497,16 @@
 
         private void Sinc()
         {
-            throw new NotImplementedException();
+            this.SignalSecond.AssignSignal(this.SignalFirst);
+            this.SignalSecond.Continuous.Value = true;
+            this.SignalSecond.Samples.Value = 500;
+
+            this.SignalSecond.Function = (data, t) =>
+                {
+                    throw new NotImplementedException();
+                };
+
+            Generator.GenerateSignal(this.SignalSecond);
         }
 
         private void Snr()
@@ -502,8 +535,11 @@
             this.SignalSecond.Continuous.Value = true;
             this.SignalSecond.Samples.Value = 500;
 
-            this.SignalSecond.Function = (data, t) => { return SignalFirst.Points.OrderBy(p => Math.Abs(p.X - t)).First().Y; };
-            Generator.GenerateSignal(SignalSecond);
+            this.SignalSecond.Function = (data, t) =>
+                {
+                    return this.SignalFirst.Points.OrderBy(p => Math.Abs(p.X - t)).First().Y;
+                };
+            Generator.GenerateSignal(this.SignalSecond);
         }
     }
 }

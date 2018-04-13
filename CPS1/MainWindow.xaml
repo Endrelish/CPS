@@ -270,13 +270,12 @@
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
-                                        
                                         <TextBlock Grid.Row="0" Grid.Column="0" Visibility="{Binding SamplingFrequencyVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="SAMPLING FREQUENCY"/>
                                         <TextBox Grid.Row="0" Grid.Column="1" Visibility="{Binding SamplingFrequencyVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="{Binding SamplingFrequency}" />
 
-                                        <TextBlock Grid.Row="1" Grid.Column="0" Visibility="{Binding QuantizationLevelsVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="QUANTIZATION LEVELS"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Visibility="{Binding SamplingFrequencyVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="NUMBER OF SAMPLES"/>
                                         <TextBox Grid.Row="1" Grid.Column="1" Visibility="{Binding QuantizationLevelsVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="{Binding QuantizationLevels}" />
-                                        
+
                                     </Grid>
                                     <Button Grid.Row="2" HorizontalAlignment="Center" Padding="7 7 7 7" VerticalAlignment="Top" Content="COMPUTE" FontWeight="Bold" Command="{Binding ComputeCommand}" CommandParameter="DA"/>
                                 </Grid>
