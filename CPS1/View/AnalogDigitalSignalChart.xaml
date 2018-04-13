@@ -21,7 +21,7 @@
             </wpf:CartesianChart.Series>
             <wpf:CartesianChart.AxisX>
                 <wpf:Axis Title="Signal value" Labels="{Binding SignalFirst.Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                <wpf:Axis Title="Signal value" Visibility="Collapsed" Labels="{Binding SignalSecond.Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                <wpf:Axis ShowLabels="False" Labels="{Binding SignalSecond.Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </wpf:CartesianChart.AxisX>
             <wpf:CartesianChart.AxisY>
                 <wpf:Axis LabelFormatter="{Binding SignalFirst.Formatter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />

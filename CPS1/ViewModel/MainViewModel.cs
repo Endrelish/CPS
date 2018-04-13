@@ -284,6 +284,15 @@
                             break;
                     }
                 }
+                else
+                {
+                    switch (this.DaOperation)
+                    {
+                        case "ZERO-ORDER HOLD":
+                            this.ZeroOrderHold();
+                            break;
+                    }
+                }
             }
         }
 
@@ -490,6 +499,11 @@
         private void ZeroOrderHold()
         {
             this.SignalSecond.AssignSignal(this.SignalFirst);
+            this.SignalSecond.Continuous.Value = true;
+            this.SignalSecond.Samples.Value = 500;
+
+            this.SignalSecond.Function = (data, t) => { return SignalFirst.Points.OrderBy(p => Math.Abs(p.X - t)).First().Y; };
+            Generator.GenerateSignal(SignalSecond);
         }
     }
 }
