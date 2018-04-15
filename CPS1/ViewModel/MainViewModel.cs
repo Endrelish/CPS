@@ -503,7 +503,29 @@
 
             this.SignalSecond.Function = (data, t) =>
                 {
-                    throw new NotImplementedException();
+                    var n = SignalFirst.Points.Count(p => p.X < t);
+
+                    var sum = 0.0d;
+                    var ts = SignalFirst.Duration.Value / SignalFirst.Samples.Value;
+                    for (int i = n - QuantizationLevels; i < n + QuantizationLevels; i++)
+                    //for (int i = 0; i < SignalFirst.Points.Count; i++)
+                    {
+                        if (i < 0 || i > SignalFirst.Points.Count) continue;
+                        try
+                        {
+                            sum += SignalFirst.Points[i].Y * this.sincFunc((t - SignalFirst.Points[i].X) / ts);
+                        }
+                        catch (ArgumentOutOfRangeException)
+                        {
+                            // Do nothing
+                        }
+                    }
+                    //foreach (var point in SignalFirst.Points)
+                    //{
+                    //    sum += point.Y * this.sincFunc((t - point.X) / ts);
+                    //}
+
+                    return sum;
                 };
 
             Generator.GenerateSignal(this.SignalSecond);
