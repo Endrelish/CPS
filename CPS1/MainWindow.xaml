@@ -88,7 +88,7 @@
                                        Text="SIGNAL TYPE" />
                                 <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1"
                                       ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding FirstSignalType}" />
-                                <view:SignalSettings Grid.Row="2" DataContext="{Binding SignalFirst}" />
+                                <view:SignalSettings Grid.Row="2" DataContext="{Binding FirstSignal}" />
                                 <Button Margin="0 0 0 0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top"
                                     Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
                                     Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}" />
@@ -113,7 +113,7 @@
                                    Text="SIGNAL TYPE" />
                                 <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1"
                                   ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding SecondSignalType}" />
-                                <view:SignalSettings Grid.Row="2" DataContext="{Binding SignalSecond}" />
+                                <view:SignalSettings Grid.Row="2" DataContext="{Binding SecondSignal}" />
                                 <Button Margin="0 0 0 0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top"
                                 Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
                                 Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource Second}" />
@@ -167,16 +167,16 @@
                         <RowDefinition Height="50*" />
                         <RowDefinition Height="50*" />
                     </Grid.RowDefinitions>
-                    <view:SignalChart DataContext="{Binding SignalFirst}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
-                    <view:HistogramChart DataContext="{Binding SignalFirst}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
+                    <view:SignalChart DataContext="{Binding FirstSignal}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
+                    <view:HistogramChart DataContext="{Binding FirstSignal}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
                 </Grid>
                 <Grid Grid.Column="2" Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50*" />
                         <RowDefinition Height="50*" />
                     </Grid.RowDefinitions>
-                    <view:SignalChart DataContext="{Binding SignalSecond}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
-                    <view:HistogramChart DataContext="{Binding SignalSecond}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
+                    <view:SignalChart DataContext="{Binding SecondSignal}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
+                    <view:HistogramChart DataContext="{Binding SecondSignal}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
                 </Grid>
             </Grid>
         </TabItem>
@@ -211,7 +211,7 @@
                                        Text="SIGNAL TYPE" />
                                 <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1"
                                       ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding FirstSignalType}" />
-                                <view:SignalSettings Grid.Row="2" DataContext="{Binding SignalFirst}" />
+                                <view:SignalSettings Grid.Row="2" DataContext="{Binding FirstSignal}" />
                                 <Button Margin="0 0 0 0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top"
                                     Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
                                     Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}" />
@@ -232,7 +232,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Name="AdTextBlock" Visibility="{Binding SignalFirst.Continuous.Value, Converter={StaticResource BTVC}}" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
+                                <TextBlock Grid.Row="0" Name="AdTextBlock" Visibility="{Binding FirstSignal.Continuous.Value, Converter={StaticResource BTVC}}" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
                                            Text="A/D CONVERSION" />
                                 <Grid Grid.Row="1" Visibility="{Binding ElementName=AdTextBlock, Path=Visibility}">
                                     <Grid.RowDefinitions>

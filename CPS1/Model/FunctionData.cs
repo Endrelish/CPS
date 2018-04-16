@@ -19,6 +19,13 @@
         [NonSerialized]
         private Func<FunctionData, double, double> function;
 
+        private Signal type;
+
+        private void SetRequiredAttributes()
+        {
+            this.RequiredAttributes = AvailableFunctions.GetRequiredParameters(this.Type);
+        }
+
         public FunctionData(
             double startTime = 0,
             double amplitude = 50,
@@ -82,7 +89,7 @@
             this.Points = new List<Point>();
             this.HistogramPoints = new List<Point>();
 
-            this.RequiredAttributes = new Required(false, false, false, false, false, false, false, false);
+            this.Type = Signal.Sine;
         }
 
         [field: NonSerialized]
@@ -189,7 +196,18 @@
         public FunctionAttribute<double> StartTime { get; set; }
 
         [DataMember]
-        public Signal Type { get; set; }
+        public Signal Type
+        {
+            get
+            {
+                return this.type;
+            }
+            set
+            {
+                this.type = value;
+                this.SetRequiredAttributes();
+            }
+        }
 
         [IgnoreDataMember]
         public ChartValues<double> Values
