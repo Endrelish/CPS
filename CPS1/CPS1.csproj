@@ -80,6 +80,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\ChartSettingsConverter.cs" />
+    <Compile Include="Converters\PointSizeContinuousConverter.cs" />
     <Compile Include="Converters\VisibilityInvertionConverter.cs" />
     <Compile Include="Model\Exceptions\SignalNotFoundException.cs" />
     <Compile Include="Model\FileXmlSerializer.cs" />

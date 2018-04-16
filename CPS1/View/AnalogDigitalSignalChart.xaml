@@ -11,13 +11,14 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <converters:ChartSettingsConverter x:Key="ChartSettingsConverter" />
+        <converters:PointSizeContinuousConverter x:Key="PointSizeContinuousConverter"/>
         <viewModel:ViewModelLocator x:Key="ViewModelLocator" />
     </UserControl.Resources>
     <Grid DataContext="{Binding ViewModel, Source={StaticResource ViewModelLocator}}">
         <wpf:CartesianChart>
             <wpf:CartesianChart.Series>
-                <wpf:LineSeries ScalesXAt="0" Values="{Binding SignalFirst.Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointForeground="#2195f2" Fill="Transparent"  PointGeometrySize="3" LineSmoothness="1" StrokeThickness="{Binding SignalFirst.Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
-                <wpf:LineSeries ScalesXAt="1" Values="{Binding SignalSecond.Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointForeground="#f34436" Fill="Transparent" PointGeometrySize="3" LineSmoothness="1" StrokeThickness="{Binding SignalSecond.Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
+                <wpf:LineSeries ScalesXAt="0" Values="{Binding SignalFirst.Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointForeground="#2195f2" Fill="Transparent"  PointGeometrySize="{Binding SignalFirst.Continuous.Value, Mode=OneWay, Converter={StaticResource PointSizeContinuousConverter}}" LineSmoothness="1" StrokeThickness="{Binding SignalFirst.Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
+                <wpf:LineSeries ScalesXAt="1" Values="{Binding SignalSecond.Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointForeground="#f34436" Fill="Transparent" PointGeometrySize="{Binding SignalSecond.Continuous.Value, Mode=OneWay, Converter={StaticResource PointSizeContinuousConverter}}" LineSmoothness="1" StrokeThickness="{Binding SignalSecond.Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
             </wpf:CartesianChart.Series>
             <wpf:CartesianChart.AxisX>
                 <wpf:Axis Title="Signal value" Labels="{Binding SignalFirst.Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
