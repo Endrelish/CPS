@@ -390,6 +390,10 @@
 
         private void Mse()
         {
+            this.MeanSquaredError =
+                this.SignalSecond.Points
+                    .Select(p => Math.Pow(this.SignalFirst.Function(this.SignalFirst, p.X) - p.Y, 2)).Sum()
+                / this.SignalSecond.Points.Count;
         }
 
         private void MultiplySignals(object obj)
