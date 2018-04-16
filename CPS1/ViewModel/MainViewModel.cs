@@ -1,7 +1,6 @@
 ﻿namespace CPS1.ViewModel
 {
     using System;
-    using System.CodeDom;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
@@ -45,6 +44,8 @@
 
         private ICommand generateSignalCommand;
 
+        private double meanSquaredError;
+
         private ICommand multiplyCommand;
 
         private ICommand openCommand;
@@ -58,6 +59,12 @@
         private Signal secondSignalType;
 
         private ICommand subtractCommand;
+
+        private double signalToNoiseRatio;
+
+        private double peakSignalToNoiseRatio;
+
+        private double maximumDifference;
 
         public MainViewModel()
         {
@@ -178,6 +185,21 @@
                                                  ?? (this.generateSignalCommand = new CommandHandler(
                                                          this.GenerateSignal,
                                                          () => true));
+
+        public double MeanSquaredError
+        {
+            get => this.meanSquaredError;
+            set
+            {
+                if (value.Equals(this.meanSquaredError))
+                {
+                    return;
+                }
+
+                this.meanSquaredError = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public ICommand MultiplyCommand => this.multiplyCommand ?? (this.multiplyCommand = new CommandHandler(
                                                                         this.MultiplySignals,
@@ -348,14 +370,26 @@
             }
         }
 
+        public double MaximumDifference
+        {
+            get
+            {
+                return this.maximumDifference;
+            }
+            set
+            {
+                if (value.Equals(this.maximumDifference)) return;
+                this.maximumDifference = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         private void Md()
         {
-            throw new NotImplementedException();
         }
 
         private void Mse()
         {
-            throw new NotImplementedException();
         }
 
         private void MultiplySignals(object obj)
@@ -408,7 +442,15 @@
 
         private void Psnr()
         {
-            throw new NotImplementedException();
+            PeakSignalToNoiseRatio = 10 * Math.Log10(SignalFirst.Points.Max(p => p.Y) / this.MeanSquaredError);
+        }
+
+        private void CalculateMetrics()
+        {
+            this.Mse();
+            this.Snr();
+            this.Psnr();
+            this.Md();
         }
 
         private void Quantization()
@@ -503,37 +545,74 @@
 
             this.SignalSecond.Function = (data, t) =>
                 {
-                    var n = SignalFirst.Points.Count(p => p.X < t);
+                    var n = this.SignalFirst.Points.Count(p => p.X < t);
 
                     var sum = 0.0d;
-                    var ts = SignalFirst.Duration.Value / SignalFirst.Samples.Value;
-                    for (int i = n - QuantizationLevels; i < n + QuantizationLevels; i++)
-                    //for (int i = 0; i < SignalFirst.Points.Count; i++)
+                    var ts = this.SignalFirst.Duration.Value / this.SignalFirst.Samples.Value;
+                    for (var i = n - this.QuantizationLevels; i < n + this.QuantizationLevels; i++)
                     {
-                        if (i < 0 || i > SignalFirst.Points.Count) continue;
+                        ////for (int i = 0; i < SignalFirst.Points.Count; i++)
+                        if (i < 0 || i > this.SignalFirst.Points.Count)
+                        {
+                            continue;
+                        }
+
                         try
                         {
-                            sum += SignalFirst.Points[i].Y * this.sincFunc((t - SignalFirst.Points[i].X) / ts);
+                            sum += this.SignalFirst.Points[i].Y
+                                   * this.sincFunc((t - this.SignalFirst.Points[i].X) / ts);
                         }
                         catch (ArgumentOutOfRangeException)
                         {
                             // Do nothing
                         }
                     }
-                    //foreach (var point in SignalFirst.Points)
-                    //{
-                    //    sum += point.Y * this.sincFunc((t - point.X) / ts);
-                    //}
 
+                    ////foreach (var point in SignalFirst.Points)
+                    ////{
+                    ////    sum += point.Y * this.sincFunc((t - point.X) / ts);
+                    ////}
                     return sum;
                 };
 
             Generator.GenerateSignal(this.SignalSecond);
         }
 
+        public double SignalToNoiseRatio
+        {
+            get
+            {
+                return this.signalToNoiseRatio;
+            }
+            set
+            {
+                if (value.Equals(this.signalToNoiseRatio)) return;
+                this.signalToNoiseRatio = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         private void Snr()
         {
-            throw new NotImplementedException();
+            var numerator = SignalFirst.Points.Select(p => p.Y * p.Y).Sum();
+            var denominator = SignalSecond.Points.Select(p => Math.Pow(SignalFirst.Function(SignalFirst, p.X) - p.Y, 2))
+                .Sum();
+
+            this.SignalToNoiseRatio = 10 * Math.Log10(numerator / denominator);
+        }
+
+        public double PeakSignalToNoiseRatio
+        {
+            get
+            {
+                return this.peakSignalToNoiseRatio;
+            }
+            set
+            {
+                if (value.Equals(this.peakSignalToNoiseRatio)) return;
+                this.peakSignalToNoiseRatio = value;
+                this.OnPropertyChanged();
+            }
         }
 
         private void SubtractSignals(object obj)
