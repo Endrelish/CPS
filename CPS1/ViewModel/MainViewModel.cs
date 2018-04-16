@@ -386,6 +386,8 @@
 
         private void Md()
         {
+            this.MaximumDifference = SignalSecond.Points
+                .Select(p => Math.Abs(p.Y - SignalFirst.Function(SignalFirst, p.X))).Max();
         }
 
         private void Mse()
