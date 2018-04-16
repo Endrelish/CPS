@@ -22,6 +22,7 @@
             <Setter Property="Padding" Value="5 5 5 5" />
             <Setter Property="Margin" Value="2 2 2 2" />
         </Style>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
         <system:Int16 x:Key="First">1</system:Int16>
         <system:Int16 x:Key="Second">2</system:Int16>
@@ -31,6 +32,24 @@
         <Image x:Key="OpenIcon2" Source="resources/OpenIcon.png" />
         <BooleanToVisibilityConverter x:Key="BTVC" />
         <converters:VisibilityInvertionConverter x:Key="VIC" />
+
+        <ControlTemplate x:Key="Parameter">
+            <Grid Margin="25 5 25 5" Visibility="{Binding Visibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="70"/>
+                    </Grid.ColumnDefinitions>
+                    <Separator />
+                    <TextBlock Grid.Column="1" Margin="10,0,0,0" Text="{Binding Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Grid>
+        </ControlTemplate>
 
     </Window.Resources>
     <TabControl DataContext="{Binding ViewModel, Source={StaticResource Locator}}" SelectedIndex="1">
@@ -211,6 +230,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Name="AdTextBlock" Visibility="{Binding SignalFirst.Continuous.Value, Converter={StaticResource BTVC}}" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
                                            Text="A/D CONVERSION" />
@@ -279,6 +299,12 @@
                                     </Grid>
                                     <Button Grid.Row="2" HorizontalAlignment="Center" Padding="7 7 7 7" VerticalAlignment="Top" Content="COMPUTE" FontWeight="Bold" Command="{Binding ComputeCommand}" CommandParameter="DA"/>
                                 </Grid>
+                                <StackPanel Grid.Row="4" VerticalAlignment="Bottom" Margin ="0 0 0 50">
+                                    <Control Template="{StaticResource Parameter}" DataContext="{Binding MeanSquaredError}"/>
+                                    <Control Template="{StaticResource Parameter}" DataContext="{Binding MaximumDifference}"/>
+                                    <Control Template="{StaticResource Parameter}" DataContext="{Binding SignalToNoiseRatio}"/>
+                                    <Control Template="{StaticResource Parameter}" DataContext="{Binding PeakSignalToNoiseRatio}"/>
+                                </StackPanel>
                             </Grid>
                         </TabItem>
                     </TabControl>

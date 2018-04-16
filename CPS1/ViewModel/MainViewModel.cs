@@ -44,7 +44,7 @@
 
         private ICommand generateSignalCommand;
 
-        private double meanSquaredError;
+        private FunctionAttribute<double> meanSquaredError;
 
         private ICommand multiplyCommand;
 
@@ -60,11 +60,11 @@
 
         private ICommand subtractCommand;
 
-        private double signalToNoiseRatio;
+        private FunctionAttribute<double> signalToNoiseRatio;
 
-        private double peakSignalToNoiseRatio;
+        private FunctionAttribute<double> peakSignalToNoiseRatio;
 
-        private double maximumDifference;
+        private FunctionAttribute<double> maximumDifference;
 
         public MainViewModel()
         {
@@ -106,6 +106,12 @@
             this.DaOperations = new List<string> { "ZERO-ORDER HOLD", "SINC RECONSTRUCTION" };
             this.AdOperation = string.Empty;
             this.DaOperation = string.Empty;
+
+            this.MaximumDifference = new FunctionAttribute<double>(0.0d, true, 0, 0, "MAXIMUM DIFFERENCE");
+            this.SignalToNoiseRatio = new FunctionAttribute<double>(0, true, 0, 0, "SIGNAL TO NOISE RATIO");
+            this.MeanSquaredError = new FunctionAttribute<double>(0, true, 0, 0, "MEAN SQUARED ERROR");
+            this.PeakSignalToNoiseRatio = new FunctionAttribute<double>(0, true, 0, 0, "PEAK SIGNAL TO NOISE RATIO");
+            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -186,7 +192,7 @@
                                                          this.GenerateSignal,
                                                          () => true));
 
-        public double MeanSquaredError
+        public FunctionAttribute<double> MeanSquaredError
         {
             get => this.meanSquaredError;
             set
@@ -329,6 +335,8 @@
                             break;
                     }
                 }
+
+                this.CalculateMetrics();
             }
         }
 
@@ -370,7 +378,7 @@
             }
         }
 
-        public double MaximumDifference
+        public FunctionAttribute<double> MaximumDifference
         {
             get
             {
@@ -386,13 +394,13 @@
 
         private void Md()
         {
-            this.MaximumDifference = SignalSecond.Points
+            this.MaximumDifference.Value = SignalSecond.Points
                 .Select(p => Math.Abs(p.Y - SignalFirst.Function(SignalFirst, p.X))).Max();
         }
 
         private void Mse()
         {
-            this.MeanSquaredError =
+            this.MeanSquaredError.Value =
                 this.SignalSecond.Points
                     .Select(p => Math.Pow(this.SignalFirst.Function(this.SignalFirst, p.X) - p.Y, 2)).Sum()
                 / this.SignalSecond.Points.Count;
@@ -412,6 +420,7 @@
                 }
             }
         }
+        
 
         private void OpenSignal(object parameter)
         {
@@ -448,7 +457,7 @@
 
         private void Psnr()
         {
-            PeakSignalToNoiseRatio = 10 * Math.Log10(SignalFirst.Points.Max(p => p.Y) / this.MeanSquaredError);
+            PeakSignalToNoiseRatio.Value = 10 * Math.Log10(SignalFirst.Points.Max(p => p.Y) / this.MeanSquaredError.Value);
         }
 
         private void CalculateMetrics()
@@ -584,7 +593,7 @@
             Generator.GenerateSignal(this.SignalSecond);
         }
 
-        public double SignalToNoiseRatio
+        public FunctionAttribute<double> SignalToNoiseRatio
         {
             get
             {
@@ -604,10 +613,10 @@
             var denominator = SignalSecond.Points.Select(p => Math.Pow(SignalFirst.Function(SignalFirst, p.X) - p.Y, 2))
                 .Sum();
 
-            this.SignalToNoiseRatio = 10 * Math.Log10(numerator / denominator);
+            this.SignalToNoiseRatio.Value = 10 * Math.Log10(numerator / denominator);
         }
 
-        public double PeakSignalToNoiseRatio
+        public FunctionAttribute<double> PeakSignalToNoiseRatio
         {
             get
             {
