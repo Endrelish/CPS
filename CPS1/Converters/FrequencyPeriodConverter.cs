@@ -19,7 +19,7 @@
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var ret = 0.0d;
-            if (value is double frequency)
+            if (value is string val && double.TryParse(val, out var frequency))
             {
                 ret = 1.0d / frequency;
             }
