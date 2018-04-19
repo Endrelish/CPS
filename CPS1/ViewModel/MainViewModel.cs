@@ -34,6 +34,8 @@
 
         private string adOperation;
 
+        private ICommand clearCommand;
+
         private ICommand computeCommand;
 
         private string daOperation;
@@ -44,11 +46,17 @@
 
         private ICommand generateSignalCommand;
 
+        private FunctionAttribute<double> maximumDifference;
+
         private FunctionAttribute<double> meanSquaredError;
 
         private ICommand multiplyCommand;
 
         private ICommand openCommand;
+
+        private FunctionAttribute<double> peakSignalToNoiseRatio;
+
+        private int quantizationLevels;
 
         private bool quantizationLevelsVisibility;
 
@@ -58,13 +66,9 @@
 
         private Signal secondSignalType;
 
-        private ICommand subtractCommand;
-
         private FunctionAttribute<double> signalToNoiseRatio;
 
-        private FunctionAttribute<double> peakSignalToNoiseRatio;
-
-        private FunctionAttribute<double> maximumDifference;
+        private ICommand subtractCommand;
 
         public MainViewModel()
         {
@@ -111,7 +115,6 @@
             this.SignalToNoiseRatio = new FunctionAttribute<double>(0, true, 0, 0, "SIGNAL TO NOISE RATIO");
             this.MeanSquaredError = new FunctionAttribute<double>(0, true, 0, 0, "MEAN SQUARED ERROR");
             this.PeakSignalToNoiseRatio = new FunctionAttribute<double>(0, true, 0, 0, "PEAK SIGNAL TO NOISE RATIO");
-            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -139,6 +142,9 @@
         }
 
         public List<string> AdOperations { get; }
+
+        public ICommand ClearCommand =>
+            this.clearCommand ?? (this.clearCommand = new CommandHandler(this.Clear, () => true));
 
         public ICommand ComputeCommand
         {
@@ -192,6 +198,21 @@
                                                          this.GenerateSignal,
                                                          () => true));
 
+        public FunctionAttribute<double> MaximumDifference
+        {
+            get => this.maximumDifference;
+            set
+            {
+                if (value.Equals(this.maximumDifference))
+                {
+                    return;
+                }
+
+                this.maximumDifference = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public FunctionAttribute<double> MeanSquaredError
         {
             get => this.meanSquaredError;
@@ -217,7 +238,35 @@
 
         public int Param { get; } = 2;
 
-        public int QuantizationLevels { get; set; }
+        public FunctionAttribute<double> PeakSignalToNoiseRatio
+        {
+            get => this.peakSignalToNoiseRatio;
+            set
+            {
+                if (value.Equals(this.peakSignalToNoiseRatio))
+                {
+                    return;
+                }
+
+                this.peakSignalToNoiseRatio = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int QuantizationLevels
+        {
+            get => this.quantizationLevels;
+            set
+            {
+                if (value == this.quantizationLevels)
+                {
+                    return;
+                }
+
+                this.quantizationLevels = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public bool QuantizationLevelsVisibility
         {
@@ -276,6 +325,21 @@
             }
         }
 
+        public FunctionAttribute<double> SignalToNoiseRatio
+        {
+            get => this.signalToNoiseRatio;
+            set
+            {
+                if (value.Equals(this.signalToNoiseRatio))
+                {
+                    return;
+                }
+
+                this.signalToNoiseRatio = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public ICommand SubtractCommand => this.subtractCommand ?? (this.subtractCommand = new CommandHandler(
                                                                         this.SubtractSignals,
                                                                         () => this.SignalFirst.Points.Count > 0
@@ -304,6 +368,34 @@
                 {
                     this.SignalSecond.Compose(this.SignalFirst, Operation.Add);
                 }
+            }
+        }
+
+        private void CalculateMetrics()
+        {
+            this.Mse();
+            this.Snr();
+            this.Psnr();
+            this.Md();
+        }
+
+        private void Clear(object parameter)
+        {
+            if (!int.TryParse(parameter as string, out var no))
+            {
+                return;
+            }
+
+            if (no == 1 || no == 3)
+            {
+                this.SignalFirst.Points.Clear();
+                this.SignalFirst.PointsUpdate();
+            }
+
+            if (no >= 2)
+            {
+                this.SignalSecond.Points.Clear();
+                this.SignalSecond.PointsUpdate();
             }
         }
 
@@ -378,24 +470,10 @@
             }
         }
 
-        public FunctionAttribute<double> MaximumDifference
-        {
-            get
-            {
-                return this.maximumDifference;
-            }
-            set
-            {
-                if (value.Equals(this.maximumDifference)) return;
-                this.maximumDifference = value;
-                this.OnPropertyChanged();
-            }
-        }
-
         private void Md()
         {
-            this.MaximumDifference.Value = SignalSecond.Points
-                .Select(p => Math.Abs(p.Y - SignalFirst.Function(SignalFirst, p.X))).Max();
+            this.MaximumDifference.Value = this.SignalSecond.Points
+                .Select(p => Math.Abs(p.Y - this.SignalFirst.Function(this.SignalFirst, p.X))).Max();
         }
 
         private void Mse()
@@ -420,7 +498,6 @@
                 }
             }
         }
-        
 
         private void OpenSignal(object parameter)
         {
@@ -457,21 +534,12 @@
 
         private void Psnr()
         {
-            PeakSignalToNoiseRatio.Value = 10 * Math.Log10(SignalFirst.Points.Max(p => p.Y) / this.MeanSquaredError.Value);
-        }
-
-        private void CalculateMetrics()
-        {
-            this.Mse();
-            this.Snr();
-            this.Psnr();
-            this.Md();
+            this.PeakSignalToNoiseRatio.Value =
+                10 * Math.Log10(this.SignalFirst.Points.Max(p => p.Y) / this.MeanSquaredError.Value);
         }
 
         private void Quantization()
         {
-            // TODO Number of bits in GUI
-            // BUG Quantization after sampling
             var levels = new List<double>();
             var step = this.SignalFirst.Amplitude.Value * 2.0d / (this.QuantizationLevels - 1);
             for (var i = 0; i <= this.QuantizationLevels - 1; i++)
@@ -593,41 +661,13 @@
             Generator.GenerateSignal(this.SignalSecond);
         }
 
-        public FunctionAttribute<double> SignalToNoiseRatio
-        {
-            get
-            {
-                return this.signalToNoiseRatio;
-            }
-            set
-            {
-                if (value.Equals(this.signalToNoiseRatio)) return;
-                this.signalToNoiseRatio = value;
-                this.OnPropertyChanged();
-            }
-        }
-
         private void Snr()
         {
-            var numerator = SignalFirst.Points.Select(p => p.Y * p.Y).Sum();
-            var denominator = SignalSecond.Points.Select(p => Math.Pow(SignalFirst.Function(SignalFirst, p.X) - p.Y, 2))
-                .Sum();
+            var numerator = this.SignalFirst.Points.Select(p => p.Y * p.Y).Sum();
+            var denominator = this.SignalSecond.Points
+                .Select(p => Math.Pow(this.SignalFirst.Function(this.SignalFirst, p.X) - p.Y, 2)).Sum();
 
             this.SignalToNoiseRatio.Value = 10 * Math.Log10(numerator / denominator);
-        }
-
-        public FunctionAttribute<double> PeakSignalToNoiseRatio
-        {
-            get
-            {
-                return this.peakSignalToNoiseRatio;
-            }
-            set
-            {
-                if (value.Equals(this.peakSignalToNoiseRatio)) return;
-                this.peakSignalToNoiseRatio = value;
-                this.OnPropertyChanged();
-            }
         }
 
         private void SubtractSignals(object obj)
