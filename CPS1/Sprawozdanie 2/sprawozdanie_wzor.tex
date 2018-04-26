@@ -1,0 +1,214 @@
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[T1]{polski}
+\usepackage[cp1250]{inputenc}
+\newcommand{\BibTeX}{{\sc Bib}\TeX} 
+\usepackage{graphicx}
+\usepackage{amsfonts}
+
+\setlength{\textheight}{21cm}
+
+\title{{\bf Zadanie nr 2 - Próbkowanie i kwantyzacja}\linebreak
+Cyfrowe Przetwarzanie Sygna³ów}
+\author{Pawe³ Purgat, 203975 \and Bart³omiej Ciach, 203860}
+\date{27.04.2018}
+
+\begin{document}
+\clearpage\maketitle
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+\section{Cel zadania}
+
+Celem zadania by³o zapoznanie siê z konwersj¹ analogowo-cyfrow¹ oraz cyfrowo-analogow¹. W æwiczeniu zaimplementowane zosta³y wybrane metody konwersji.
+
+\section{Wstêp teoretyczny}
+
+W zadaniu zosta³y wykonane nastêpuj¹ce procesy:
+\begin{itemize}
+\item Konwersja analogowo - cyfrowa
+\begin{itemize}
+\item Próbkowanie równomierne
+\item Kwantyzacja równomierna z zaokr¹glaniem
+\end{itemize}
+\item Konwersja cyfrowo - analogowa
+\begin{itemize}
+\item Ekstrapolacja zerowego rzêdu
+\item Rekonstrukcja w oparciu o funkcjê sinc.
+\end{itemize}
+\end{itemize}
+
+Dla przetwarzanych sygna³ów zosta³y równie¿ policzone poni¿sze miary:
+\begin{itemize}
+\item B³¹d œredniokwadratowy
+\item Stosunek sygna³ - szum
+\item Szczytowy stosunek sygna³ - szum
+\item Maksymalna ró¿nica
+\end{itemize}
+
+Do wykonania zadania zosta³a u¿yta instrukcja udostêpniona na portalu WIKAMP [1].
+
+\section{Eksperymenty i wyniki}
+
+W ramach zadania na wygenerowanych sygna³ach ci¹g³ych i dyskretnych zosta³y przeprowadzone procesy konwersji analogowo - cyfrowej oraz cyfrowo - analogowej na przyk³adzie sygna³u sinusoidalnego. Wyniki eksperymentów zosta³y przedstawione poni¿ej (na wykresach kolorem niebieskim zaznaczono wykres sygna³y przed konwersj¹, na czerwono zaznaczony jest sygna³ po konwersji).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PODROZDZIA£ PT. EKSPERYMENT NR 1 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Eksperyment nr 1}
+
+Konwersja cyfrowo - analogowa.
+
+\subsubsection{Za³o¿enia}
+Eksperyment nr 1 polega³ na generacji sygna³u w postaci cyfrowej (dyskretnej) oraz póŸniejszej jego konwersji do postaci analogowej (ci¹g³ej) przy pomocy opisanych metod.
+
+\subsubsection{Przebieg}
+
+Po wygenerowaniu sygna³u dyskretnego przy pomocy metod ekstrapolacji zerowego rzêdu oraz rekonstrukcji w oparciu o funkcjê sinc odtworzony zosta³ sygna³ ci¹g³y.
+
+\subsubsection{Rezultat}
+
+\begin{figure}[h!]
+\includegraphics[scale=0.35]{w1.png}
+\caption{Wykres otrzymany po ekstrapolacji zerowego rzêdu.}
+\end{figure}
+
+
+\begin{table}[h!]
+\centering
+\caption{Obliczone miary dla ekstrapolacji zerowego rzêdu.}
+\begin{tabular}{c c}
+\textbf{B³¹d œredniokwadratowy} & \textbf{27,36} \\
+\textbf{Maksymalna ró¿nica} & \textbf{12,68} \\
+\textbf{Stosunek sygna³ - szum} & \textbf{6,51} \\
+\textbf{Szczytowy stosunek sygna³ - szum} & \textbf{2,62} \\
+\end{tabular}
+\end{table}
+
+\begin{figure}[h!]
+\includegraphics[scale=0.35]{w2.png}
+\caption{Wykres otrzymany po rekonstrukcji w oparciu o funkcjê sinc przy uwzglêdnieniu 5 s¹siaduj¹cych próbek.}
+\end{figure}
+
+
+\begin{table}[h!]
+\centering
+\caption{Obliczone miary dla rekonstrukcji w oparciu o funkcjê sinc przy uwzglêdnieniu 5 s¹siaduj¹cych próbek.}
+\begin{tabular}{c c}
+\textbf{B³¹d œredniokwadratowy} & \textbf{0,40} \\
+\textbf{Maksymalna ró¿nica} & \textbf{1,70} \\
+\textbf{Stosunek sygna³ - szum} & \textbf{24,92} \\
+\textbf{Szczytowy stosunek sygna³ - szum} & \textbf{21,02} \\
+\end{tabular}
+\end{table}
+
+
+\begin{figure}[h!]
+\includegraphics[scale=0.35]{w3.png}
+\caption{Wykres otrzymany po rekonstrukcji w oparciu o funkcjê sinc przy uwzglêdnieniu 50 s¹siaduj¹cych próbek.}
+\end{figure}
+
+
+\begin{table}[h!]
+\centering
+\caption{Obliczone miary dla rekonstrukcji w oparciu o funkcjê sinc przy uwzglêdnieniu 50 s¹siaduj¹cych próbek.}
+\begin{tabular}{c c}
+\textbf{B³¹d œredniokwadratowy} & \textbf{0,55} \\
+\textbf{Maksymalna ró¿nica} & \textbf{1,33} \\
+\textbf{Stosunek sygna³ - szum} & \textbf{23,47} \\
+\textbf{Szczytowy stosunek sygna³ - szum} & \textbf{19,58} \\
+\end{tabular}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PODROZDZIA£ PT. EKSPERYMENT NR 2 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\subsection{Eksperyment nr 2}
+\subsubsection{Za³o¿enia}
+Eksperyment nr 2 polega³ na generacji sygna³u w postaci analogowej (ci¹g³ej) oraz póŸniejszej jego konwersji do postaci cyfrowej (dyskretnej) przy pomocy opisanych metod.
+\subsubsection{Przebieg}
+Wygenerowany sygna³ ci¹g³y zosta³ poddany konwersji analogowo - cyfrowej przy pomocy próbkowania równomiernego oraz kwantyzacji równomiernej z zaokr¹gleniem.
+
+\subsubsection{Rezultat}
+
+\begin{figure}[h!]
+\includegraphics[scale=0.35]{w4.png}
+\caption{Wykres otrzymany po próbkowaniu równomiernym.}
+\end{figure}
+
+
+\begin{table}[h!]
+\centering
+\caption{Obliczone miary dla próbkowania równomiernego.}
+\begin{tabular}{c c}
+\textbf{B³¹d œredniokwadratowy} & \textbf{3,00} \\
+\textbf{Maksymalna ró¿nica} & \textbf{1,22} \\
+\textbf{Stosunek sygna³ - szum} & \textbf{333,18} \\
+\textbf{Szczytowy stosunek sygna³ - szum} & \textbf{312,22} \\
+\end{tabular}
+\end{table}
+
+\begin{figure}[h!]
+\includegraphics[scale=0.35]{w5.png}
+\caption{Wykres otrzymany po kwantyzacji równomiernej z zaokr¹glaniem na 4 bitach.}
+\end{figure}
+
+
+\begin{table}[h!]
+\centering
+\caption{Obliczone miary dla kwantyzacji równomiernej z zaokr¹glaniem na 4 bitach.}
+\begin{tabular}{c c}
+\textbf{B³¹d œredniokwadratowy} & \textbf{0,82} \\
+\textbf{Maksymalna ró¿nica} & \textbf{1,61} \\
+\textbf{Stosunek sygna³ - szum} & \textbf{31,84} \\
+\textbf{Szczytowy stosunek sygna³ - szum} & \textbf{17,86} \\
+\end{tabular}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PODROZDZIA£ PT. EKSPERYMENT NR N 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{Eksperyment nr 3}
+\subsubsection{Za³o¿enia}
+Eksperyment nr 3 polega³ na zaprezentowaniu zjawiska aliasingu przy próbkowaniu.
+\subsubsection{Przebieg}
+Zosta³ wygenerowany sygna³ ci¹g³y sk³adaj¹cy siê z dwóch sygna³ów sinusoidalnych o czêstotliwoœciach 440Hz oraz 22000Hz. Czêstotliwoœæ próbkowania wynosi³a 22050Hz. Po operacji próbkowania, sygna³ zosta³ zrekonstruowany przy pomocy funkcji sinc. 
+\subsubsection{Rezultat}
+
+\begin{figure}[h!]
+\includegraphics[scale=0.35]{w6.png}
+\caption{Wykres zrekonstruowany na podstawie próbkowania sygna³u.}
+\end{figure}
+
+
+\begin{table}[h!]
+\centering
+\caption{Obliczone miary dla rekonstrukcji sygna³u próbkowanego.}
+\begin{tabular}{c c}
+\textbf{B³¹d œredniokwadratowy} & \textbf{2848,87} \\
+\textbf{Maksymalna ró¿nica} & \textbf{99,24} \\
+\textbf{Stosunek sygna³ - szum} & \textbf{-15,17} \\
+\textbf{Szczytowy stosunek sygna³ - szum} & \textbf{-17,54} \\
+\end{tabular}
+\end{table}
+\newpage
+
+\section{Wnioski}
+\begin{itemize}
+\item Ekstrapolacja zerowego rzêdu generuje widoczne zniekszta³cenie w stosunku do oryginalnego sygna³u. Jej dok³adnoœæ zale¿y od czêstotliwoœci próbkowania sygna³u oryginalnego.
+\item Rekonstrukcja w oparciu o funkcjê sinc jest dok³adniejsza ni¿ ekstrapolacja zerowego rzêdu, jednak jej dok³adnoœæ zale¿y od liczby próbek, które bierzemy pod uwagê przy obliczaniu wartoœci sygna³u w danym punkcie.
+\item Zjawisko aliasingu mo¿emy zaobserwowaæ, gdy sygna³ posiada sk³adowe o czêstotliwoœci wiêkszej od po³owy czêstotliwoœci próbkowania.
+\item Zjawisko aliasingu powoduje, ¿e rekonstrukcja próbkowanego sygna³u nie oddaje sygna³u pierwotnego.
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BIBLIOGRAFIA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Bibliografia}
+[1] Instrukcja do zadania 2, Próbkowanie i kwantyzacja
+\end{document}

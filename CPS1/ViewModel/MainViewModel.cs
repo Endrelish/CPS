@@ -589,8 +589,6 @@
             this.SignalSecond.Continuous.Value = false;
             this.SignalSecond.Samples.Value = (int)(this.SignalSecond.Duration.Value * this.SamplingFrequency);
             Generator.GenerateSignal(this.SignalSecond);
-
-            // this.GenerateSignal(1);
         }
 
         private void SaveSignal(object parameter)
