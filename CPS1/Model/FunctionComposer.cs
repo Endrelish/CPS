@@ -8,8 +8,9 @@
     {
         public static Func<FunctionData, double, double> ComposeFunction(Func<FunctionData, double, double> first, Func<FunctionData, double, double> second, FunctionData secondData, Operation operation)
         {
-            var fd = new FunctionData(secondData.StartTime.Value, secondData.Amplitude.Value, secondData.Period.Value, secondData.Duration.Value, secondData.DutyCycle.Value, secondData.Samples.Value, secondData.HistogramIntervals.Value, secondData.Probability.Value);
-            fd.Function = (Func<FunctionData, double, double>)secondData.Function.Clone();
+            //var fd = new FunctionData(secondData.StartTime.Value, secondData.Amplitude.Value, secondData.Period.Value, secondData.Duration.Value, secondData.DutyCycle.Value, secondData.Samples.Value, secondData.HistogramIntervals.Value, secondData.Probability.Value);
+            //fd.Function = (Func<FunctionData, double, double>)secondData.Function.Clone();
+            var fd = secondData.Copy;
             var composition = first;
                 switch (operation)
                 {

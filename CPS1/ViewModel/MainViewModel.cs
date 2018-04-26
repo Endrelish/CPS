@@ -5,7 +5,6 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
-    using System.Threading.Tasks;
     using System.Windows.Input;
 
     using CPS1.Annotations;
@@ -43,7 +42,7 @@
 
         private ICommand divideCommand;
 
-        private Signal firstSignalType;
+        private readonly Signal firstSignalType;
 
         private ICommand generateSignalCommand;
 
@@ -67,11 +66,13 @@
 
         private Signal secondSignalType;
 
+        private FunctionData signalFirstCopy;
+
         private FunctionAttribute<double> signalToNoiseRatio;
 
         private ICommand subtractCommand;
 
-        private FunctionData signalFirstCopy;
+        private ICommand swapCommand;
 
         public MainViewModel()
         {
@@ -119,14 +120,13 @@
             this.MeanSquaredError = new FunctionAttribute<double>(0, true, 0, 0, "MEAN SQUARED ERROR");
             this.PeakSignalToNoiseRatio = new FunctionAttribute<double>(0, true, 0, 0, "PEAK SIGNAL TO NOISE RATIO");
 
-            //TUTAJ TERAZ TAKIE COŚ
+            // TUTAJ TERAZ TAKIE COŚ
 
-            SignalSecond.Period.Value = 0.5;
-            GenerateSignal((short)1);
-            GenerateSignal((short)2);
+            // SignalSecond.Period.Value = 0.5;
+            // GenerateSignal((short)1);
+            // GenerateSignal((short)2);
 
-            AddSignals((short)1);
-
+            // AddSignals((short)1);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -357,6 +357,11 @@
                                                                         () => this.SignalFirst.Points.Count > 0
                                                                               && this.SignalSecond.Points.Count > 0));
 
+        public ICommand SwapCommand => this.swapCommand
+                                       ?? (this.swapCommand = new CommandHandler(
+                                               this.SwapSignals,
+                                               this.SignalsGenerated));
+
         public bool SignalsGenerated()
         {
             return this.SignalFirst.Points.Count > 0 && this.SignalSecond.Points.Count > 0;
@@ -470,6 +475,7 @@
                         this.SignalFirst.Type = this.firstSignalType;
                         this.SignalFirst.Function = AvailableFunctions.GetFunction(this.SignalFirst.Type);
                     }
+
                     Generator.GenerateSignal(this.SignalFirst);
                     Histogram.GetHistogram(this.SignalFirst);
                 }
@@ -480,11 +486,13 @@
                         this.SignalSecond.Type = this.secondSignalType;
                         this.SignalSecond.Function = AvailableFunctions.GetFunction(this.SignalSecond.Type);
                     }
+
                     Generator.GenerateSignal(this.SignalSecond);
                     Histogram.GetHistogram(this.SignalSecond);
                 }
 
                 ((CommandHandler)this.ComputeCommand).RaiseCanExecuteChanged();
+                ((CommandHandler)this.SwapCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -581,7 +589,8 @@
             this.SignalSecond.Continuous.Value = false;
             this.SignalSecond.Samples.Value = (int)(this.SignalSecond.Duration.Value * this.SamplingFrequency);
             Generator.GenerateSignal(this.SignalSecond);
-            //this.GenerateSignal(1);
+
+            // this.GenerateSignal(1);
         }
 
         private void SaveSignal(object parameter)
@@ -698,6 +707,15 @@
             }
         }
 
+        private void SwapSignals(object obj)
+        {
+            var fd = this.SignalFirst.Copy;
+            this.SignalFirst.AssignSignal(SignalSecond);
+            this.SignalSecond.AssignSignal(fd);
+            this.SignalFirst.PointsUpdate();
+            this.SignalSecond.PointsUpdate();
+        }
+
         private void ZeroOrderHold()
         {
             this.SignalSecond.AssignSignal(this.SignalFirst);
@@ -706,7 +724,16 @@
 
             this.SignalSecond.Function = (data, t) =>
                 {
-                    return this.SignalFirst.Points.OrderBy(p => Math.Abs(p.X - t)).First().Y;
+                    var ret = 0.0d;
+                    if (SignalFirst.Points.Any(p => p.X < t))
+                    {
+                        ret = this.SignalFirst.Points.Where(p => p.X < t).OrderBy(p => -p.X).First().Y;
+                    }
+                    else
+                    {
+                        ret = this.SignalFirst.Points.OrderBy(p => Math.Abs(p.X - t)).First().Y;
+                    }
+                    return ret;
                 };
             Generator.GenerateSignal(this.SignalSecond);
         }

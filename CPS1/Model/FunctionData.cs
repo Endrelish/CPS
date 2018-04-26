@@ -84,7 +84,7 @@
 
             this.RequiredAttributes = new Required(false, false, false, false, false, false, false, false);
         }
-        
+
 
         [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
@@ -220,6 +220,16 @@
             }
         }
 
+        public FunctionData Copy
+        {
+            get
+            {
+                var fd = new FunctionData();
+                fd.AssignSignal(this);
+                return fd;
+            }
+        }
+
         public void AssignSignal(FunctionData data)
         {
             this.Amplitude.AssignAttribute(data.Amplitude);
@@ -237,7 +247,7 @@
             this.Variance.AssignAttribute(data.Variance);
             this.RootMeanSquare.AssignAttribute(data.RootMeanSquare);
             this.AveragePower.AssignAttribute(data.AveragePower);
-            this.Function = data.Function;
+            this.Function = (Func<FunctionData, double, double>)data.Function.Clone();
             this.Points.Clear();
             this.Points.AddRange(data.Points);
             this.PointsUpdate();

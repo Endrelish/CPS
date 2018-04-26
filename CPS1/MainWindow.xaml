@@ -62,7 +62,7 @@
             <MenuItem Header="Clear _1. graph." Command="{Binding ClearCommand}" CommandParameter="1"/>
                 <MenuItem Header="Clear _2. graph." Command="{Binding ClearCommand}" CommandParameter="2"/>
             <MenuItem Header="_Clear all." Command="{Binding ClearCommand}" CommandParameter="3"/>
-            <MenuItem Header="_Generate." Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}" />
+            <MenuItem Header="_Swap signals." Command="{Binding SwapCommand}"/>
         </Menu>
         <TabControl Grid.Row="1" SelectedIndex="1">
         <TabItem Header="Operations on signals">
