@@ -62,6 +62,7 @@
             <MenuItem Header="Clear _1. graph." Command="{Binding ClearCommand}" CommandParameter="1"/>
                 <MenuItem Header="Clear _2. graph." Command="{Binding ClearCommand}" CommandParameter="2"/>
             <MenuItem Header="_Clear all." Command="{Binding ClearCommand}" CommandParameter="3"/>
+            <MenuItem Header="_Generate." Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}" />
         </Menu>
         <TabControl Grid.Row="1" SelectedIndex="1">
         <TabItem Header="Operations on signals">
@@ -271,10 +272,10 @@
                                         <TextBox Grid.Row="0" Grid.Column="1" Visibility="{Binding SamplingFrequencyVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="{Binding SamplingFrequency}" />
 
                                         <TextBlock Grid.Row="1" Grid.Column="0" Visibility="{Binding QuantizationLevelsVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="QUANTIZATION LEVELS"/>
-                                        <TextBox Grid.Row="1" Grid.Column="1" Visibility="{Binding QuantizationLevelsVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="{Binding QuantizationLevels}" Name="Levels"/>
+                                        <TextBox Grid.Row="1" Grid.Column="1" Visibility="{Binding QuantizationLevelsVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="{Binding QuantizationLevels, UpdateSourceTrigger=PropertyChanged}" Name="Levels"/>
                                         
                                         <TextBlock Grid.Row="2" Grid.Column="0" Visibility="{Binding QuantizationLevelsVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="QUANTIZATION BITS"/>
-                                        <TextBox Grid.Row="2" Grid.Column="1" Visibility="{Binding QuantizationLevelsVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="{Binding QuantizationLevels, Converter={StaticResource LC}}" />
+                                            <TextBox Grid.Row="2" Grid.Column="1" Visibility="{Binding QuantizationLevelsVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="{Binding QuantizationLevels, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource LC}}" />
                                         
                                     </Grid>
                                     <Button Grid.Row="2" HorizontalAlignment="Center" Padding="7 7 7 7" VerticalAlignment="Top" Content="COMPUTE" FontWeight="Bold" Command="{Binding ComputeCommand}" CommandParameter="AD"/>

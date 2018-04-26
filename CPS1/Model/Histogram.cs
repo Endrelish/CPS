@@ -6,6 +6,7 @@
     {
         public static void GetHistogram(FunctionData data)
         {
+            var amp = data.Amplitude.Value;
             data.SetAmplitude();
             var max = data.StartTime.Value + data.Duration.Value;
             if (data.Period.Visibility)
@@ -41,7 +42,7 @@
                 var x = point.X;
                 var y = point.Y;
             }
-
+            data.Amplitude.Value = amp;
             data.HistogramPointsUpdate();
         }
     }

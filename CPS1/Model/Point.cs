@@ -24,5 +24,10 @@
         {
                 return this.X.CompareTo(((Point)obj).X);
         }
+
+        public override string ToString()
+        {
+            return this.X + " | " + this.Y;
+        }
     }
 }

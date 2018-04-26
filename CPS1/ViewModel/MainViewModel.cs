@@ -5,6 +5,7 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
     using System.Windows.Input;
 
     using CPS1.Annotations;
@@ -70,6 +71,8 @@
 
         private ICommand subtractCommand;
 
+        private FunctionData signalFirstCopy;
+
         public MainViewModel()
         {
             this.SignalFirst = new FunctionData();
@@ -115,6 +118,15 @@
             this.SignalToNoiseRatio = new FunctionAttribute<double>(0, true, 0, 0, "SIGNAL TO NOISE RATIO");
             this.MeanSquaredError = new FunctionAttribute<double>(0, true, 0, 0, "MEAN SQUARED ERROR");
             this.PeakSignalToNoiseRatio = new FunctionAttribute<double>(0, true, 0, 0, "PEAK SIGNAL TO NOISE RATIO");
+
+            //TUTAJ TERAZ TAKIE COŚ
+
+            SignalSecond.Period.Value = 0.5;
+            GenerateSignal((short)1);
+            GenerateSignal((short)2);
+
+            AddSignals((short)1);
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -185,10 +197,10 @@
 
         public string FirstSignalType
         {
-            get => AvailableFunctions.GetDescription(this.firstSignalType);
+            get => AvailableFunctions.GetDescription(this.SignalFirst.Type);
             set
             {
-                this.firstSignalType = AvailableFunctions.GetTypeByDescription(value);
+                this.SignalFirst.Type = AvailableFunctions.GetTypeByDescription(value);
                 this.SetRequiredParameters(this.SignalFirst);
             }
         }
@@ -453,15 +465,21 @@
             {
                 if (chart == 1)
                 {
-                    this.SignalFirst.Type = this.firstSignalType;
-                    this.SignalFirst.Function = AvailableFunctions.GetFunction(this.SignalFirst.Type);
+                    if (this.SignalFirst.Type != Signal.Composite)
+                    {
+                        this.SignalFirst.Type = this.firstSignalType;
+                        this.SignalFirst.Function = AvailableFunctions.GetFunction(this.SignalFirst.Type);
+                    }
                     Generator.GenerateSignal(this.SignalFirst);
                     Histogram.GetHistogram(this.SignalFirst);
                 }
                 else if (chart == 2)
                 {
-                    this.SignalSecond.Type = this.secondSignalType;
-                    this.SignalSecond.Function = AvailableFunctions.GetFunction(this.SignalSecond.Type);
+                    if (this.SignalSecond.Type != Signal.Composite)
+                    {
+                        this.SignalSecond.Type = this.secondSignalType;
+                        this.SignalSecond.Function = AvailableFunctions.GetFunction(this.SignalSecond.Type);
+                    }
                     Generator.GenerateSignal(this.SignalSecond);
                     Histogram.GetHistogram(this.SignalSecond);
                 }
@@ -563,6 +581,7 @@
             this.SignalSecond.Continuous.Value = false;
             this.SignalSecond.Samples.Value = (int)(this.SignalSecond.Duration.Value * this.SamplingFrequency);
             Generator.GenerateSignal(this.SignalSecond);
+            //this.GenerateSignal(1);
         }
 
         private void SaveSignal(object parameter)
@@ -611,13 +630,7 @@
 
         private void SetRequiredParameters(FunctionData signal)
         {
-            var choice = this.firstSignalType;
-            if (signal == this.SignalSecond)
-            {
-                choice = this.secondSignalType;
-            }
-
-            signal.RequiredAttributes = AvailableFunctions.GetRequiredParameters(choice);
+            signal.RequiredAttributes = AvailableFunctions.GetRequiredParameters(signal.Type);
         }
 
         private void Sinc()

@@ -84,6 +84,7 @@
 
             this.RequiredAttributes = new Required(false, false, false, false, false, false, false, false);
         }
+        
 
         [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
@@ -243,6 +244,7 @@
             this.HistogramPoints.Clear();
             this.HistogramPoints.AddRange(data.HistogramPoints);
             this.HistogramPointsUpdate();
+            this.Type = data.Type;
         }
 
         public void CalculateParameters()
@@ -275,9 +277,9 @@
                 data.Function = AvailableFunctions.GetFunction(data.Type);
             }
 
+            this.Type = Signal.Composite;
             if (data.Function != null && this.Function != null) // TODO Think about a proper way of implementing this feature
             {
-                this.Type = Signal.Composite;
                 this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
                 this.Function = FunctionComposer.ComposeFunction(this.Function, data.Function, data, operation);
                 Generator.GenerateSignal(this);

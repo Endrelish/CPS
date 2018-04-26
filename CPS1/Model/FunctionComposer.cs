@@ -8,23 +8,25 @@
     {
         public static Func<FunctionData, double, double> ComposeFunction(Func<FunctionData, double, double> first, Func<FunctionData, double, double> second, FunctionData secondData, Operation operation)
         {
+            var fd = new FunctionData(secondData.StartTime.Value, secondData.Amplitude.Value, secondData.Period.Value, secondData.Duration.Value, secondData.DutyCycle.Value, secondData.Samples.Value, secondData.HistogramIntervals.Value, secondData.Probability.Value);
+            fd.Function = (Func<FunctionData, double, double>)secondData.Function.Clone();
             var composition = first;
                 switch (operation)
                 {
                     case Operation.Add:
-                        composition = (data, x) => first(data, x) + second(secondData, x);
+                        composition = (data, x) => first(data, x) + second(fd, x);
                         break;
                     case Operation.Subtract:
-                        composition = (data, x) => first(data, x) - second(secondData, x);
+                        composition = (data, x) => first(data, x) - second(fd, x);
                         break;
                     case Operation.Multiply:
-                        composition = (data, x) => first(data, x) * second(secondData, x);
+                        composition = (data, x) => first(data, x) * second(fd, x);
                         break;
                     case Operation.Divide:
                         composition = (data, x) =>
                             {
                                 var y1 = first(data, x);
-                                var y2 = second(secondData, x);
+                                var y2 = second(fd, x);
 
                                 if (double.IsPositiveInfinity(y1))
                                 {

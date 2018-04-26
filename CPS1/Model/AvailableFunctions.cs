@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Linq;
+    using System.Reflection;
 
     using CPS1.Model.Exceptions;
     using CPS1.Properties;
@@ -176,6 +177,11 @@
                         },
                     new Required(true, true, false, true, false, true, true, false),
                     "Unit step signal"));
+            list.Add(Signal.Composite,
+                new Tuple<Func<FunctionData, double, double>, Required, string>(
+                    (data, t) => throw new InvalidFunctionException("Cannot get composite function formula."),
+                    new Required(false, false, false, false, false, false, false, false),
+                    "Composite signal"));
 
             Functions = ImmutableDictionary.CreateRange(list);
         }
