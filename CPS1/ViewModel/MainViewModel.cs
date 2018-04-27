@@ -675,7 +675,7 @@
             var denominator = this.SignalSecond.Points
                 .Select(p => Math.Pow(this.SignalFirst.Function(this.SignalFirst, p.X) - p.Y, 2)).Sum();
 
-            this.SignalToNoiseRatio.Value = 10 * Math.Log10(Math.Abs(numerator / denominator));
+            this.SignalToNoiseRatio.Value = 10 * Math.Abs(Math.Log10(Math.Abs(numerator / denominator)));
         }
 
         private void SubtractSignals(object obj)
