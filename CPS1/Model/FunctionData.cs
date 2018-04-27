@@ -247,7 +247,10 @@
             this.Variance.AssignAttribute(data.Variance);
             this.RootMeanSquare.AssignAttribute(data.RootMeanSquare);
             this.AveragePower.AssignAttribute(data.AveragePower);
-            this.Function = (Func<FunctionData, double, double>)data.Function.Clone();
+            if (data.Function != null)
+            {
+                this.Function = (Func<FunctionData, double, double>)data.Function.Clone();
+            }
             this.Points.Clear();
             this.Points.AddRange(data.Points);
             this.PointsUpdate();
