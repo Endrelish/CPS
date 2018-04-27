@@ -654,27 +654,14 @@
                     var ts = this.SignalFirst.Duration.Value / this.SignalFirst.Samples.Value;
                     for (var i = n - this.QuantizationLevels; i < n + this.QuantizationLevels; i++)
                     {
-                        ////for (int i = 0; i < SignalFirst.Points.Count; i++)
-                        if (i < 0 || i > this.SignalFirst.Points.Count)
+                        if (i >= 0 && i < this.SignalFirst.Points.Count)
                         {
-                            continue;
-                        }
-
-                        try
-                        {
+                            
                             sum += this.SignalFirst.Points[i].Y
                                    * this.sincFunc((t - this.SignalFirst.Points[i].X) / ts);
                         }
-                        catch (ArgumentOutOfRangeException)
-                        {
-                            // Do nothing
-                        }
                     }
-
-                    ////foreach (var point in SignalFirst.Points)
-                    ////{
-                    ////    sum += point.Y * this.sincFunc((t - point.X) / ts);
-                    ////}
+                    
                     return sum;
                 };
 
