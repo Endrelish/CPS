@@ -47,7 +47,7 @@
                         <ColumnDefinition Width="70"/>
                     </Grid.ColumnDefinitions>
                     <Separator />
-                    <TextBlock Grid.Column="1" Margin="10,0,0,0" Text="{Binding Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Grid.Column="1" Margin="10,0,0,0" Text="{Binding Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
                 </Grid>
             </Grid>
         </ControlTemplate>

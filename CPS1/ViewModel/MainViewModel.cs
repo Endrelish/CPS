@@ -18,6 +18,8 @@
 
         private readonly IFileDialog fileDialog;
 
+        private readonly Signal firstSignalType;
+
         private readonly IFileSerializer serializer;
 
         private readonly Func<double, double> sincFunc = t =>
@@ -41,8 +43,6 @@
         private string daOperation;
 
         private ICommand divideCommand;
-
-        private readonly Signal firstSignalType;
 
         private ICommand generateSignalCommand;
 
@@ -683,11 +683,12 @@
 
         private void Snr()
         {
-            var numerator = this.SignalFirst.Points.Select(p => p.Y * p.Y).Sum();
+            var numerator = this.SignalSecond.Points.Select(p => this.SignalFirst.Function(this.SignalFirst, p.X))
+                .Sum();
             var denominator = this.SignalSecond.Points
                 .Select(p => Math.Pow(this.SignalFirst.Function(this.SignalFirst, p.X) - p.Y, 2)).Sum();
 
-            this.SignalToNoiseRatio.Value = 10 * Math.Log10(numerator / denominator);
+            this.SignalToNoiseRatio.Value = 10 * Math.Log10(Math.Abs(numerator / denominator));
         }
 
         private void SubtractSignals(object obj)
@@ -708,7 +709,7 @@
         private void SwapSignals(object obj)
         {
             var fd = this.SignalFirst.Copy;
-            this.SignalFirst.AssignSignal(SignalSecond);
+            this.SignalFirst.AssignSignal(this.SignalSecond);
             this.SignalSecond.AssignSignal(fd);
             this.SignalFirst.PointsUpdate();
             this.SignalSecond.PointsUpdate();
@@ -723,7 +724,7 @@
             this.SignalSecond.Function = (data, t) =>
                 {
                     var ret = 0.0d;
-                    if (SignalFirst.Points.Any(p => p.X < t))
+                    if (this.SignalFirst.Points.Any(p => p.X < t))
                     {
                         ret = this.SignalFirst.Points.Where(p => p.X < t).OrderBy(p => -p.X).First().Y;
                     }
@@ -731,6 +732,7 @@
                     {
                         ret = this.SignalFirst.Points.OrderBy(p => Math.Abs(p.X - t)).First().Y;
                     }
+
                     return ret;
                 };
             Generator.GenerateSignal(this.SignalSecond);
