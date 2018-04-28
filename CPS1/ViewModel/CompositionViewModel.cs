@@ -6,10 +6,11 @@
 
     public class CompositionViewModel
     {
-        private ICommand addCommand;
-        private ICommand divideCommand;
-        private ICommand multiplyCommand;
-        private ICommand subtractCommand;
+        private CommandHandler addCommand;
+        private CommandHandler divideCommand;
+        private CommandHandler multiplyCommand;
+        private CommandHandler subtractCommand;
+        private CommandHandler swapCommand;
 
         private SignalViewModel firstSignalViewModel;
 
@@ -22,18 +23,18 @@
 
             this.firstSignalViewModel.SignalData.PropertyChanged += (sender, args) =>
                 {
-                    ((CommandHandler)this.AddCommand).RaiseCanExecuteChanged();
-                    ((CommandHandler)this.SubtractCommand).RaiseCanExecuteChanged();
-                    ((CommandHandler)this.MultiplyCommand).RaiseCanExecuteChanged();
-                    ((CommandHandler)this.DivideCommand).RaiseCanExecuteChanged();
+                    this.AddCommand.RaiseCanExecuteChanged();
+                    this.SubtractCommand.RaiseCanExecuteChanged();
+                    this.MultiplyCommand.RaiseCanExecuteChanged();
+                    this.DivideCommand.RaiseCanExecuteChanged();
                 };
 
             this.secondSignalViewModel.SignalData.PropertyChanged += (sender, args) =>
                 {
-                    ((CommandHandler)this.AddCommand).RaiseCanExecuteChanged();
-                    ((CommandHandler)this.SubtractCommand).RaiseCanExecuteChanged();
-                    ((CommandHandler)this.MultiplyCommand).RaiseCanExecuteChanged();
-                    ((CommandHandler)this.DivideCommand).RaiseCanExecuteChanged();
+                    this.AddCommand.RaiseCanExecuteChanged();
+                    this.SubtractCommand.RaiseCanExecuteChanged();
+                    this.MultiplyCommand.RaiseCanExecuteChanged();
+                    this.DivideCommand.RaiseCanExecuteChanged();
                 };
         }
 
@@ -42,16 +43,16 @@
             return this.firstSignalViewModel.SignalGenerated && this.secondSignalViewModel.SignalGenerated;
         }
 
-        public ICommand AddCommand => this.addCommand
+        public CommandHandler AddCommand => this.addCommand
                                       ?? (this.addCommand = new CommandHandler(this.AddSignals, this.SignalsGenerated));
-        public ICommand DivideCommand => this.divideCommand
+        public CommandHandler DivideCommand => this.divideCommand
                                          ?? (this.divideCommand = new CommandHandler(
                                                  this.DivideSignals,
                                                  this.SignalsGenerated));
-        public ICommand MultiplyCommand => this.multiplyCommand ?? (this.multiplyCommand = new CommandHandler(
+        public CommandHandler MultiplyCommand => this.multiplyCommand ?? (this.multiplyCommand = new CommandHandler(
                                                                         this.MultiplySignals,
                                                                         () => this.SignalsGenerated()));
-        public ICommand SubtractCommand => this.subtractCommand ?? (this.subtractCommand = new CommandHandler(
+        public CommandHandler SubtractCommand => this.subtractCommand ?? (this.subtractCommand = new CommandHandler(
                                                                         this.SubtractSignals,
                                                                         () => this.SignalsGenerated()));
         private void AddSignals(object obj)
@@ -111,6 +112,21 @@
                 }
             }
         }
+
+        public CommandHandler SwapCommand => this.swapCommand
+                                       ?? (this.swapCommand = new CommandHandler(
+                                               this.SwapSignals,
+                                               this.SignalsGenerated));
+
+        private void SwapSignals(object obj)
+        {
+            var fd = this.firstSignalViewModel.SignalData.Copy;
+            this.firstSignalViewModel.SignalData.AssignSignal(this.secondSignalViewModel.SignalData);
+            this.secondSignalViewModel.SignalData.AssignSignal(fd);
+            this.firstSignalViewModel.SignalData.PointsUpdate();
+            this.secondSignalViewModel.SignalData.PointsUpdate();
+        }
+
 
     }
 }

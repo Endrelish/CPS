@@ -83,6 +83,8 @@
     <Compile Include="Converters\LogarithmConverter.cs" />
     <Compile Include="Converters\PointSizeContinuousConverter.cs" />
     <Compile Include="Converters\VisibilityInvertionConverter.cs" />
+    <Compile Include="Model\ConversionMetrics.cs" />
+    <Compile Include="Model\ConversionOperations.cs" />
     <Compile Include="Model\Exceptions\InvalidFunctionException.cs" />
     <Compile Include="Model\Exceptions\SignalNotFoundException.cs" />
     <Compile Include="Model\FileXmlSerializer.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="ViewModel\CommandHandler.cs" />
     <Compile Include="Model\FileBinarySerializer.cs" />
     <Compile Include="ViewModel\CompositionViewModel.cs" />
+    <Compile Include="ViewModel\ConversionViewModel.cs" />
     <Compile Include="ViewModel\SignalViewModel.cs" />
     <Compile Include="View\AnalogDigitalSignalChart.xaml.cs">
       <DependentUpon>AnalogDigitalSignalChart.xaml</DependentUpon>
