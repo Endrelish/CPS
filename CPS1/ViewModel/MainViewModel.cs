@@ -57,24 +57,7 @@
         {
             this.FirstSignalViewModel = new SignalViewModel();
             this.SecondSignalViewModel = new SignalViewModel();
-
-
-            this.FirstSignalViewModel.SignalData.PropertyChanged += (sender, args) =>
-                {
-                    ((CommandHandler)this.AddCommand).RaiseCanExecuteChanged();
-                    ((CommandHandler)this.SubtractCommand).RaiseCanExecuteChanged();
-                    ((CommandHandler)this.MultiplyCommand).RaiseCanExecuteChanged();
-                    ((CommandHandler)this.DivideCommand).RaiseCanExecuteChanged();
-                };
-
-            this.SecondSignalViewModel.SignalData.PropertyChanged += (sender, args) =>
-                {
-                    ((CommandHandler)this.AddCommand).RaiseCanExecuteChanged();
-                    ((CommandHandler)this.SubtractCommand).RaiseCanExecuteChanged();
-                    ((CommandHandler)this.MultiplyCommand).RaiseCanExecuteChanged();
-                    ((CommandHandler)this.DivideCommand).RaiseCanExecuteChanged();
-                };
-
+            
             this.SamplingFrequency = 10;
             this.QuantizationLevels = 25;
 
@@ -87,14 +70,7 @@
             this.SignalToNoiseRatio = new FunctionAttribute<double>(0, true, 0, 0, "SIGNAL TO NOISE RATIO");
             this.MeanSquaredError = new FunctionAttribute<double>(0, true, 0, 0, "MEAN SQUARED ERROR");
             this.PeakSignalToNoiseRatio = new FunctionAttribute<double>(0, true, 0, 0, "PEAK SIGNAL TO NOISE RATIO");
-
-            // TUTAJ TERAZ TAKIE COŚ
-
-            // SignalSecond.Period.Value = 0.5;
-            // GenerateSignal((short)1);
-            // GenerateSignal((short)2);
-
-            // AddSignals((short)1);
+            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -184,10 +160,6 @@
             }
         }
 
-        public ICommand MultiplyCommand => this.multiplyCommand ?? (this.multiplyCommand = new CommandHandler(
-                                                                        this.MultiplySignals,
-                                                                        () => this.SignalFirst.Points.Count > 0
-                                                                              && this.SignalSecond.Points.Count > 0));
 
         
         public FunctionAttribute<double> PeakSignalToNoiseRatio
@@ -275,18 +247,17 @@
             }
         }
 
-        public ICommand SubtractCommand => this.subtractCommand ?? (this.subtractCommand = new CommandHandler(
-                                                                        this.SubtractSignals,
-                                                                        () => this.SignalsGenerated()));
 
         public ICommand SwapCommand => this.swapCommand
                                        ?? (this.swapCommand = new CommandHandler(
                                                this.SwapSignals,
                                                this.SignalsGenerated));
 
+        public CompositionViewModel CompositionViewModel { get; set; }
+
         public bool SignalsGenerated()
         {
-            return this.SignalFirst.Points.Count > 0 && this.SignalSecond.Points.Count > 0;
+            return CompositionViewModel.SignalsGenerated();
         }
 
         [NotifyPropertyChangedInvocator]
@@ -295,20 +266,6 @@
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void AddSignals(object obj)
-        {
-            if (obj is short no)
-            {
-                if (no == 1)
-                {
-                    this.SignalFirst.Compose(this.SignalSecond, Operation.Add);
-                }
-                else
-                {
-                    this.SignalSecond.Compose(this.SignalFirst, Operation.Add);
-                }
-            }
-        }
 
         private void CalculateMetrics()
         {
@@ -351,20 +308,6 @@
             }
         }
 
-        private void DivideSignals(object obj)
-        {
-            if (obj is short no)
-            {
-                if (no == 1)
-                {
-                    this.SignalFirst.Compose(this.SignalSecond, Operation.Divide);
-                }
-                else
-                {
-                    this.SignalSecond.Compose(this.SignalFirst, Operation.Divide);
-                }
-            }
-        }
 
        
         private void Md()
@@ -381,20 +324,6 @@
                 / this.SignalSecond.Points.Count;
         }
 
-        private void MultiplySignals(object obj)
-        {
-            if (obj is short no)
-            {
-                if (no == 1)
-                {
-                    this.SignalFirst.Compose(this.SignalSecond, Operation.Multiply);
-                }
-                else
-                {
-                    this.SignalSecond.Compose(this.SignalFirst, Operation.Multiply);
-                }
-            }
-        }
 
         
 
@@ -495,20 +424,6 @@
             this.SignalToNoiseRatio.Value = 10 * Math.Abs(Math.Log10(Math.Abs(numerator / denominator)));
         }
 
-        private void SubtractSignals(object obj)
-        {
-            if (obj is short no)
-            {
-                if (no == 1)
-                {
-                    this.SignalFirst.Compose(this.SignalSecond, Operation.Subtract);
-                }
-                else
-                {
-                    this.SignalSecond.Compose(this.SignalFirst, Operation.Subtract);
-                }
-            }
-        }
 
         private void SwapSignals(object obj)
         {
