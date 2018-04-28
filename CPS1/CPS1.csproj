@@ -82,16 +82,19 @@
     <Compile Include="Converters\ChartSettingsConverter.cs" />
     <Compile Include="Converters\LogarithmConverter.cs" />
     <Compile Include="Converters\PointSizeContinuousConverter.cs" />
-    <Compile Include="Converters\VisibilityInvertionConverter.cs" />
+    <Compile Include="Converters\VisibilityInversionConverter.cs" />
     <Compile Include="Model\Conversion\Metrics.cs" />
     <Compile Include="Model\Conversion\Operations.cs" />
     <Compile Include="Model\Exceptions\InvalidFunctionException.cs" />
     <Compile Include="Model\Exceptions\SignalNotFoundException.cs" />
+    <Compile Include="Model\Parameters\Parameter.cs" />
     <Compile Include="Model\Serialization\FileXmlSerializer.cs" />
     <Compile Include="Model\Generation\AvailableFunctions.cs" />
     <Compile Include="Model\Composition\FunctionComposer.cs" />
     <Compile Include="Model\Composition\Operation.cs" />
     <Compile Include="Model\Composition\Operations.cs" />
+    <Compile Include="Model\Parameters\IParametersProvider.cs" />
+    <Compile Include="Model\SignalData\IFunctionAttribute.cs" />
     <Compile Include="ViewModel\CommandHandler.cs" />
     <Compile Include="Model\Serialization\FileBinarySerializer.cs" />
     <Compile Include="ViewModel\CompositionViewModel.cs" />
@@ -99,6 +102,12 @@
     <Compile Include="ViewModel\SignalViewModel.cs" />
     <Compile Include="View\AnalogDigitalSignalChart.xaml.cs">
       <DependentUpon>AnalogDigitalSignalChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Attributes.xaml.cs">
+      <DependentUpon>Attributes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CompositionSettings.xaml.cs">
+      <DependentUpon>CompositionSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\FileDialogWpf.cs" />
     <Compile Include="Converters\FrequencyPeriodConverter.cs" />
@@ -115,6 +124,9 @@
     <Compile Include="Model\Serialization\IFileSerializer.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="View\Parameters.xaml.cs">
+      <DependentUpon>Parameters.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SignalChart.xaml.cs">
       <DependentUpon>SignalChart.xaml</DependentUpon>
     </Compile>
@@ -122,8 +134,15 @@
       <DependentUpon>SignalSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\StringToDoubleConverter.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="View\AnalogDigitalSignalChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Attributes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CompositionSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -131,7 +150,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -139,10 +158,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\Parameters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\SignalChart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

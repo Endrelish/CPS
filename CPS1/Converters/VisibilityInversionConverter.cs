@@ -5,7 +5,7 @@
     using System.Windows;
     using System.Windows.Data;
 
-    public class VisibilityInvertionConverter : IValueConverter
+    public class VisibilityInversionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

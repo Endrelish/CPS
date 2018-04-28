@@ -14,25 +14,17 @@
         WindowState="Maximized"
         Height="1000" Width="1800"
         Left="60" Top="20">
+    <Window.DataContext>
+        <viewModel:MainViewModel/>
+    </Window.DataContext>
     <Window.Resources>
-        <viewModel:ViewModelLocator x:Key="Locator" />
         <Style TargetType="Control" x:Key="ChartStyle">
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="Beige" />
             <Setter Property="Padding" Value="5 5 5 5" />
             <Setter Property="Margin" Value="2 2 2 2" />
         </Style>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
-        <system:Int16 x:Key="First">1</system:Int16>
-        <system:Int16 x:Key="Second">2</system:Int16>
-        <Image x:Key="SaveIcon1" Source="resources/SaveIcon.png" />
-        <Image x:Key="SaveIcon2" Source="resources/SaveIcon.png" />
-        <Image x:Key="OpenIcon1" Source="resources/OpenIcon.png" />
-        <Image x:Key="OpenIcon2" Source="resources/OpenIcon.png" />
-        <BooleanToVisibilityConverter x:Key="BTVC" />
-        <converters:VisibilityInvertionConverter x:Key="VIC" />
-        <converters:LogarithmConverter x:Key="LC"/>
 
         <ControlTemplate x:Key="Parameter">
             <Grid Margin="25 5 25 5" Visibility="{Binding Visibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -53,17 +45,19 @@
         </ControlTemplate>
 
     </Window.Resources>
-    <Grid DataContext="{Binding ViewModel, Source={StaticResource Locator}}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <!--Menu bar.-->
         <Menu Grid.Row="0">
-            <MenuItem Header="Clear _1. graph." Command="{Binding ClearCommand}" CommandParameter="1"/>
-                <MenuItem Header="Clear _2. graph." Command="{Binding ClearCommand}" CommandParameter="2"/>
-            <MenuItem Header="_Clear all." Command="{Binding ClearCommand}" CommandParameter="3"/>
-            <MenuItem Header="_Swap signals." Command="{Binding SwapCommand}"/>
+            <MenuItem Header="Clear _1. graph." Command="{Binding FirstSignalViewModel.ClearCommand}"/>
+            <MenuItem Header="Clear _2. graph." Command="{Binding SecondSignalViewModel.ClearCommand}" CommandParameter="2"/>
+            <MenuItem Header="_Swap signals." Command="{Binding CompositionViewModel.SwapCommand}"/>
         </Menu>
+
+        <!--TODO Remember last open tab.-->
         <TabControl Grid.Row="1" SelectedIndex="1">
         <TabItem Header="Operations on signals">
             <Grid Margin="5 5 5 5">
@@ -76,6 +70,7 @@
                     <RowDefinition Height="25" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
+                <!--Tab headers.-->
                 <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Text="MENU" />
@@ -85,9 +80,11 @@
                 <TextBlock Grid.Column="2" Grid.Row="0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Text="SECOND SIGNAL GRAPH AND HISTOGRAM" />
+                
                 <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
-                    <TabControl Grid.Row="0">
-                        <TabItem Header="First signal">
+                        <TabControl Grid.Row="0">
+                            <!--First signal settings tab.-->
+                            <TabItem Header="First signal" DataContext="{Binding FirstSignalViewModel}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
@@ -96,21 +93,12 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
+                                    <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
                                        Text="SIGNAL TYPE" />
-                                <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1"
-                                      ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding FirstSignalType}" />
-                                <view:SignalSettings Grid.Row="2" DataContext="{Binding SignalFirst}" />
-                                <Button Margin="0 0 0 0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top"
-                                    Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
-                                    Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}" />
-                                <Button Grid.Row="4" Margin="15 15 15 15" VerticalAlignment="Bottom"
-                                    HorizontalAlignment="Right" Width="30" Content="{StaticResource SaveIcon1}"
-                                    Command="{Binding SaveCommand}" CommandParameter="{StaticResource First}" BorderThickness="0" Background="White"/>
-                                <Button Grid.Row="4" Margin="15 15 60 15" VerticalAlignment="Bottom"
-                                    HorizontalAlignment="Right" Width="30" Content="{StaticResource OpenIcon1}" Command="{Binding OpenCommand}"
-                                    CommandParameter="{StaticResource First}" BorderThickness="0" Background="White"/>
-                            </Grid>
+                                    <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1"
+                                      ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding SignalType}" />
+                                    <view:SignalSettings Grid.Row="2" DataContext="{Binding}" />
+                                </Grid>
                         </TabItem>
                         <TabItem Header="Second signal">
                             <Grid>
@@ -138,39 +126,7 @@
                             </Grid>
                         </TabItem>
                         <TabItem Header="Operations">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="8*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Column="0" Grid.Row="0" Margin="10 10 10 10" Text="FIRST = FIRST + SECOND"/>
-                                <TextBlock Grid.Column="0" Grid.Row="1" Margin="10 10 10 10" Text="SECOND = SECOND + FIRST"/>
-                                <TextBlock Grid.Column="0" Grid.Row="2" Margin="10 10 10 10" Text="FIRST = FIRST - SECOND"/>
-                                <TextBlock Grid.Column="0" Grid.Row="3" Margin="10 10 10 10" Text="SECOND = SECOND - FIRST"/>
-                                <TextBlock Grid.Column="0" Grid.Row="4" Margin="10 10 10 10" Text="FIRST = FIRST * SECOND"/>
-                                <TextBlock Grid.Column="0" Grid.Row="5" Margin="10 10 10 10" Text="SECOND = SECOND * FIRST"/>
-                                <TextBlock Grid.Column="0" Grid.Row="6" Margin="10 10 10 10" Text="FIRST = FIRST / SECOND"/>
-                                <TextBlock Grid.Column="0" Grid.Row="7" Margin="10 10 10 10" Text="SECOND = SECOND / FIRST"/>
-                                <Button Grid.Column="1" Grid.Row="0" Margin="1 1 1 1" Content="COMPUTE" Command="{Binding AddCommand}" CommandParameter="{StaticResource First}"/>
-                                <Button Grid.Column="1" Grid.Row="1" Margin="1 1 1 1" Content="COMPUTE" Command="{Binding AddCommand}" CommandParameter="{StaticResource Second}"/>
-                                <Button Grid.Column="1" Grid.Row="2" Margin="1 1 1 1" Content="COMPUTE" Command="{Binding SubtractCommand}" CommandParameter="{StaticResource First}"/>
-                                <Button Grid.Column="1" Grid.Row="3" Margin="1 1 1 1" Content="COMPUTE" Command="{Binding SubtractCommand}" CommandParameter="{StaticResource Second}"/>
-                                <Button Grid.Column="1" Grid.Row="4" Margin="1 1 1 1" Content="COMPUTE" Command="{Binding MultiplyCommand}" CommandParameter="{StaticResource First}"/>
-                                <Button Grid.Column="1" Grid.Row="5" Margin="1 1 1 1" Content="COMPUTE" Command="{Binding MultiplyCommand}" CommandParameter="{StaticResource Second}"/>
-                                <Button Grid.Column="1" Grid.Row="6" Margin="1 1 1 1" Content="COMPUTE" Command="{Binding DivideCommand}" CommandParameter="{StaticResource First}"/>
-                                <Button Grid.Column="1" Grid.Row="7" Margin="1 1 1 1" Content="COMPUTE" Command="{Binding DivideCommand}" CommandParameter="{StaticResource Second}"/>
-                            </Grid>
+                            
                         </TabItem>
                     </TabControl>
                 </ScrollViewer>

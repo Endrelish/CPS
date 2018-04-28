@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="CPS1.View.Parameters"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CPS1.View"
+             mc:Ignorable="d"
+             d:DesignWidth="400">
+    <UserControl.Resources>
+        <DataTemplate x:Key="Item">
+            <Grid Margin="25 5 25 5" Visibility="{Binding Visibility, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="70"/>
+                    </Grid.ColumnDefinitions>
+                    <Separator />
+                    <TextBlock Grid.Column="1" Margin="10,0,0,0" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <ListView ItemsSource="{Binding}" ItemTemplate="{StaticResource Item}"/>
+</UserControl>

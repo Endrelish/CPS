@@ -5,44 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CPS1"
              xmlns:converters="clr-namespace:CPS1.Converters"
+             xmlns:view="clr-namespace:CPS1.View"
              mc:Ignorable="d" d:DesignWidth="400" Height="750">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Image x:Key="SaveIcon" Source="../resources/SaveIcon.png" />
+        <Image x:Key="OpenIcon" Source="../resources/OpenIcon.png" />
         <converters:FrequencyPeriodConverter x:Key="FrequencyPeriodConverter" />
-        <ControlTemplate x:Key="Parameter">
-            <Grid Margin="25 5 25 5" Visibility="{Binding Visibility, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="70"/>
-                    </Grid.ColumnDefinitions>
-                    <Separator />
-                    <TextBlock Grid.Column="1" Margin="10,0,0,0" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </Grid>
-            </Grid>
-        </ControlTemplate>
-        <ControlTemplate x:Key="Setting" TargetType="Control">
-            <Grid Margin="25 5 25 5" Visibility="{Binding Visibility, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="70"/>
-                    </Grid.ColumnDefinitions>
-                    <Slider Grid.Column="0" Name="Slider"  Minimum="{Binding MinValue}" Maximum="{Binding MaxValue}" Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <TextBox Grid.Column="1" Name="Text"  Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </Grid>
-            </Grid>
-        </ControlTemplate>
+        
+        
     </UserControl.Resources>
     <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
@@ -58,6 +28,8 @@
             <RowDefinition Height="25" />
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -100,11 +72,16 @@
                    VerticalAlignment="Center"
                    Text="HISTOGRAM SETTINGS" />
         <Control Grid.Row="10" Template="{StaticResource Setting}" DataContext="{Binding HistogramIntervals}"/>
-        <Control Grid.Row="11" Height="50" />
-        <Control Grid.Row="12" Template="{StaticResource Parameter}" DataContext="{Binding AverageValue}" />
-        <Control Grid.Row="13" Template="{StaticResource Parameter}" DataContext="{Binding AbsoluteAverageValue}" />
-        <Control Grid.Row="14" Template="{StaticResource Parameter}" DataContext="{Binding AveragePower}" />
-        <Control Grid.Row="15" Template="{StaticResource Parameter}" DataContext="{Binding Variance}" />
-        <Control Grid.Row="16" Template="{StaticResource Parameter}" DataContext="{Binding RootMeanSquare}" />
+        <view:Parameters DataContext="{Binding Parameters}"/>
+
+        <Button Margin="0 0 0 0" Grid.Row="17" HorizontalAlignment="Center" VerticalAlignment="Top"
+                Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
+                Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}" />
+        <Button Grid.Row="18" Margin="15 15 15 15" VerticalAlignment="Bottom"
+                HorizontalAlignment="Right" Width="30" Content="{StaticResource SaveIcon}"
+                Command="{Binding SaveCommand}" CommandParameter="{StaticResource First}" BorderThickness="0" Background="White"/>
+        <Button Grid.Row="18" Margin="15 15 60 15" VerticalAlignment="Bottom"
+                HorizontalAlignment="Right" Width="30" Content="{StaticResource OpenIcon}" Command="{Binding OpenCommand}"
+                CommandParameter="{StaticResource First}" BorderThickness="0" Background="White"/>
     </Grid>
 </UserControl>

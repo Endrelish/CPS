@@ -21,11 +21,7 @@
         private T value;
 
         private bool visibility;
-
-        public FunctionAttribute()
-        {
-        }
-
+        
         public FunctionAttribute(T value, bool visibility, T minValue, T maxValue, string name)
         {
             this.Value = value;

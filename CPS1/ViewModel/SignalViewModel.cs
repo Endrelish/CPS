@@ -33,7 +33,7 @@
             this.fileDialog = new FileDialogWpf();
             this.serializer = new FileBinarySerializer();
         }
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         public CommandHandler ClearCommand =>
@@ -50,7 +50,8 @@
         public CommandHandler SaveCommand =>
             this.saveCommand ?? (this.saveCommand = new CommandHandler(this.SaveSignal, () => true));
 
-        public FunctionData SignalData { get; set; }
+        public FunctionData SignalData { get; }
+
 
         public bool SignalGenerated => this.SignalData.Points.Count > 0;
 
@@ -60,7 +61,6 @@
             set
             {
                 this.SignalData.Type = AvailableFunctions.GetTypeByDescription(value);
-                this.SetRequiredParameters();
             }
         }
 
@@ -130,12 +130,6 @@
                 this.serializer.Serialize(this.SignalData, filename);
             }
         }
-
-        private void SetRequiredParameters()
-        {
-            this.SignalData.RequiredAttributes = AvailableFunctions.GetRequiredParameters(this.SignalData.Type);
-        }
-
         
     }
 }

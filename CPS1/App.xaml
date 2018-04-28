@@ -1,9 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<Application xmlns:local="clr-namespace:CPS1" StartupUri="MainWindow.xaml"
+<Application xmlns:local="clr-namespace:CPS1" StartupUri="View/MainWindow.xaml"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:converters="clr-namespace:CPS1.Converters"
              x:Class="CPS1.App"
-             DispatcherUnhandledException="Application_DispatcherUnhandledException">
-
+             DispatcherUnhandledException="ApplicationDispatcherUnhandledException">
+    <Application.Resources>
+        <system:Int16 x:Key="First">1</system:Int16>
+        <system:Int16 x:Key="Second">2</system:Int16>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:VisibilityInversionConverter x:Key="VisibilityInversionConverter" />
+        <converters:LogarithmConverter x:Key="LogarithmConverter"/>
+    </Application.Resources>
 </Application>
