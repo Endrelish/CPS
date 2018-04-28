@@ -93,6 +93,8 @@
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="ViewModel\CommandHandler.cs" />
     <Compile Include="Model\FileBinarySerializer.cs" />
+    <Compile Include="ViewModel\CompositionViewModel.cs" />
+    <Compile Include="ViewModel\SignalViewModel.cs" />
     <Compile Include="View\AnalogDigitalSignalChart.xaml.cs">
       <DependentUpon>AnalogDigitalSignalChart.xaml</DependentUpon>
     </Compile>

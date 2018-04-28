@@ -21,7 +21,7 @@
                 <wpf:LineSeries ScalesXAt="1" Values="{Binding SignalSecond.Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointForeground="#f34436" Fill="Transparent" PointGeometrySize="{Binding SignalSecond.Continuous.Value, Mode=OneWay, Converter={StaticResource PointSizeContinuousConverter}}" LineSmoothness="1" StrokeThickness="{Binding SignalSecond.Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
             </wpf:CartesianChart.Series>
             <wpf:CartesianChart.AxisX>
-                <wpf:Axis Title="Signal value" Labels="{Binding SignalFirst.Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                <wpf:Axis Title="SignalData value" Labels="{Binding SignalFirst.Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                 <wpf:Axis ShowLabels="False" Labels="{Binding SignalSecond.Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </wpf:CartesianChart.AxisX>
             <wpf:CartesianChart.AxisY>

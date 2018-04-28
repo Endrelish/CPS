@@ -13,14 +13,6 @@
 
     public class MainViewModel : INotifyPropertyChanged
     {
-        [NonSerialized]
-        private static readonly Func<double, string> Formatter1 = value => value.ToString("N");
-
-        private readonly IFileDialog fileDialog;
-
-        private readonly Signal firstSignalType;
-
-        private readonly IFileSerializer serializer;
 
         private readonly Func<double, double> sincFunc = t =>
             {
@@ -32,28 +24,19 @@
                 return Math.Sin(Math.PI * t) / (Math.PI * t);
             };
 
-        private ICommand addCommand;
 
         private string adOperation;
-
-        private ICommand clearCommand;
-
+        
         private ICommand computeCommand;
 
         private string daOperation;
 
-        private ICommand divideCommand;
-
-        private ICommand generateSignalCommand;
-
+        
         private FunctionAttribute<double> maximumDifference;
 
         private FunctionAttribute<double> meanSquaredError;
 
-        private ICommand multiplyCommand;
-
-        private ICommand openCommand;
-
+        
         private FunctionAttribute<double> peakSignalToNoiseRatio;
 
         private int quantizationLevels;
@@ -61,37 +44,22 @@
         private bool quantizationLevelsVisibility;
 
         private bool samplingFrequencyVisibility;
-
-        private ICommand saveCommand;
-
-        private Signal secondSignalType;
-
-        private FunctionData signalFirstCopy;
-
+        
         private FunctionAttribute<double> signalToNoiseRatio;
 
-        private ICommand subtractCommand;
 
         private ICommand swapCommand;
 
+        public SignalViewModel FirstSignalViewModel { get; set; }
+        public SignalViewModel SecondSignalViewModel { get; set; }
+
         public MainViewModel()
         {
-            this.SignalFirst = new FunctionData();
-            this.SignalSecond = new FunctionData();
-            this.firstSignalType = Signal.Sine;
-            this.secondSignalType = Signal.Sine;
-            this.SignalFirst.Type = this.firstSignalType;
-            this.SignalSecond.Type = this.secondSignalType;
-            this.SignalFirst.Continuous.Value = true;
-            this.SignalSecond.Continuous.Value = true;
+            this.FirstSignalViewModel = new SignalViewModel();
+            this.SecondSignalViewModel = new SignalViewModel();
 
-            this.SetRequiredParameters(this.SignalFirst);
-            this.SetRequiredParameters(this.SignalSecond);
 
-            this.fileDialog = new FileDialogWpf();
-            this.serializer = new FileBinarySerializer();
-
-            this.SignalFirst.PropertyChanged += (sender, args) =>
+            this.FirstSignalViewModel.SignalData.PropertyChanged += (sender, args) =>
                 {
                     ((CommandHandler)this.AddCommand).RaiseCanExecuteChanged();
                     ((CommandHandler)this.SubtractCommand).RaiseCanExecuteChanged();
@@ -99,7 +67,7 @@
                     ((CommandHandler)this.DivideCommand).RaiseCanExecuteChanged();
                 };
 
-            this.SignalSecond.PropertyChanged += (sender, args) =>
+            this.SecondSignalViewModel.SignalData.PropertyChanged += (sender, args) =>
                 {
                     ((CommandHandler)this.AddCommand).RaiseCanExecuteChanged();
                     ((CommandHandler)this.SubtractCommand).RaiseCanExecuteChanged();
@@ -107,7 +75,7 @@
                     ((CommandHandler)this.DivideCommand).RaiseCanExecuteChanged();
                 };
 
-            this.SamplingFrequency = 10 / this.SignalFirst.Period.Value;
+            this.SamplingFrequency = 10;
             this.QuantizationLevels = 25;
 
             this.AdOperations = new List<string> { "UNIFORM SAMPLING", "UNIFORM QUANTIZATION" };
@@ -130,11 +98,7 @@
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public static Func<double, string> Formatter => Formatter1;
-
-        public ICommand AddCommand => this.addCommand
-                                      ?? (this.addCommand = new CommandHandler(this.AddSignals, this.SignalsGenerated));
+        
 
         public string AdOperation
         {
@@ -155,8 +119,6 @@
 
         public List<string> AdOperations { get; }
 
-        public ICommand ClearCommand =>
-            this.clearCommand ?? (this.clearCommand = new CommandHandler(this.Clear, () => true));
 
         public ICommand ComputeCommand
         {
@@ -190,25 +152,7 @@
 
         public List<string> DaOperations { get; }
 
-        public ICommand DivideCommand => this.divideCommand
-                                         ?? (this.divideCommand = new CommandHandler(
-                                                 this.DivideSignals,
-                                                 this.SignalsGenerated));
 
-        public string FirstSignalType
-        {
-            get => AvailableFunctions.GetDescription(this.SignalFirst.Type);
-            set
-            {
-                this.SignalFirst.Type = AvailableFunctions.GetTypeByDescription(value);
-                this.SetRequiredParameters(this.SignalFirst);
-            }
-        }
-
-        public ICommand GenerateSignalCommand => this.generateSignalCommand
-                                                 ?? (this.generateSignalCommand = new CommandHandler(
-                                                         this.GenerateSignal,
-                                                         () => true));
 
         public FunctionAttribute<double> MaximumDifference
         {
@@ -245,11 +189,7 @@
                                                                         () => this.SignalFirst.Points.Count > 0
                                                                               && this.SignalSecond.Points.Count > 0));
 
-        public ICommand OpenCommand =>
-            this.openCommand ?? (this.openCommand = new CommandHandler(this.OpenSignal, () => true));
-
-        public int Param { get; } = 2;
-
+        
         public FunctionAttribute<double> PeakSignalToNoiseRatio
         {
             get => this.peakSignalToNoiseRatio;
@@ -311,24 +251,7 @@
                 this.OnPropertyChanged();
             }
         }
-
-        public ICommand SaveCommand =>
-            this.saveCommand ?? (this.saveCommand = new CommandHandler(this.SaveSignal, () => true));
-
-        public string SecondSignalType
-        {
-            get => AvailableFunctions.GetDescription(this.secondSignalType);
-            set
-            {
-                this.secondSignalType = AvailableFunctions.GetTypeByDescription(value);
-                this.SetRequiredParameters(this.SignalSecond);
-            }
-        }
-
-        public FunctionData SignalFirst { get; set; }
-
-        public FunctionData SignalSecond { get; set; }
-
+        
         public IEnumerable<string> SignalsLabels
         {
             get
@@ -354,8 +277,7 @@
 
         public ICommand SubtractCommand => this.subtractCommand ?? (this.subtractCommand = new CommandHandler(
                                                                         this.SubtractSignals,
-                                                                        () => this.SignalFirst.Points.Count > 0
-                                                                              && this.SignalSecond.Points.Count > 0));
+                                                                        () => this.SignalsGenerated()));
 
         public ICommand SwapCommand => this.swapCommand
                                        ?? (this.swapCommand = new CommandHandler(
@@ -395,27 +317,7 @@
             this.Psnr();
             this.Md();
         }
-
-        private void Clear(object parameter)
-        {
-            if (!int.TryParse(parameter as string, out var no))
-            {
-                return;
-            }
-
-            if (no == 1 || no == 3)
-            {
-                this.SignalFirst.Points.Clear();
-                this.SignalFirst.PointsUpdate();
-            }
-
-            if (no >= 2)
-            {
-                this.SignalSecond.Points.Clear();
-                this.SignalSecond.PointsUpdate();
-            }
-        }
-
+        
         private void Compute(object parameter)
         {
             if (parameter is string type)
@@ -464,38 +366,7 @@
             }
         }
 
-        private void GenerateSignal(object parameter)
-        {
-            if (parameter is short chart)
-            {
-                if (chart == 1)
-                {
-                    if (this.SignalFirst.Type != Signal.Composite)
-                    {
-                        this.SignalFirst.Type = this.firstSignalType;
-                        this.SignalFirst.Function = AvailableFunctions.GetFunction(this.SignalFirst.Type);
-                    }
-
-                    Generator.GenerateSignal(this.SignalFirst);
-                    Histogram.GetHistogram(this.SignalFirst);
-                }
-                else if (chart == 2)
-                {
-                    if (this.SignalSecond.Type != Signal.Composite)
-                    {
-                        this.SignalSecond.Type = this.secondSignalType;
-                        this.SignalSecond.Function = AvailableFunctions.GetFunction(this.SignalSecond.Type);
-                    }
-
-                    Generator.GenerateSignal(this.SignalSecond);
-                    Histogram.GetHistogram(this.SignalSecond);
-                }
-
-                ((CommandHandler)this.ComputeCommand).RaiseCanExecuteChanged();
-                ((CommandHandler)this.SwapCommand).RaiseCanExecuteChanged();
-            }
-        }
-
+       
         private void Md()
         {
             this.MaximumDifference.Value = this.SignalSecond.Points
@@ -525,38 +396,7 @@
             }
         }
 
-        private void OpenSignal(object parameter)
-        {
-            if (parameter is short chart)
-            {
-                var filename = this.fileDialog.GetOpenFilePath(this.serializer.Format);
-                if (string.IsNullOrEmpty(filename))
-                {
-                    return;
-                }
-
-                var data = this.serializer.Deserialize(filename);
-
-                if (chart == 1)
-                {
-                    this.SignalFirst.AssignSignal(data);
-
-                    // Histogram.GetHistogram(this.SignalFirst);
-                    // this.SignalFirst.HistogramPointsUpdate();
-                    // this.SignalFirst.PointsUpdate();
-                    // this.SignalFirst.AllChanged();
-                }
-                else if (chart == 2)
-                {
-                    this.SignalSecond.AssignSignal(data);
-
-                    // Histogram.GetHistogram(this.SignalSecond);
-                    // this.SignalSecond.HistogramPointsUpdate();
-                    // this.SignalSecond.PointsUpdate();
-                    // this.SignalSecond.AllChanged();
-                }
-            }
-        }
+        
 
         private void Psnr()
         {
@@ -591,26 +431,7 @@
             Generator.GenerateSignal(this.SignalSecond);
         }
 
-        private void SaveSignal(object parameter)
-        {
-            if (parameter is short chart)
-            {
-                var filename = this.fileDialog.GetSaveFilePath(this.serializer.Format);
-                if (string.IsNullOrEmpty(filename))
-                {
-                    return;
-                }
-
-                if (chart == 1)
-                {
-                    this.serializer.Serialize(this.SignalFirst, filename);
-                }
-                else if (chart == 2)
-                {
-                    this.serializer.Serialize(this.SignalSecond, filename);
-                }
-            }
-        }
+       
 
         private void SetParametersVisibility(string value)
         {
@@ -635,10 +456,6 @@
             }
         }
 
-        private void SetRequiredParameters(FunctionData signal)
-        {
-            signal.RequiredAttributes = AvailableFunctions.GetRequiredParameters(signal.Type);
-        }
 
         private void Sinc()
         {

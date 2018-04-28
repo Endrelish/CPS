@@ -19,6 +19,8 @@
         [NonSerialized]
         private Func<FunctionData, double, double> function;
 
+        private Signal type;
+
         public FunctionData(
             double startTime = 0,
             double amplitude = 50,
@@ -27,7 +29,9 @@
             double dutyCycle = 0.5,
             int samples = 500,
             int histogramIntervals = 10,
-            double probability = 0.5)
+            double probability = 0.5,
+            bool continuous = true,
+            Signal type = Signal.Sine)
         {
             this.Amplitude = new FunctionAttribute<double>(
                 amplitude,
@@ -83,8 +87,9 @@
             this.HistogramPoints = new List<Point>();
 
             this.RequiredAttributes = new Required(false, false, false, false, false, false, false, false);
+            this.Continuous.Value = continuous;
+            this.Type = type;
         }
-
 
         [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
@@ -104,6 +109,16 @@
         [DataMember]
         public FunctionAttribute<bool> Continuous { get; set; }
 
+        public FunctionData Copy
+        {
+            get
+            {
+                var fd = new FunctionData();
+                fd.AssignSignal(this);
+                return fd;
+            }
+        }
+
         [DataMember]
         public FunctionAttribute<double> Duration { get; set; }
 
@@ -111,7 +126,7 @@
         public FunctionAttribute<double> DutyCycle { get; set; }
 
         [IgnoreDataMember]
-        public Func<double, string> Formatter => MainViewModel.Formatter;
+        public Func<double, string> Formatter => value => value.ToString("N");
 
         [IgnoreDataMember]
         public Func<FunctionData, double, double> Function
@@ -190,7 +205,23 @@
         public FunctionAttribute<double> StartTime { get; set; }
 
         [DataMember]
-        public Signal Type { get; set; }
+        public Signal Type
+        {
+            get => this.type;
+            set
+            {
+                if (value == this.type)
+                {
+                    return;
+                }
+
+                this.type = value;
+                if (this.type != Signal.Composite)
+                {
+                    this.RequiredAttributes = AvailableFunctions.GetRequiredParameters(this.type);
+                }
+            }
+        }
 
         [IgnoreDataMember]
         public ChartValues<double> Values
@@ -220,16 +251,6 @@
             }
         }
 
-        public FunctionData Copy
-        {
-            get
-            {
-                var fd = new FunctionData();
-                fd.AssignSignal(this);
-                return fd;
-            }
-        }
-
         public void AssignSignal(FunctionData data)
         {
             this.Amplitude.AssignAttribute(data.Amplitude);
@@ -251,6 +272,7 @@
             {
                 this.Function = (Func<FunctionData, double, double>)data.Function.Clone();
             }
+
             this.Points.Clear();
             this.Points.AddRange(data.Points);
             this.PointsUpdate();
@@ -277,9 +299,11 @@
 
         public void Compose(FunctionData data, Operation operation)
         {
-            
             if (operation == Operation.Divide && data.Points.Any(p => Math.Abs(p.Y) < double.Epsilon))
+            {
                 this.Continuous.Value = false;
+            }
+
             if (this.Type != Signal.Composite)
             {
                 this.Function = AvailableFunctions.GetFunction(this.Type);
@@ -291,8 +315,10 @@
             }
 
             this.Type = Signal.Composite;
-            if (data.Function != null && this.Function != null) // TODO Think about a proper way of implementing this feature
+            if (data.Function != null && this.Function != null
+            )
             {
+                // TODO Think about a proper way of implementing this feature
                 this.Continuous.Value = this.Continuous.Value && data.Continuous.Value;
                 this.Function = FunctionComposer.ComposeFunction(this.Function, data.Function, data, operation);
                 Generator.GenerateSignal(this);
@@ -319,7 +345,8 @@
 
         public void SetAmplitude()
         {
-            this.Amplitude.Value = Math.Ceiling(Math.Max(this.Points.Max(p => p.Y), Math.Abs(this.Points.Min(p => p.Y))));
+            this.Amplitude.Value =
+                Math.Ceiling(Math.Max(this.Points.Max(p => p.Y), Math.Abs(this.Points.Min(p => p.Y))));
         }
 
         [NotifyPropertyChangedInvocator]
@@ -512,9 +539,12 @@
                         .Select(p => new Point(p.X, p.Y * -1)));
             }
 
-            foreach (var point in Points)
+            foreach (var point in this.Points)
             {
-                if (Math.Abs(point.Y) < 10E-10) point.Y = 0;
+                if (Math.Abs(point.Y) < 10E-10)
+                {
+                    point.Y = 0;
+                }
             }
         }
     }
