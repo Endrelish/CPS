@@ -11,10 +11,11 @@
     {
         public MainViewModel()
         {
-            this.CompositionViewModel = new CompositionViewModel(this.FirstSignalViewModel, this.SecondSignalViewModel);
-            this.ConversionViewModel = new ConversionViewModel(this.FirstSignalViewModel, this.SecondSignalViewModel);
             this.FirstSignalViewModel = new SignalViewModel();
             this.SecondSignalViewModel = new SignalViewModel();
+
+            this.CompositionViewModel = new CompositionViewModel(this.FirstSignalViewModel, this.SecondSignalViewModel);
+            this.ConversionViewModel = new ConversionViewModel(this.FirstSignalViewModel, this.SecondSignalViewModel);
         }
 
         public CompositionViewModel CompositionViewModel { get; }

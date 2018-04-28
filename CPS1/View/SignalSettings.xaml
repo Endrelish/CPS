@@ -10,78 +10,59 @@
     <UserControl.Resources>
         <Image x:Key="SaveIcon" Source="../resources/SaveIcon.png" />
         <Image x:Key="OpenIcon" Source="../resources/OpenIcon.png" />
-        <converters:FrequencyPeriodConverter x:Key="FrequencyPeriodConverter" />
-        
-        
     </UserControl.Resources>
     <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition Height="25" />
             <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Text="SIGNAL SETTINGS" />
-        <Grid Grid.Row="1" Visibility="{Binding Continuous.Visibility, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <RadioButton Margin="20 0 0 0" Grid.Column="0" Content="Continuous" IsChecked="{Binding Continuous.Value}" GroupName="{Binding}" />
-            <RadioButton Grid.Column="1" Content="Discrete" GroupName="{Binding}" />
-        </Grid>
-        <Control Grid.Row="2" Template="{StaticResource Setting}" DataContext="{Binding StartTime}"/>
-        <Control Grid.Row="3" Template="{StaticResource Setting}" DataContext="{Binding Duration}"/>
-        <Control Grid.Row="4" Template="{StaticResource Setting}" DataContext="{Binding Amplitude}"/>
-        <Control Grid.Row="5" Template="{StaticResource Setting}" Name="Period" DataContext="{Binding Period}"/>
-        <Grid Grid.Row="6" Margin="25 5 25 5" DataContext="{Binding Period}" Visibility="{Binding Visibility, Converter={StaticResource BooleanToVisibilityConverter}}">
+               Text="SIGNAL TYPE" />
+        <ComboBox Grid.Row="1" Margin="25 10 25 10" HorizontalContentAlignment="Left"
+              ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding SignalType}" />
+        <Grid Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" DataContext="{Binding SignalData}">
             <Grid.RowDefinitions>
-                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <TextBlock Text="FREQUENCY" HorizontalAlignment="Left"/>
-            <Grid Grid.Row="1">
+            <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Text="SIGNAL SETTINGS" />
+            <Grid Grid.Row="1" Visibility="{Binding Continuous.Visibility, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Slider Grid.Column="0" Minimum="{Binding ElementName, Converter={StaticResource FrequencyPeriodConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Maximum="{Binding MinValue, Converter={StaticResource FrequencyPeriodConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="{Binding Value, Converter={StaticResource FrequencyPeriodConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource FrequencyPeriodConverter}}"/>
+                <RadioButton Margin="20 0 0 0" Grid.Column="0" Content="Continuous" IsChecked="{Binding Continuous.Value}" GroupName="{Binding}" />
+                <RadioButton Grid.Column="1" Content="Discrete" GroupName="{Binding}" />
             </Grid>
-        </Grid>
-        <Control Grid.Row="7" Template="{StaticResource Setting}" DataContext="{Binding DutyCycle}"/>
-        <Control Grid.Row="8" Template="{StaticResource Setting}" DataContext="{Binding Samples}"/>
-        <TextBlock Grid.Row="9" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
+            <view:Attributes Grid.Row="2" DataContext="{Binding Attributes}"/>
+
+            <TextBlock Grid.Row="3" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Text="HISTOGRAM SETTINGS" />
-        <Control Grid.Row="10" Template="{StaticResource Setting}" DataContext="{Binding HistogramIntervals}"/>
-        <view:Parameters DataContext="{Binding Parameters}"/>
+            <view:Attributes Grid.Row="4" DataContext="{Binding HistogramAttributes}"/>
+            <view:Parameters Grid.Row="5" Margin="0 50 0 0" DataContext="{Binding Parameters}"/>
 
-        <Button Margin="0 0 0 0" Grid.Row="17" HorizontalAlignment="Center" VerticalAlignment="Top"
+            <Button Margin="0 50 0 0" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Top"
                 Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
                 Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}" />
-        <Button Grid.Row="18" Margin="15 15 15 15" VerticalAlignment="Bottom"
+            <Button Grid.Row="7" Margin="15 15 15 15" VerticalAlignment="Bottom"
                 HorizontalAlignment="Right" Width="30" Content="{StaticResource SaveIcon}"
                 Command="{Binding SaveCommand}" CommandParameter="{StaticResource First}" BorderThickness="0" Background="White"/>
-        <Button Grid.Row="18" Margin="15 15 60 15" VerticalAlignment="Bottom"
+            <Button Grid.Row="7" Margin="15 15 60 15" VerticalAlignment="Bottom"
                 HorizontalAlignment="Right" Width="30" Content="{StaticResource OpenIcon}" Command="{Binding OpenCommand}"
                 CommandParameter="{StaticResource First}" BorderThickness="0" Background="White"/>
+        </Grid>
     </Grid>
 </UserControl>

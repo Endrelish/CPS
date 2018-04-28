@@ -84,49 +84,14 @@
                 <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
                         <TabControl Grid.Row="0">
                             <!--First signal settings tab.-->
-                            <TabItem Header="First signal" DataContext="{Binding FirstSignalViewModel}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
-                                       Text="SIGNAL TYPE" />
-                                    <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1"
-                                      ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding SignalType}" />
-                                    <view:SignalSettings Grid.Row="2" DataContext="{Binding}" />
-                                </Grid>
-                        </TabItem>
-                        <TabItem Header="Second signal">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
-                                   Text="SIGNAL TYPE" />
-                                <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1"
-                                  ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding SecondSignalType}" />
-                                <view:SignalSettings Grid.Row="2" DataContext="{Binding SignalSecond}" />
-                                <Button Margin="0 0 0 0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top"
-                                Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
-                                Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource Second}" />
-                                <Button Grid.Row="4" Margin="15 15 15 15" VerticalAlignment="Bottom"
-                                HorizontalAlignment="Right" Width="30" Content="{StaticResource SaveIcon2}"
-                                Command="{Binding SaveCommand}" CommandParameter="{StaticResource Second}" BorderThickness="0" Background="White"/>
-                                <Button Grid.Row="4" Margin="15 15 60 15" VerticalAlignment="Bottom"
-                                HorizontalAlignment="Right" Width="30" Content="{StaticResource OpenIcon2}" Command="{Binding OpenCommand}"
-                                CommandParameter="{StaticResource Second}" BorderThickness="0" Background="White"/>
-                            </Grid>
-                        </TabItem>
+                            <TabItem Header="First signal">
+                                <view:SignalSettings DataContext="{Binding FirstSignalViewModel}"/>
+                            </TabItem>
+                            <TabItem Header="Second signal">
+                                <view:SignalSettings DataContext="{Binding SecondSignalViewModel}" />
+                            </TabItem>
                         <TabItem Header="Operations">
-                            
+                            <!--TODO Create Operations View-->
                         </TabItem>
                     </TabControl>
                 </ScrollViewer>
@@ -135,16 +100,16 @@
                         <RowDefinition Height="50*" />
                         <RowDefinition Height="50*" />
                     </Grid.RowDefinitions>
-                    <view:SignalChart DataContext="{Binding SignalFirst}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
-                    <view:HistogramChart DataContext="{Binding SignalFirst}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
+                    <view:SignalChart DataContext="{Binding FirstSignalViewModel.SignalData}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
+                    <view:HistogramChart DataContext="{Binding FirstSignalViewModel.SignalData}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
                 </Grid>
                 <Grid Grid.Column="2" Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50*" />
                         <RowDefinition Height="50*" />
                     </Grid.RowDefinitions>
-                    <view:SignalChart DataContext="{Binding SignalSecond}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
-                    <view:HistogramChart DataContext="{Binding SignalSecond}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
+                        <view:SignalChart DataContext="{Binding SecondSignalViewModel.SignalData}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
+                        <view:HistogramChart DataContext="{Binding SecondSignalViewModel.SignalData}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
                 </Grid>
             </Grid>
         </TabItem>
@@ -167,32 +132,10 @@
                 <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
                     <TabControl Grid.Row="0">
                         <TabItem Header="Generate signal">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
-                                       Text="SIGNAL TYPE" />
-                                <ComboBox Margin="25 10 25 10" HorizontalContentAlignment="Left" Grid.Row="1"
-                                      ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding FirstSignalType}" />
-                                <view:SignalSettings Grid.Row="2" DataContext="{Binding SignalFirst}" />
-                                <Button Margin="0 0 0 0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top"
-                                    Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
-                                    Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}" />
-                                <Button Grid.Row="4" Margin="15 15 15 15" VerticalAlignment="Bottom"
-                                    HorizontalAlignment="Right" Width="30" Content="{StaticResource SaveIcon1}"
-                                    Command="{Binding SaveCommand}" CommandParameter="{StaticResource First}" BorderThickness="0" Background="White"/>
-                                <Button Grid.Row="4" Margin="15 15 60 15" VerticalAlignment="Bottom"
-                                    HorizontalAlignment="Right" Width="30" Content="{StaticResource OpenIcon1}" Command="{Binding OpenCommand}"
-                                    CommandParameter="{StaticResource First}" BorderThickness="0" Background="White"/>
-                            </Grid>
+                            <view:SignalSettings DataContext="{Binding FirstSignalViewModel}"></view:SignalSettings>
                         </TabItem>
                         <TabItem Header="Operations">
-                            <Grid>
+                            <!--<Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
@@ -200,7 +143,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Name="AdTextBlock" Visibility="{Binding SignalFirst.Continuous.Value, Converter={StaticResource BTVC}}" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
+                                <TextBlock Grid.Row="0" Name="AdTextBlock" Visibility="{Binding FirstSignalViewModel.SignalData.Continuous.Value, Converter={StaticResource BooleanToVisibilityConverter}}" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
                                            Text="A/D CONVERSION" />
                                 <Grid Grid.Row="1" Visibility="{Binding ElementName=AdTextBlock, Path=Visibility}">
                                     <Grid.RowDefinitions>
@@ -276,7 +219,7 @@
                                     <Control Template="{StaticResource Parameter}" DataContext="{Binding SignalToNoiseRatio}"/>
                                     <Control Template="{StaticResource Parameter}" DataContext="{Binding PeakSignalToNoiseRatio}"/>
                                 </StackPanel>
-                            </Grid>
+                            </Grid>-->
                         </TabItem>
                     </TabControl>
                 </ScrollViewer>

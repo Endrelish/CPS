@@ -13,7 +13,7 @@
         <converters:ChartSettingsConverter x:Key="ChartSettingsConverter" />
         <converters:PointSizeContinuousConverter x:Key="PointSizeContinuousConverter"/>
     </UserControl.Resources>
-    <Grid DataContext="{Binding ViewModel, Source={StaticResource ViewModelLocator}}">
+    <Grid>
         <wpf:CartesianChart>
             <wpf:CartesianChart.Series>
                 <wpf:LineSeries ScalesXAt="0" Values="{Binding SignalFirst.Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointForeground="#2195f2" Fill="Transparent"  PointGeometrySize="{Binding SignalFirst.Continuous.Value, Mode=OneWay, Converter={StaticResource PointSizeContinuousConverter}}" LineSmoothness="1" StrokeThickness="{Binding SignalFirst.Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />

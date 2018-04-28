@@ -1,12 +1,15 @@
 ﻿namespace CPS1.Model.SignalData
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Runtime.Serialization;
     using System.Windows.Data;
+    using System.Windows.Documents;
 
     using CPS1.Converters;
     using CPS1.Model.Generation;
@@ -48,8 +51,8 @@
                 Settings.Default.PeriodMin,
                 Settings.Default.PeriodMax,
                 "PERIOD");
-            this.Period = new FunctionAttribute<double>(
-                period,
+            this.Frequency = new FunctionAttribute<double>(
+                1.0d / period,
                 false,
                 1.0d / Settings.Default.PeriodMax,
                 1.0d / Settings.Default.PeriodMin,
@@ -99,20 +102,17 @@
                         this.RootMeanSquare
                     });
 
-            this.Attributes = new List<IFunctionAttribute>(
-                new IFunctionAttribute[]
+            this.Attributes = new List<object>(
+                new object[]
                     {
-                        (IFunctionAttribute)Amplitude,
-                        (IFunctionAttribute)Period,
-                        (IFunctionAttribute)Frequency,
-                        (IFunctionAttribute)Samples,
-                        (IFunctionAttribute)StartTime,
-                        (IFunctionAttribute)Duration,
-                        (IFunctionAttribute)DutyCycle,
-                        (IFunctionAttribute)Probability,
-                        (IFunctionAttribute)Continuous,
+                        this.Amplitude, this.Period,
+                        this.Frequency, this.Samples,
+                        this.StartTime, this.Duration,
+                        this.DutyCycle, this.Probability,
+                        this.Continuous
                     });
-            this.HistogramAttributes = new List<IFunctionAttribute>(new IFunctionAttribute[] { (IFunctionAttribute)this.HistogramIntervals });
+            this.HistogramAttributes =
+                new List<object>(new object[] { this.HistogramIntervals });
 
             this.Points = new List<Point>();
             this.HistogramPoints = new List<Point>();
@@ -121,84 +121,9 @@
             this.Continuous.Value = continuous;
             this.Type = type;
 
-            this.Period.PropertyChanged += (sender, args) =>
-                {
-                    if (sender.Equals(Period.Value))
-                    {
-                        this.Frequency.Value = 1.0d / this.Period.Value;
-                        return;
-                    }
-                    if (sender.Equals(Period.Visibility))
-                    {
-                        this.Frequency.Visibility = this.Period.Visibility;
-                        return;
-                    }
-                    if (sender.Equals(Period.MaxValue))
-                    {
-                        this.Frequency.MinValue = 1.0d / this.Period.MaxValue;
-                        return;
-                    }
-                    if (sender.Equals(Period.MinValue))
-                    {
-                        this.Frequency.MaxValue = 1.0d / this.Period.MinValue;
-                        return;
-                    }
-                };
-
-            this.Frequency.PropertyChanged += (sender, args) =>
-                {
-                    if (sender.Equals(Frequency.Value))
-                    {
-                        this.Period.Value = 1.0d / this.Frequency.Value;
-                        return;
-                    }
-                    if (sender.Equals(Frequency.Visibility))
-                    {
-                        this.Period.Visibility = this.Frequency.Visibility;
-                        return;
-                    }
-                    if (sender.Equals(Frequency.MaxValue))
-                    {
-                        this.Period.MinValue = 1.0d / this.Frequency.MaxValue;
-                        return;
-                    }
-                    if (sender.Equals(Frequency.MinValue))
-                    {
-                        this.Period.MaxValue = 1.0d / this.Frequency.MinValue;
-                        return;
-                    }
-                };
+            this.BindAttributesOneWay(this.Frequency, this.Period, new FrequencyPeriodConverter());
+            this.BindAttributesOneWay(this.Period, this.Frequency, new FrequencyPeriodConverter());
         }
-
-        private void BindAttributesOneWay<T>(FunctionAttribute<T> source, FunctionAttribute<T> target, IValueConverter converter = null) where T : struct
-        {
-            source.PropertyChanged += (sender, args) =>
-                {
-                    if (sender.Equals(source.Value))
-                    {
-                        target.Value = 1.0d / source.Value;
-                        return;
-                    }
-                    if (sender.Equals(source.Visibility))
-                    {
-                        target.Visibility = source.Visibility;
-                        return;
-                    }
-                    if (sender.Equals(source.MaxValue))
-                    {
-                        target.MinValue = 1.0d / source.MaxValue;
-                        return;
-                    }
-                    if (sender.Equals(source.MinValue))
-                    {
-                        target.MaxValue = 1.0d / source.MinValue;
-                        return;
-                    }
-                };
-        }
-
-        public FunctionAttribute<double> Frequency { get; set; }
-        public List<IFunctionAttribute> HistogramAttributes { get; }
 
         [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
@@ -208,6 +133,8 @@
 
         [DataMember]
         public FunctionAttribute<double> Amplitude { get; set; }
+
+        public IEnumerable<object> Attributes { get; }
 
         [DataMember]
         public Parameter AveragePower { get; set; }
@@ -237,12 +164,16 @@
         [IgnoreDataMember]
         public Func<double, string> Formatter => value => value.ToString("N");
 
+        public FunctionAttribute<double> Frequency { get; set; }
+
         [IgnoreDataMember]
         public Func<FunctionData, double, double> Function
         {
             get => this.function;
             set => this.function = value;
         }
+
+        public IEnumerable<object> HistogramAttributes { get; }
 
         [DataMember]
         public FunctionAttribute<int> HistogramIntervals { get; set; }
@@ -432,6 +363,67 @@
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public IEnumerable<IFunctionAttribute> Attributes { get; }
+        private void BindAttributesOneWay<T>(
+            FunctionAttribute<T> source,
+            FunctionAttribute<T> target,
+            IValueConverter converter = null)
+            where T : struct
+        {
+            if (converter == null)
+            {
+                converter = new DefaultConverter();
+            }
+
+            source.PropertyChanged += (sender, args) =>
+                {
+                    if (sender.Equals(source.Value))
+                    {
+                        target.Value = (T)(converter.Convert(
+                                               source.Value,
+                                               target.Value.GetType(),
+                                               null,
+                                               CultureInfo.InvariantCulture) ?? target.Value);
+                        return;
+                    }
+
+                    if (sender.Equals(source.Visibility))
+                    {
+                        target.Visibility = source.Visibility;
+                        return;
+                    }
+
+                    if (sender.Equals(source.MaxValue))
+                    {
+                        target.MinValue = (T)(converter.Convert(
+                                                  source.MaxValue,
+                                                  target.MinValue.GetType(),
+                                                  null,
+                                                  CultureInfo.InvariantCulture) ?? target.MinValue);
+                        return;
+                    }
+
+                    if (sender.Equals(source.MinValue))
+                    {
+                        target.MaxValue = (T)(converter.Convert(
+                                                  source.MinValue,
+                                                  target.MaxValue.GetType(),
+                                                  null,
+                                                  CultureInfo.InvariantCulture) ?? target.MaxValue);
+                    }
+                };
+        }
+
+        private class DefaultConverter : IValueConverter
+        {
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                return value;
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                return value;
+            }
+        }
     }
 }
