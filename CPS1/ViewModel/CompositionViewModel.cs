@@ -3,6 +3,7 @@
     using System.Windows.Input;
 
     using CPS1.Model;
+    using CPS1.Model.Composition;
 
     public class CompositionViewModel
     {
@@ -61,11 +62,11 @@
             {
                 if (no == 1)
                 {
-                    this.firstSignalViewModel.Compose(this.secondSignalViewModel, Operation.Add);
+                    Operations.Compose(this.firstSignalViewModel.SignalData, this.secondSignalViewModel.SignalData, Operation.Add);
                 }
                 else
                 {
-                    this.secondSignalViewModel.Compose(this.firstSignalViewModel, Operation.Add);
+                    Operations.Compose(this.secondSignalViewModel.SignalData, this.firstSignalViewModel.SignalData, Operation.Add);
                 }
             }
         }
@@ -75,11 +76,11 @@
             {
                 if (no == 1)
                 {
-                    this.firstSignalViewModel.Compose(this.secondSignalViewModel, Operation.Divide);
+                    Operations.Compose(this.firstSignalViewModel.SignalData, this.secondSignalViewModel.SignalData, Operation.Divide);
                 }
                 else
                 {
-                    this.secondSignalViewModel.Compose(this.firstSignalViewModel, Operation.Divide);
+                    Operations.Compose(this.secondSignalViewModel.SignalData, this.firstSignalViewModel.SignalData, Operation.Divide);
                 }
             }
         }
@@ -89,11 +90,11 @@
             {
                 if (no == 1)
                 {
-                    this.firstSignalViewModel.Compose(this.secondSignalViewModel, Operation.Multiply);
+                    Operations.Compose(this.firstSignalViewModel.SignalData, this.secondSignalViewModel.SignalData, Operation.Multiply);
                 }
                 else
                 {
-                    this.secondSignalViewModel.Compose(this.firstSignalViewModel, Operation.Multiply);
+                    Operations.Compose(this.secondSignalViewModel.SignalData, this.firstSignalViewModel.SignalData, Operation.Multiply);
                 }
             }
         }
@@ -104,11 +105,11 @@
             {
                 if (no == 1)
                 {
-                    this.firstSignalViewModel.Compose(this.secondSignalViewModel, Operation.Subtract);
+                    Operations.Compose(this.firstSignalViewModel.SignalData, this.secondSignalViewModel.SignalData, Operation.Subtract);
                 }
                 else
                 {
-                    this.secondSignalViewModel.Compose(this.firstSignalViewModel, Operation.Subtract);
+                    Operations.Compose(this.secondSignalViewModel.SignalData, this.firstSignalViewModel.SignalData, Operation.Subtract);
                 }
             }
         }

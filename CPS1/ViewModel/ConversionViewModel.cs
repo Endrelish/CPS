@@ -4,8 +4,12 @@
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
-    using CPS1.Annotations;
     using CPS1.Model;
+    using CPS1.Model.Conversion;
+    using CPS1.Model.SignalData;
+    using CPS1.Properties;
+
+    using Operations = CPS1.Model.Conversion.Operations;
 
     public class ConversionViewModel : INotifyPropertyChanged
     {
@@ -198,16 +202,16 @@
 
         private void CalculateMetrics()
         {
-            this.MeanSquaredError.Value = ConversionMetrics.MeanSquaredError(
+            this.MeanSquaredError.Value = Metrics.MeanSquaredError(
                 this.firstSignalViewModel.SignalData,
                 this.secondSignalViewModel.SignalData);
-            this.PeakSignalToNoiseRatio.Value = ConversionMetrics.PeakSignalToNoiseRatio(
+            this.PeakSignalToNoiseRatio.Value = Metrics.PeakSignalToNoiseRatio(
                 this.firstSignalViewModel.SignalData,
                 this.secondSignalViewModel.SignalData);
-            this.SignalToNoiseRatio.Value = ConversionMetrics.SignalToNoiseRatio(
+            this.SignalToNoiseRatio.Value = Metrics.SignalToNoiseRatio(
                 this.firstSignalViewModel.SignalData,
                 this.secondSignalViewModel.SignalData);
-            this.MaximumDifference.Value = ConversionMetrics.MaximumDifference(
+            this.MaximumDifference.Value = Metrics.MaximumDifference(
                 this.firstSignalViewModel.SignalData,
                 this.secondSignalViewModel.SignalData);
         }
@@ -229,24 +233,24 @@
                 switch (this.Operation)
                 {
                     case "UNIFORM SAMPLING":
-                        ConversionOperations.Sampling(
+                        Operations.Sampling(
                             this.firstSignalViewModel.SignalData,
                             this.secondSignalViewModel.SignalData,
                             this.SamplingFrequency);
                         break;
                     case "UNIFORM QUANTIZATION":
-                        ConversionOperations.Quantization(
+                        Operations.Quantization(
                             this.firstSignalViewModel.SignalData,
                             this.secondSignalViewModel.SignalData,
                             this.QuantizationLevels);
                         break;
                     case "ZERO-ORDER HOLD":
-                        ConversionOperations.ZeroOrderHold(
+                        Operations.ZeroOrderHold(
                             this.firstSignalViewModel.SignalData,
                             this.secondSignalViewModel.SignalData);
                         break;
                     case "SINC RECONSTRUCTION":
-                        ConversionOperations.SincReconstruction(
+                        Operations.SincReconstruction(
                             this.firstSignalViewModel.SignalData,
                             this.secondSignalViewModel.SignalData,
                             this.QuantizationLevels);

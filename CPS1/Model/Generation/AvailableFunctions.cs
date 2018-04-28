@@ -1,12 +1,13 @@
-﻿namespace CPS1.Model
+﻿namespace CPS1.Model.Generation
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Linq;
-    using System.Reflection;
 
+    using CPS1.Model.Composition;
     using CPS1.Model.Exceptions;
+    using CPS1.Model.SignalData;
     using CPS1.Properties;
 
     public static class AvailableFunctions

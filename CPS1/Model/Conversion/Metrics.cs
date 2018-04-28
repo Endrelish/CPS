@@ -1,9 +1,11 @@
-﻿namespace CPS1.Model
+﻿namespace CPS1.Model.Conversion
 {
     using System;
     using System.Linq;
 
-    public static class ConversionMetrics
+    using CPS1.Model.SignalData;
+
+    public static class Metrics
     {
         public static double MaximumDifference(FunctionData first, FunctionData second)
         {

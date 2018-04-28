@@ -1,12 +1,16 @@
 ﻿namespace CPS1.ViewModel
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
 
-    using CPS1.Annotations;
     using CPS1.Model;
+    using CPS1.Model.Generation;
+    using CPS1.Model.Serialization;
+    using CPS1.Model.SignalData;
+    using CPS1.Properties;
     using CPS1.View;
 
     public class SignalViewModel : INotifyPropertyChanged
@@ -60,44 +64,15 @@
             }
         }
 
-        public void Compose(SignalViewModel viewModel, Operation operation)
+        public IEnumerable<string> SignalsLabels
         {
-            var data = viewModel.SignalData;
-            if (operation == Operation.Divide && data.Points.Any(p => Math.Abs(p.Y) < double.Epsilon))
+            get
             {
-                this.SignalData.Continuous.Value = false;
-            }
-
-            if (this.SignalData.Type != Signal.Composite)
-            {
-                this.SignalData.Function = AvailableFunctions.GetFunction(this.SignalData.Type);
-            }
-
-            if (data.Type != Signal.Composite)
-            {
-                data.Function = AvailableFunctions.GetFunction(data.Type);
-            }
-
-            this.SignalData.Type = Signal.Composite;
-            if (data.Function != null && this.SignalData.Function != null)
-            {
-                // TODO Think about a proper way of implementing this feature
-                this.SignalData.Continuous.Value = this.SignalData.Continuous.Value && data.Continuous.Value;
-                this.SignalData.Function = FunctionComposer.ComposeFunction(
-                    this.SignalData.Function,
-                    data.Function,
-                    data,
-                    operation);
-                Generator.GenerateSignal(this.SignalData);
-            }
-            else
-            {
-                this.SimpleCompose(data, operation);
-                this.SignalData.PointsUpdate();
-                Histogram.GetHistogram(this.SignalData);
+                return AvailableFunctions.Functions.Values.Select(p => p.Item3);
             }
         }
 
+        
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -138,11 +113,7 @@
                 var data = this.serializer.Deserialize(filename);
 
                 this.SignalData.AssignSignal(data);
-
-                // Histogram.GetHistogram(this.SignalFirst);
-                // this.SignalFirst.HistogramPointsUpdate();
-                // this.SignalFirst.PointsUpdate();
-                // this.SignalFirst.AllChanged();
+                
             }
         }
 
@@ -165,198 +136,6 @@
             this.SignalData.RequiredAttributes = AvailableFunctions.GetRequiredParameters(this.SignalData.Type);
         }
 
-        private void SimpleAdd(FunctionData data)
-        {
-            if (this.SignalData.Continuous.Value && data.Continuous.Value)
-            {
-                foreach (var point in this.SignalData.Points)
-                {
-                    if (data.Points.Any(p => p.X == point.X))
-                    {
-                        point.Y += data.Points.First(p => p.X == point.X).Y;
-                    }
-                    else
-                    {
-                        point.Y += (data.Points.First(a => a.X == data.Points.Where(p => p.X < point.X).Max(p => p.X)).Y
-                                    + data.Points.First(a => a.X == data.Points.Where(p => p.X > point.X).Min(p => p.X))
-                                        .Y) / 2.0d;
-                    }
-                }
-            }
-            else
-            {
-                foreach (var point in this.SignalData.Points)
-                {
-                    if (data.Points.Any(p => p.X == point.X))
-                    {
-                        point.Y += data.Points.First(p => p.X == point.X).Y;
-                    }
-                }
-
-                this.SignalData.Points.AddRange(
-                    data.Points.Where(p => !this.SignalData.Points.Select(a => a.X).Contains(p.X)));
-            }
-        }
-
-        private void SimpleCompose(FunctionData data, Operation operation)
-        {
-            switch (operation)
-            {
-                case Operation.Add:
-                    this.SimpleAdd(data);
-                    break;
-                case Operation.Subtract:
-                    this.SimpleSubtract(data);
-                    break;
-                case Operation.Multiply:
-                    this.SimpleMultiply(data);
-                    break;
-                case Operation.Divide:
-                    this.SimpleDivide(data);
-                    break;
-            }
-        }
-
-        private void SimpleDivide(FunctionData data)
-        {
-            if (this.SignalData.Continuous.Value && data.Continuous.Value)
-            {
-                for (var i = 0; i < this.SignalData.Points.Count; i++)
-                {
-                    var point = this.SignalData.Points[i];
-                    if (data.Points.Any(p => Math.Abs(p.X - point.X) < double.Epsilon))
-                    {
-                        try
-                        {
-                            point.Y /= data.Points.First(p => Math.Abs(p.X - point.X) < double.Epsilon).Y;
-                        }
-                        catch (DivideByZeroException)
-                        {
-                            this.SignalData.Points.RemoveAt(i--);
-                        }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            point.Y /=
-                                (data.Points.First(
-                                     a => Math.Abs(a.X - data.Points.Where(p => p.X < point.X).Max(p => p.X))
-                                          < double.Epsilon).Y + data.Points.First(
-                                     a => Math.Abs(a.X - data.Points.Where(p => p.X > point.X).Min(p => p.X))
-                                          < double.Epsilon).Y) / 2.0d;
-                        }
-                        catch (DivideByZeroException)
-                        {
-                            this.SignalData.Points.RemoveAt(i--);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                for (var i = 0; i < this.SignalData.Points.Count; i++)
-                {
-                    var point = this.SignalData.Points[i];
-                    if (data.Points.Any(p => Math.Abs(p.X - point.X) < double.Epsilon))
-                    {
-                        try
-                        {
-                            point.Y /= data.Points.First(p => Math.Abs(p.X - point.X) < double.Epsilon).Y;
-                        }
-                        catch (DivideByZeroException)
-                        {
-                            this.SignalData.Points.RemoveAt(i--);
-                        }
-                    }
-                    else
-                    {
-                        this.SignalData.Points.RemoveAt(i--);
-                    }
-                }
-            }
-        }
-
-        private void SimpleMultiply(FunctionData data)
-        {
-            if (this.SignalData.Continuous.Value && data.Continuous.Value)
-            {
-                foreach (var point in this.SignalData.Points)
-                {
-                    if (data.Points.Any(p => Math.Abs(p.X - point.X) < double.Epsilon))
-                    {
-                        point.Y *= data.Points.First(p => Math.Abs(p.X - point.X) < double.Epsilon).Y;
-                    }
-                    else
-                    {
-                        point.Y *=
-                            (data.Points.First(
-                                 a => Math.Abs(a.X - data.Points.Where(p => p.X < point.X).Max(p => p.X))
-                                      < double.Epsilon).Y + data.Points.First(
-                                 a => Math.Abs(a.X - data.Points.Where(p => p.X > point.X).Min(p => p.X))
-                                      < double.Epsilon).Y) / 2.0d;
-                    }
-                }
-            }
-            else
-            {
-                foreach (var point in this.SignalData.Points)
-                {
-                    if (data.Points.Any(p => Math.Abs(p.X - point.X) < double.Epsilon))
-                    {
-                        point.Y *= data.Points.First(p => Math.Abs(p.X - point.X) < double.Epsilon).Y;
-                    }
-                    else
-                    {
-                        point.Y = 0;
-                    }
-                }
-            }
-        }
-
-        private void SimpleSubtract(FunctionData data)
-        {
-            if (this.SignalData.Continuous.Value && data.Continuous.Value)
-            {
-                foreach (var point in this.SignalData.Points)
-                {
-                    if (data.Points.Any(p => Math.Abs(p.X - point.X) < double.Epsilon))
-                    {
-                        point.Y -= data.Points.First(p => Math.Abs(p.X - point.X) < double.Epsilon).Y;
-                    }
-                    else
-                    {
-                        point.Y -=
-                            (data.Points.First(
-                                 a => Math.Abs(a.X - data.Points.Where(p => p.X < point.X).Max(p => p.X))
-                                      < double.Epsilon).Y + data.Points.First(
-                                 a => Math.Abs(a.X - data.Points.Where(p => p.X > point.X).Min(p => p.X))
-                                      < double.Epsilon).Y) / 2.0d;
-                    }
-                }
-            }
-            else
-            {
-                foreach (var point in this.SignalData.Points)
-                {
-                    if (data.Points.Any(p => Math.Abs(p.X - point.X) < double.Epsilon))
-                    {
-                        point.Y -= data.Points.First(p => Math.Abs(p.X - point.X) < double.Epsilon).Y;
-                    }
-                }
-
-                this.SignalData.Points.AddRange(
-                    data.Points.Where(p => !this.SignalData.Points.Select(a => a.X).Contains(p.X))
-                        .Select(p => new Point(p.X, p.Y * -1)));
-            }
-
-            foreach (var point in this.SignalData.Points)
-            {
-                if (Math.Abs(point.Y) < 10E-10)
-                {
-                    point.Y = 0;
-                }
-            }
-        }
+        
     }
 }

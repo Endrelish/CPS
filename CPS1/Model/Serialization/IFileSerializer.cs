@@ -1,6 +1,6 @@
-﻿namespace CPS1.Model
+﻿namespace CPS1.Model.Serialization
 {
-    using System.Collections.Generic;
+    using CPS1.Model.SignalData;
 
     public interface IFileSerializer
     {

@@ -1,8 +1,9 @@
-﻿namespace CPS1.Model
+﻿namespace CPS1.Model.Composition
 {
     using System;
-    using System.Collections.Generic;
-    using System.Threading;
+
+    using CPS1.Model.SignalData;
+
     [Serializable]
     public static class FunctionComposer
     {

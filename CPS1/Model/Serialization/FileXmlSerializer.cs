@@ -1,8 +1,9 @@
-﻿namespace CPS1.Model
+﻿namespace CPS1.Model.Serialization
 {
-    using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
+
+    using CPS1.Model.SignalData;
 
     public class FileXmlSerializer : IFileSerializer
     {

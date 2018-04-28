@@ -1,4 +1,4 @@
-﻿namespace CPS1.Model
+﻿namespace CPS1.Model.SignalData
 {
     using System;
     using System.Runtime.Serialization;

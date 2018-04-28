@@ -1,10 +1,13 @@
-﻿namespace CPS1.Model
+﻿namespace CPS1.Model.Conversion
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    public static class ConversionOperations
+    using CPS1.Model.Generation;
+    using CPS1.Model.SignalData;
+
+    public static class Operations
     {
 
         private static readonly Func<double, double> sincFunc = t =>

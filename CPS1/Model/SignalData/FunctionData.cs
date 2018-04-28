@@ -1,4 +1,4 @@
-﻿namespace CPS1.Model
+﻿namespace CPS1.Model.SignalData
 {
     using System;
     using System.Collections.Generic;
@@ -7,8 +7,8 @@
     using System.Runtime.CompilerServices;
     using System.Runtime.Serialization;
 
+    using CPS1.Model.Generation;
     using CPS1.Properties;
-    using CPS1.ViewModel;
 
     using LiveCharts;
 

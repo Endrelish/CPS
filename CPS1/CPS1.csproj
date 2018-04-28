@@ -83,18 +83,17 @@
     <Compile Include="Converters\LogarithmConverter.cs" />
     <Compile Include="Converters\PointSizeContinuousConverter.cs" />
     <Compile Include="Converters\VisibilityInvertionConverter.cs" />
-    <Compile Include="Model\ConversionMetrics.cs" />
-    <Compile Include="Model\ConversionOperations.cs" />
+    <Compile Include="Model\Conversion\Metrics.cs" />
+    <Compile Include="Model\Conversion\Operations.cs" />
     <Compile Include="Model\Exceptions\InvalidFunctionException.cs" />
     <Compile Include="Model\Exceptions\SignalNotFoundException.cs" />
-    <Compile Include="Model\FileXmlSerializer.cs" />
-    <Compile Include="Model\AvailableFunctions.cs" />
-    <Compile Include="Model\FunctionComposer.cs" />
-    <Compile Include="Model\Operation.cs" />
-    <Compile Include="Model\SerializationFunctionHolder.cs" />
-    <Compile Include="Properties\Annotations1.cs" />
+    <Compile Include="Model\Serialization\FileXmlSerializer.cs" />
+    <Compile Include="Model\Generation\AvailableFunctions.cs" />
+    <Compile Include="Model\Composition\FunctionComposer.cs" />
+    <Compile Include="Model\Composition\Operation.cs" />
+    <Compile Include="Model\Composition\Operations.cs" />
     <Compile Include="ViewModel\CommandHandler.cs" />
-    <Compile Include="Model\FileBinarySerializer.cs" />
+    <Compile Include="Model\Serialization\FileBinarySerializer.cs" />
     <Compile Include="ViewModel\CompositionViewModel.cs" />
     <Compile Include="ViewModel\ConversionViewModel.cs" />
     <Compile Include="ViewModel\SignalViewModel.cs" />
@@ -103,17 +102,17 @@
     </Compile>
     <Compile Include="View\FileDialogWpf.cs" />
     <Compile Include="Converters\FrequencyPeriodConverter.cs" />
-    <Compile Include="Model\FunctionAttribute.cs" />
-    <Compile Include="Model\FunctionData.cs" />
-    <Compile Include="Model\Required.cs" />
-    <Compile Include="Model\Signal.cs" />
-    <Compile Include="Model\Generator.cs" />
-    <Compile Include="Model\Histogram.cs" />
+    <Compile Include="Model\SignalData\FunctionAttribute.cs" />
+    <Compile Include="Model\SignalData\FunctionData.cs" />
+    <Compile Include="Model\SignalData\Required.cs" />
+    <Compile Include="Model\Generation\Signal.cs" />
+    <Compile Include="Model\Generation\Generator.cs" />
+    <Compile Include="Model\Generation\Histogram.cs" />
     <Compile Include="View\HistogramChart.xaml.cs">
       <DependentUpon>HistogramChart.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\IFileDialog.cs" />
-    <Compile Include="Model\IFileSerializer.cs" />
+    <Compile Include="Model\Serialization\IFileSerializer.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="View\SignalChart.xaml.cs">
@@ -154,7 +153,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Point.cs" />
+    <Compile Include="Model\SignalData\Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

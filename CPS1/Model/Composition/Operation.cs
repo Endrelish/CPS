@@ -1,4 +1,4 @@
-﻿namespace CPS1.Model
+﻿namespace CPS1.Model.Composition
 {
     public enum Operation
     {

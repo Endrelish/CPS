@@ -1,4 +1,4 @@
-﻿namespace CPS1.Model
+﻿namespace CPS1.Model.Generation
 {
     public enum Signal
     {

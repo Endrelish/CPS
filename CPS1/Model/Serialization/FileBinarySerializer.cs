@@ -1,9 +1,9 @@
-﻿namespace CPS1.Model
+﻿namespace CPS1.Model.Serialization
 {
-    using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization.Formatters.Binary;
+
+    using CPS1.Model.SignalData;
 
     public class FileBinarySerializer : IFileSerializer
     {
@@ -14,7 +14,7 @@
         public FileBinarySerializer()
         {
             this.formatter = new BinaryFormatter();
-            Format = "Binary files (*.bin)|*.bin";
+            this.Format = "Binary files (*.bin)|*.bin";
         }
 
         public FunctionData Deserialize(string filename)

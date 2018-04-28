@@ -1,6 +1,8 @@
-﻿namespace CPS1.Model
+﻿namespace CPS1.Model.Generation
 {
     using System;
+
+    using CPS1.Model.SignalData;
 
     public static class Generator
     {
