@@ -6,39 +6,47 @@
              xmlns:local="clr-namespace:CPS1"
              xmlns:converters="clr-namespace:CPS1.Converters"
              xmlns:view="clr-namespace:CPS1.View"
-             mc:Ignorable="d" d:DesignWidth="400" Height="750">
+             mc:Ignorable="d" d:DesignWidth="400">
     <UserControl.Resources>
         <Image x:Key="SaveIcon" Source="../resources/SaveIcon.png" />
         <Image x:Key="OpenIcon" Source="../resources/OpenIcon.png" />
+        <Style x:Key="TitleStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0 10 0 10"/>
+        </Style>
     </UserControl.Resources>
-    <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+    <ScrollViewer>
+    <Grid VerticalAlignment="Top" Margin="0 0 0 0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
-               Text="SIGNAL TYPE" />
+        <TextBlock Grid.Row="0" Text="SIGNAL TYPE" Style="{StaticResource TitleStyle}"/>
         <ComboBox Grid.Row="1" Margin="25 10 25 10" HorizontalContentAlignment="Left"
               ItemsSource="{Binding SignalsLabels}" SelectedItem="{Binding SignalType}" />
-        <Grid Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" DataContext="{Binding SignalData}">
+        <Grid Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" DataContext="{Binding SignalData}" Margin="0 20 0 20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="25"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="25" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Text="SIGNAL SETTINGS" />
-            <Grid Grid.Row="1" Visibility="{Binding Continuous.Visibility, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock Grid.Row="0" Text="SIGNAL SETTINGS" Style="{StaticResource TitleStyle}"/>
+            <Grid Grid.Row="1" Visibility="{Binding Continuous.Visibility, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0 0 0 10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
@@ -46,23 +54,22 @@
                 <RadioButton Margin="20 0 0 0" Grid.Column="0" Content="Continuous" IsChecked="{Binding Continuous.Value}" GroupName="{Binding}" />
                 <RadioButton Grid.Column="1" Content="Discrete" GroupName="{Binding}" />
             </Grid>
-            <view:Attributes Grid.Row="2" DataContext="{Binding Attributes}"/>
+            <view:Attributes Grid.Row="2" DataContext="{Binding Attributes}" BorderBrush="Transparent"/>
 
-            <TextBlock Grid.Row="3" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Text="HISTOGRAM SETTINGS" />
+            <TextBlock Grid.Row="3" Text="HISTOGRAM SETTINGS" Style="{StaticResource TitleStyle}"/>
             <view:Attributes Grid.Row="4" DataContext="{Binding HistogramAttributes}"/>
-            <view:Parameters Grid.Row="5" Margin="0 50 0 0" DataContext="{Binding Parameters}"/>
-
-            <Button Margin="0 50 0 0" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Top"
-                Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
-                Command="{Binding GenerateSignalCommand}" CommandParameter="{StaticResource First}" />
-            <Button Grid.Row="7" Margin="15 15 15 15" VerticalAlignment="Bottom"
-                HorizontalAlignment="Right" Width="30" Content="{StaticResource SaveIcon}"
-                Command="{Binding SaveCommand}" CommandParameter="{StaticResource First}" BorderThickness="0" Background="White"/>
-            <Button Grid.Row="7" Margin="15 15 60 15" VerticalAlignment="Bottom"
-                HorizontalAlignment="Right" Width="30" Content="{StaticResource OpenIcon}" Command="{Binding OpenCommand}"
-                CommandParameter="{StaticResource First}" BorderThickness="0" Background="White"/>
         </Grid>
+        <Button Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top"
+                Width="100" Height="40" Content="GENERATE" FontWeight="Bold" IsDefault="True"
+                Command="{Binding GenerateSignalCommand}"/>
+        <Button Grid.Row="4" Margin="15 15 15 15" VerticalAlignment="Bottom"
+                HorizontalAlignment="Right" Width="30" Content="{StaticResource SaveIcon}"
+                Command="{Binding SaveCommand}" BorderThickness="0" Background="White"/>
+        <Button Grid.Row="4" Margin="15 15 60 15" VerticalAlignment="Bottom"
+                HorizontalAlignment="Right" Width="30" Content="{StaticResource OpenIcon}" Command="{Binding OpenCommand}" 
+                BorderThickness="0" Background="White"/>
+        <Separator Grid.Row="5" Margin="25 0 25 0" Background="Black"/>
+        <view:Parameters Grid.Row="6" Margin="0 10 0 0" DataContext="{Binding SignalData.Parameters}"/>
     </Grid>
+    </ScrollViewer>
 </UserControl>

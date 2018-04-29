@@ -108,8 +108,7 @@
                         this.Amplitude, this.Period,
                         this.Frequency, this.Samples,
                         this.StartTime, this.Duration,
-                        this.DutyCycle, this.Probability,
-                        this.Continuous
+                        this.DutyCycle, this.Probability
                     });
             this.HistogramAttributes =
                 new List<object>(new object[] { this.HistogramIntervals });
@@ -117,12 +116,14 @@
             this.Points = new List<Point>();
             this.HistogramPoints = new List<Point>();
 
-            this.RequiredAttributes = new Required(false, false, false, false, false, false, false, false);
-            this.Continuous.Value = continuous;
-            this.Type = type;
 
             this.BindAttributesOneWay(this.Frequency, this.Period, new FrequencyPeriodConverter());
             this.BindAttributesOneWay(this.Period, this.Frequency, new FrequencyPeriodConverter());
+            this.RequiredAttributes = new Required(false, false, false, false, false, false, false, false);
+
+            this.Continuous.Value = continuous;
+            this.Type = type;
+
         }
 
         [field: NonSerialized]
@@ -376,7 +377,7 @@
 
             source.PropertyChanged += (sender, args) =>
                 {
-                    if (sender.Equals(source.Value))
+                    if (args.PropertyName.Equals(nameof(source.Value)))
                     {
                         target.Value = (T)(converter.Convert(
                                                source.Value,
@@ -386,13 +387,13 @@
                         return;
                     }
 
-                    if (sender.Equals(source.Visibility))
+                    if (args.PropertyName.Equals(nameof(source.Visibility)))
                     {
                         target.Visibility = source.Visibility;
                         return;
                     }
 
-                    if (sender.Equals(source.MaxValue))
+                    if (args.PropertyName.Equals(nameof(source.MaxValue)))
                     {
                         target.MinValue = (T)(converter.Convert(
                                                   source.MaxValue,
@@ -402,7 +403,7 @@
                         return;
                     }
 
-                    if (sender.Equals(source.MinValue))
+                    if (args.PropertyName.Equals(nameof(source.MinValue)))
                     {
                         target.MaxValue = (T)(converter.Convert(
                                                   source.MinValue,

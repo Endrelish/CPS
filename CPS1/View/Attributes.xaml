@@ -25,5 +25,5 @@
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
-    <ListView ItemsSource="{Binding}" ItemTemplate="{StaticResource Attribute}"/>
+    <ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource Attribute}" BorderBrush="Transparent"/>
 </UserControl>
