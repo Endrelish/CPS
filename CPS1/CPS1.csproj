@@ -79,12 +79,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters\ChartSettingsConverter.cs" />
-    <Compile Include="Converters\LogarithmConverter.cs" />
-    <Compile Include="Converters\PointSizeContinuousConverter.cs" />
-    <Compile Include="Converters\VisibilityInversionConverter.cs" />
+    <Compile Include="Binding\AttributesBinding.cs" />
+    <Compile Include="Binding\ChartSettingsConverter.cs" />
+    <Compile Include="Binding\LogarithmConverter.cs" />
+    <Compile Include="Binding\PointSizeContinuousConverter.cs" />
+    <Compile Include="Binding\VisibilityInversionConverter.cs" />
     <Compile Include="Model\Conversion\Metrics.cs" />
     <Compile Include="Model\Conversion\Operations.cs" />
+    <Compile Include="Model\CommandHandlers\SignalGeneratedCommandHandler.cs" />
     <Compile Include="Model\Exceptions\InvalidFunctionException.cs" />
     <Compile Include="Model\Exceptions\SignalNotFoundException.cs" />
     <Compile Include="Model\Parameters\Parameter.cs" />
@@ -95,7 +97,7 @@
     <Compile Include="Model\Composition\Operations.cs" />
     <Compile Include="Model\Parameters\IParametersProvider.cs" />
     <Compile Include="Model\SignalData\IFunctionAttribute.cs" />
-    <Compile Include="ViewModel\CommandHandler.cs" />
+    <Compile Include="Model\CommandHandlers\CommandHandler.cs" />
     <Compile Include="Model\Serialization\FileBinarySerializer.cs" />
     <Compile Include="ViewModel\CompositionViewModel.cs" />
     <Compile Include="ViewModel\ConversionViewModel.cs" />
@@ -109,8 +111,11 @@
     <Compile Include="View\CompositionSettings.xaml.cs">
       <DependentUpon>CompositionSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ConversionSettings.xaml.cs">
+      <DependentUpon>ConversionSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\FileDialogWpf.cs" />
-    <Compile Include="Converters\FrequencyPeriodConverter.cs" />
+    <Compile Include="Binding\FrequencyPeriodConverter.cs" />
     <Compile Include="Model\SignalData\FunctionAttribute.cs" />
     <Compile Include="Model\SignalData\FunctionData.cs" />
     <Compile Include="Model\SignalData\Required.cs" />
@@ -133,7 +138,7 @@
     <Compile Include="View\SignalSettings.xaml.cs">
       <DependentUpon>SignalSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\StringToDoubleConverter.cs" />
+    <Compile Include="Binding\StringToDoubleConverter.cs" />
     <Page Include="View\AnalogDigitalSignalChart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -143,6 +148,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CompositionSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ConversionSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -208,6 +217,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="resources\OpenIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\ButtonBackground.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

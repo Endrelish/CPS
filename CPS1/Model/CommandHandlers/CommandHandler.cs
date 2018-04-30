@@ -1,4 +1,4 @@
-﻿namespace CPS1.ViewModel
+﻿namespace CPS1.Model.CommandHandlers
 {
     using System;
     using System.Windows.Input;

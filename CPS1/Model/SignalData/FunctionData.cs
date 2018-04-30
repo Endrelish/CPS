@@ -117,8 +117,7 @@
             this.HistogramPoints = new List<Point>();
 
 
-            this.BindAttributesOneWay(this.Frequency, this.Period, new FrequencyPeriodConverter());
-            this.BindAttributesOneWay(this.Period, this.Frequency, new FrequencyPeriodConverter());
+            AttributesBinding.BindAttributesTwoWay(this.Frequency, this.Period, new FrequencyPeriodConverter());
             this.RequiredAttributes = new Required(false, false, false, false, false, false, false, false);
 
             this.Continuous.Value = continuous;
@@ -234,7 +233,6 @@
                 this.Samples.Visibility = value.Samples;
                 this.Probability.Visibility = value.Probability;
                 this.Continuous.Visibility = value.Continuous;
-                this.Continuous.Value = value.Continuous;
             }
         }
 
@@ -262,6 +260,7 @@
                 if (this.type != Signal.Composite)
                 {
                     this.RequiredAttributes = AvailableFunctions.GetRequiredParameters(this.type);
+                    this.Function = AvailableFunctions.GetFunction(this.type);
                 }
             }
         }
@@ -363,68 +362,6 @@
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        private void BindAttributesOneWay<T>(
-            FunctionAttribute<T> source,
-            FunctionAttribute<T> target,
-            IValueConverter converter = null)
-            where T : struct
-        {
-            if (converter == null)
-            {
-                converter = new DefaultConverter();
-            }
-
-            source.PropertyChanged += (sender, args) =>
-                {
-                    if (args.PropertyName.Equals(nameof(source.Value)))
-                    {
-                        target.Value = (T)(converter.Convert(
-                                               source.Value,
-                                               target.Value.GetType(),
-                                               null,
-                                               CultureInfo.InvariantCulture) ?? target.Value);
-                        return;
-                    }
-
-                    if (args.PropertyName.Equals(nameof(source.Visibility)))
-                    {
-                        target.Visibility = source.Visibility;
-                        return;
-                    }
-
-                    if (args.PropertyName.Equals(nameof(source.MaxValue)))
-                    {
-                        target.MinValue = (T)(converter.Convert(
-                                                  source.MaxValue,
-                                                  target.MinValue.GetType(),
-                                                  null,
-                                                  CultureInfo.InvariantCulture) ?? target.MinValue);
-                        return;
-                    }
-
-                    if (args.PropertyName.Equals(nameof(source.MinValue)))
-                    {
-                        target.MaxValue = (T)(converter.Convert(
-                                                  source.MinValue,
-                                                  target.MaxValue.GetType(),
-                                                  null,
-                                                  CultureInfo.InvariantCulture) ?? target.MaxValue);
-                    }
-                };
-        }
-
-        private class DefaultConverter : IValueConverter
-        {
-            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                return value;
-            }
-
-            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                return value;
-            }
-        }
+        
     }
 }

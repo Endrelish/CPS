@@ -1,8 +1,10 @@
 ﻿namespace CPS1.ViewModel
 {
+    using System;
     using System.Windows.Input;
 
     using CPS1.Model;
+    using CPS1.Model.CommandHandlers;
     using CPS1.Model.Composition;
 
     public class CompositionViewModel
@@ -22,40 +24,36 @@
             this.firstSignalViewModel = first;
             this.secondSignalViewModel = second;
 
-            this.firstSignalViewModel.SignalData.PropertyChanged += (sender, args) =>
-                {
-                    this.AddCommand.RaiseCanExecuteChanged();
-                    this.SubtractCommand.RaiseCanExecuteChanged();
-                    this.MultiplyCommand.RaiseCanExecuteChanged();
-                    this.DivideCommand.RaiseCanExecuteChanged();
-                };
-
-            this.secondSignalViewModel.SignalData.PropertyChanged += (sender, args) =>
-                {
-                    this.AddCommand.RaiseCanExecuteChanged();
-                    this.SubtractCommand.RaiseCanExecuteChanged();
-                    this.MultiplyCommand.RaiseCanExecuteChanged();
-                    this.DivideCommand.RaiseCanExecuteChanged();
-                };
+            this.firstSignalViewModel.SignalGenerated += this.SignalsGenerated;
+            this.secondSignalViewModel.SignalGenerated += this.SignalsGenerated;
         }
 
-        public bool SignalsGenerated()
+        private void SignalsGenerated(object sender, EventArgs args)
         {
-            return this.firstSignalViewModel.SignalGenerated && this.secondSignalViewModel.SignalGenerated;
+            this.AddCommand.RaiseCanExecuteChanged();
+            this.DivideCommand.RaiseCanExecuteChanged();
+            this.MultiplyCommand.RaiseCanExecuteChanged();
+            this.SubtractCommand.RaiseCanExecuteChanged();
+            this.SwapCommand.RaiseCanExecuteChanged();
+        }
+
+        public bool AreSignalsGenerated()
+        {
+            return this.firstSignalViewModel.IsSignalGenerated && this.secondSignalViewModel.IsSignalGenerated;
         }
 
         public CommandHandler AddCommand => this.addCommand
-                                      ?? (this.addCommand = new CommandHandler(this.AddSignals, this.SignalsGenerated));
+                                      ?? (this.addCommand = new CommandHandler(this.AddSignals, this.AreSignalsGenerated));
         public CommandHandler DivideCommand => this.divideCommand
                                          ?? (this.divideCommand = new CommandHandler(
                                                  this.DivideSignals,
-                                                 this.SignalsGenerated));
+                                                 this.AreSignalsGenerated));
         public CommandHandler MultiplyCommand => this.multiplyCommand ?? (this.multiplyCommand = new CommandHandler(
                                                                         this.MultiplySignals,
-                                                                        () => this.SignalsGenerated()));
+                                                                        () => this.AreSignalsGenerated()));
         public CommandHandler SubtractCommand => this.subtractCommand ?? (this.subtractCommand = new CommandHandler(
                                                                         this.SubtractSignals,
-                                                                        () => this.SignalsGenerated()));
+                                                                        () => this.AreSignalsGenerated()));
         private void AddSignals(object obj)
         {
             if (obj is short no)
@@ -117,7 +115,7 @@
         public CommandHandler SwapCommand => this.swapCommand
                                        ?? (this.swapCommand = new CommandHandler(
                                                this.SwapSignals,
-                                               this.SignalsGenerated));
+                                               this.AreSignalsGenerated));
 
         private void SwapSignals(object obj)
         {

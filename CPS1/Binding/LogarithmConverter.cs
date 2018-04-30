@@ -9,16 +9,16 @@
         {
             if (value is int integer)
             {
-                return Math.Log(integer, 2);
+                return (int)Math.Ceiling(Math.Log(integer, 2));
             }
             return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (int.TryParse(value as string, out var integer))
+            if (value is int integer)
             {
-                return Math.Pow(2, integer);
+                return (int)Math.Pow(2, integer);
             }
             return null;
         }

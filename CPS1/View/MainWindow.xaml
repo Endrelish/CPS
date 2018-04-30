@@ -13,6 +13,7 @@
         Title="MainWindow"
         WindowState="Maximized"
         Height="1000" Width="1800"
+        MinHeight="600" MinWidth="1000"
         Left="60" Top="20">
     <Window.DataContext>
         <viewModel:MainViewModel/>
@@ -51,14 +52,14 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!--Menu bar.-->
-        <Menu Grid.Row="0">
+        <Menu Grid.Row="0" Background="Transparent">
             <MenuItem Header="Clear _1. graph." Command="{Binding FirstSignalViewModel.ClearCommand}"/>
             <MenuItem Header="Clear _2. graph." Command="{Binding SecondSignalViewModel.ClearCommand}" CommandParameter="2"/>
             <MenuItem Header="_Swap signals." Command="{Binding CompositionViewModel.SwapCommand}"/>
         </Menu>
 
         <!--TODO Remember last open tab.-->
-        <TabControl Grid.Row="1" SelectedIndex="1">
+        <TabControl Grid.Row="1" SelectedIndex="1" Background="Transparent">
         <TabItem Header="Operations on signals">
             <Grid Margin="5 5 5 5">
                 <Grid.ColumnDefinitions>
@@ -81,7 +82,7 @@
                    VerticalAlignment="Center"
                    Text="SECOND SIGNAL GRAPH AND HISTOGRAM" />
 
-                    <TabControl Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
+                    <TabControl Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}" Background="Transparent">
                         <!--First signal settings tab.-->
                         <TabItem Header="First signal">
                             <view:SignalSettings DataContext="{Binding FirstSignalViewModel}" VerticalAlignment="Top"/>
@@ -90,7 +91,7 @@
                             <view:SignalSettings DataContext="{Binding SecondSignalViewModel}" VerticalAlignment="Top"/>
                         </TabItem>
                         <TabItem Header="Operations">
-                            <!--TODO Create Operations View-->
+                            <view:CompositionSettings DataContext="{Binding CompositionViewModel}" VerticalAlignment="Top"/>
                         </TabItem>
                     </TabControl>
                     <Grid Grid.Column="1" Grid.Row="1">
@@ -130,99 +131,15 @@
                 <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
                     <TabControl Grid.Row="0">
                         <TabItem Header="Generate signal">
-                            <view:SignalSettings DataContext="{Binding FirstSignalViewModel}"></view:SignalSettings>
+                            <view:SignalSettings DataContext="{Binding FirstSignalViewModel}" VerticalAlignment="Top"/>
                         </TabItem>
                         <TabItem Header="Operations">
-                            <!--<Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Name="AdTextBlock" Visibility="{Binding FirstSignalViewModel.SignalData.Continuous.Value, Converter={StaticResource BooleanToVisibilityConverter}}" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
-                                           Text="A/D CONVERSION" />
-                                <Grid Grid.Row="1" Visibility="{Binding ElementName=AdTextBlock, Path=Visibility}">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-
-                                    <ComboBox Grid.Row="0" Margin="10 10 10 10"  ItemsSource="{Binding AdOperations}" SelectedItem="{Binding AdOperation}"/>
-                                    <Grid Grid.Row="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="8*"/>
-                                            <ColumnDefinition Width="2*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-                                        
-                                        <TextBlock Grid.Row="0" Grid.Column="0" Visibility="{Binding SamplingFrequencyVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="SAMPLING FREQUENCY"/>
-                                        <TextBox Grid.Row="0" Grid.Column="1" Visibility="{Binding SamplingFrequencyVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="{Binding SamplingFrequency}" />
-
-                                        <TextBlock Grid.Row="1" Grid.Column="0" Visibility="{Binding QuantizationLevelsVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="QUANTIZATION LEVELS"/>
-                                        <TextBox Grid.Row="1" Grid.Column="1" Visibility="{Binding QuantizationLevelsVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="{Binding QuantizationLevels, UpdateSourceTrigger=PropertyChanged}" Name="Levels"/>
-                                        
-                                        <TextBlock Grid.Row="2" Grid.Column="0" Visibility="{Binding QuantizationLevelsVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="QUANTIZATION BITS"/>
-                                            <TextBox Grid.Row="2" Grid.Column="1" Visibility="{Binding QuantizationLevelsVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="{Binding QuantizationLevels, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource LC}}" />
-                                        
-                                    </Grid>
-                                    <Button Grid.Row="2" HorizontalAlignment="Center" Padding="7 7 7 7" VerticalAlignment="Top" Content="COMPUTE" FontWeight="Bold" Command="{Binding ComputeCommand}" CommandParameter="AD"/>
-                                </Grid>
-
-                                <TextBlock Grid.Row="2" Name="DaTextBlock" Visibility="{Binding ElementName=AdTextBlock, Path=Visibility, Converter={StaticResource VIC}}" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
-                                           Text="D/A CONVERSION" />
-                                <Grid Grid.Row="3" Visibility="{Binding ElementName=DaTextBlock, Path=Visibility}">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    
-                                 <ComboBox Grid.Row="0" Margin="10 10 10 10"  ItemsSource="{Binding DaOperations}" SelectedItem="{Binding DaOperation}"/>
-                                    <Grid Grid.Row="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="8*"/>
-                                            <ColumnDefinition Width="2*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row="0" Grid.Column="0" Visibility="{Binding SamplingFrequencyVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="SAMPLING FREQUENCY"/>
-                                        <TextBox Grid.Row="0" Grid.Column="1" Visibility="{Binding SamplingFrequencyVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="{Binding SamplingFrequency}" />
-
-                                        <TextBlock Grid.Row="1" Grid.Column="0" Visibility="{Binding QuantizationLevelsVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="NUMBER OF SAMPLES"/>
-                                        <TextBox Grid.Row="1" Grid.Column="1" Visibility="{Binding QuantizationLevelsVisibility, Converter={StaticResource BTVC}}" Margin="10 10 10 10" Text="{Binding QuantizationLevels}" />
-
-                                    </Grid>
-                                    <Button Grid.Row="2" HorizontalAlignment="Center" Padding="7 7 7 7" VerticalAlignment="Top" Content="COMPUTE" FontWeight="Bold" Command="{Binding ComputeCommand}" CommandParameter="DA"/>
-                                </Grid>
-                                <StackPanel Grid.Row="4" VerticalAlignment="Bottom" Margin ="0 0 0 50">
-                                    <Control Template="{StaticResource Parameter}" DataContext="{Binding MeanSquaredError}"/>
-                                    <Control Template="{StaticResource Parameter}" DataContext="{Binding MaximumDifference}"/>
-                                    <Control Template="{StaticResource Parameter}" DataContext="{Binding SignalToNoiseRatio}"/>
-                                    <Control Template="{StaticResource Parameter}" DataContext="{Binding PeakSignalToNoiseRatio}"/>
-                                </StackPanel>
-                            </Grid>-->
+                            <view:ConversionSettings DataContext="{Binding ConversionViewModel}" VerticalAlignment="Top"/>
                         </TabItem>
                     </TabControl>
-                </ScrollViewer>
-                <view:AnalogDigitalSignalChart Grid.Row="1" Grid.Column="1" Style="{StaticResource ChartStyle}"/>
-            </Grid>
+                    </ScrollViewer>
+                <view:AnalogDigitalSignalChart Grid.Row="1" Grid.Column="1" DataContext="{Binding ConversionViewModel}" Style="{StaticResource ChartStyle}" />
+                </Grid>
         </TabItem>
     </TabControl>
     </Grid>

@@ -1,4 +1,6 @@
-﻿namespace CPS1.Model.SignalData
+﻿using CPS1.ViewModel;
+
+namespace CPS1.Model.SignalData
 {
     using System;
     using System.ComponentModel;
@@ -91,7 +93,6 @@
                 {
                     return;
                 }
-
                 this.value = value;
                 this.OnPropertyChanged();
             }

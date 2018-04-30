@@ -21,7 +21,7 @@
             };
         public static void ZeroOrderHold(FunctionData first, FunctionData second)
         {
-            first.AssignSignal(first);
+            second.AssignSignal(first);
             second.Continuous.Value = true;
             second.Samples.Value = 500;
 

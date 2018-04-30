@@ -13,5 +13,6 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:VisibilityInversionConverter x:Key="VisibilityInversionConverter" />
         <converters:LogarithmConverter x:Key="LogarithmConverter"/>
+        <Image x:Key="ButtonBackground" Source="../resources/ButtonBackground.png"/>
     </Application.Resources>
 </Application>
