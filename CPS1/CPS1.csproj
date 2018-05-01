@@ -103,6 +103,12 @@
     <Compile Include="Model\Conversion\Operations.cs" />
     <Compile Include="Model\CommandHandlers\SignalGeneratedCommandHandler.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Convolution.cs" />
+    <Compile Include="Model\ConvolutionFiltrationCorrelation\Filters\IFilter.cs" />
+    <Compile Include="Model\ConvolutionFiltrationCorrelation\Windows\BlackmanWindow.cs" />
+    <Compile Include="Model\ConvolutionFiltrationCorrelation\Windows\HammingWindow.cs" />
+    <Compile Include="Model\ConvolutionFiltrationCorrelation\Windows\HanningWindow.cs" />
+    <Compile Include="Model\ConvolutionFiltrationCorrelation\Windows\IWindow.cs" />
+    <Compile Include="Model\ConvolutionFiltrationCorrelation\Windows\RectangularWindow.cs" />
     <Compile Include="Model\Exceptions\InvalidFunctionException.cs" />
     <Compile Include="Model\Exceptions\SignalNotFoundException.cs" />
     <Compile Include="Model\Parameters\Parameter.cs" />
