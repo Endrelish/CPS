@@ -16,7 +16,7 @@
         MinHeight="600" MinWidth="1000"
         Left="60" Top="20">
     <Window.DataContext>
-        <viewModel:MainViewModel/>
+        <viewModel:MainViewModel />
     </Window.DataContext>
     <Window.Resources>
         <Style TargetType="Control" x:Key="ChartStyle">
@@ -28,19 +28,21 @@
 
 
         <ControlTemplate x:Key="Parameter">
-            <Grid Margin="25 5 25 5" Visibility="{Binding Visibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid Margin="25 5 25 5"
+                  Visibility="{Binding Visibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
+                <TextBlock Text="{Binding Name}" HorizontalAlignment="Left" />
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="70" />
                     </Grid.ColumnDefinitions>
                     <Separator />
-                    <TextBlock Grid.Column="1" Margin="10,0,0,0" Text="{Binding Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
+                    <TextBlock Grid.Column="1" Margin="10,0,0,0"
+                               Text="{Binding Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
                 </Grid>
             </Grid>
         </ControlTemplate>
@@ -48,99 +50,115 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!--Menu bar.-->
         <Menu Grid.Row="0" Background="Transparent">
-            <MenuItem Header="Clear _1. graph." Command="{Binding FirstSignalViewModel.ClearCommand}"/>
-            <MenuItem Header="Clear _2. graph." Command="{Binding SecondSignalViewModel.ClearCommand}" CommandParameter="2"/>
-            <MenuItem Header="_Swap signals." Command="{Binding CompositionViewModel.SwapCommand}"/>
+            <MenuItem Header="Clear _1. graph." Command="{Binding FirstSignalViewModel.ClearCommand}" />
+            <MenuItem Header="Clear _2. graph." Command="{Binding SecondSignalViewModel.ClearCommand}"
+                      CommandParameter="2" />
+            <MenuItem Header="_Swap signals." Command="{Binding CompositionViewModel.SwapCommand}" />
         </Menu>
 
         <!--TODO Remember last open tab.-->
         <TabControl Grid.Row="1" SelectedIndex="1" Background="Transparent">
-        <TabItem Header="Operations on signals">
-            <Grid Margin="5 5 5 5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50*" />
-                    <ColumnDefinition Width="75*" />
-                    <ColumnDefinition Width="75*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <!--Tab headers.-->
-                <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Text="MENU" />
-                <TextBlock Grid.Column="1" Grid.Row="0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Text="FIRST SIGNAL GRAPH AND HISTOGRAM" />
-                <TextBlock Grid.Column="2" Grid.Row="0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Text="SECOND SIGNAL GRAPH AND HISTOGRAM" />
+            <TabItem Header="Operations on signals">
+                <Grid Margin="5 5 5 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*" />
+                        <ColumnDefinition Width="75*" />
+                        <ColumnDefinition Width="75*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <!--Tab headers.-->
+                    <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="MENU" />
+                    <TextBlock Grid.Column="1" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="FIRST SIGNAL GRAPH AND HISTOGRAM" />
+                    <TextBlock Grid.Column="2" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="SECOND SIGNAL GRAPH AND HISTOGRAM" />
 
-                    <TabControl Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}" Background="Transparent">
+                    <TabControl Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}"
+                                Background="Transparent">
                         <!--First signal settings tab.-->
                         <TabItem Header="First signal">
-                            <view:SignalSettings DataContext="{Binding FirstSignalViewModel}" VerticalAlignment="Top"/>
+                            <view:SignalSettings DataContext="{Binding FirstSignalViewModel}" VerticalAlignment="Top" />
                         </TabItem>
                         <TabItem Header="Second signal">
-                            <view:SignalSettings DataContext="{Binding SecondSignalViewModel}" VerticalAlignment="Top"/>
+                            <view:SignalSettings DataContext="{Binding SecondSignalViewModel}" VerticalAlignment="Top" />
                         </TabItem>
                         <TabItem Header="Operations">
-                            <view:CompositionSettings DataContext="{Binding CompositionViewModel}" VerticalAlignment="Top"/>
+                            <view:CompositionSettings DataContext="{Binding CompositionViewModel}"
+                                                      VerticalAlignment="Top" />
                         </TabItem>
                     </TabControl>
                     <Grid Grid.Column="1" Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50*" />
-                        <RowDefinition Height="50*" />
-                    </Grid.RowDefinitions>
-                    <view:SignalChart DataContext="{Binding FirstSignalViewModel.SignalData}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
-                    <view:HistogramChart DataContext="{Binding FirstSignalViewModel.SignalData}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50*" />
+                            <RowDefinition Height="50*" />
+                        </Grid.RowDefinitions>
+                        <view:SignalChart DataContext="{Binding FirstSignalViewModel.SignalData}" Grid.Row="0"
+                                          Style="{StaticResource ChartStyle}" />
+                        <view:HistogramChart DataContext="{Binding FirstSignalViewModel.SignalData}" Grid.Row="1"
+                                             Style="{StaticResource ChartStyle}" />
+                    </Grid>
+                    <Grid Grid.Column="2" Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50*" />
+                            <RowDefinition Height="50*" />
+                        </Grid.RowDefinitions>
+                        <view:SignalChart DataContext="{Binding SecondSignalViewModel.SignalData}" Grid.Row="0"
+                                          Style="{StaticResource ChartStyle}" />
+                        <view:HistogramChart DataContext="{Binding SecondSignalViewModel.SignalData}" Grid.Row="1"
+                                             Style="{StaticResource ChartStyle}" />
+                    </Grid>
                 </Grid>
-                <Grid Grid.Column="2" Grid.Row="1">
+            </TabItem>
+            <TabItem Header="Sampling and quantization">
+                <Grid Margin="5 5 5 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*" />
+                        <ColumnDefinition Width="75*" />
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="50*" />
-                        <RowDefinition Height="50*" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
-                        <view:SignalChart DataContext="{Binding SecondSignalViewModel.SignalData}" Grid.Row="0" Style="{StaticResource ChartStyle}" />
-                        <view:HistogramChart DataContext="{Binding SecondSignalViewModel.SignalData}" Grid.Row="1" Style="{StaticResource ChartStyle}" />
-                </Grid>
-            </Grid>
-        </TabItem>
-        <TabItem Header="Sampling and quantization">
-            <Grid Margin="5 5 5 5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25*" />
-                    <ColumnDefinition Width="75*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Text="MENU" />
-                <TextBlock Grid.Column="1" Grid.Row="0" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Text="CHART" />
-                <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
-                    <TabControl Grid.Row="0">
-                        <TabItem Header="Generate signal">
-                            <view:SignalSettings DataContext="{Binding FirstSignalViewModel}" VerticalAlignment="Top"/>
-                        </TabItem>
-                        <TabItem Header="Operations">
-                            <view:ConversionSettings DataContext="{Binding ConversionViewModel}" VerticalAlignment="Top"/>
-                        </TabItem>
-                    </TabControl>
+                    <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="MENU" />
+                    <TextBlock Grid.Column="1" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="CHART" />
+                    <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
+                        <TabControl Grid.Row="0">
+                            <TabItem Header="Generate signal">
+                                <view:SignalSettings DataContext="{Binding FirstSignalViewModel}"
+                                                     VerticalAlignment="Top" />
+                            </TabItem>
+                            <TabItem Header="Operations">
+                                <view:ConversionSettings DataContext="{Binding ConversionViewModel}"
+                                                         VerticalAlignment="Top" />
+                            </TabItem>
+                        </TabControl>
                     </ScrollViewer>
-                <view:AnalogDigitalSignalChart Grid.Row="1" Grid.Column="1" DataContext="{Binding ConversionViewModel}" Style="{StaticResource ChartStyle}" />
+                    <view:AnalogDigitalSignalChart Grid.Row="1" Grid.Column="1"
+                                                   DataContext="{Binding ConversionViewModel}"
+                                                   Style="{StaticResource ChartStyle}" />
                 </Grid>
-        </TabItem>
-    </TabControl>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

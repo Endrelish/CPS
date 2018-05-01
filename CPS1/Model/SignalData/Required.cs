@@ -12,14 +12,14 @@
             bool continuous,
             bool probability)
         {
-            this.StartTime = startTime;
-            this.Amplitude = amplitude;
-            this.Period = period;
-            this.Duration = duration;
-            this.DutyCycle = dutyCycle;
-            this.Samples = samples;
-            this.Continuous = continuous;
-            this.Probability = probability;
+            StartTime = startTime;
+            Amplitude = amplitude;
+            Period = period;
+            Duration = duration;
+            DutyCycle = dutyCycle;
+            Samples = samples;
+            Continuous = continuous;
+            Probability = probability;
         }
 
         public bool StartTime { get; }

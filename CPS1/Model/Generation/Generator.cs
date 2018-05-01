@@ -1,9 +1,8 @@
-﻿namespace CPS1.Model.Generation
+﻿using System;
+using CPS1.Model.SignalData;
+
+namespace CPS1.Model.Generation
 {
-    using System;
-
-    using CPS1.Model.SignalData;
-
     public static class Generator
     {
         public static void GenerateSignal(FunctionData data)

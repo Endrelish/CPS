@@ -1,9 +1,9 @@
-﻿namespace CPS1.Converters
-{
-    using System;
-    using System.Globalization;
-    using System.Windows.Data;
+﻿using System;
+using System.Globalization;
+using System.Windows.Data;
 
+namespace CPS1.Converters
+{
     public class FrequencyPeriodConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -12,6 +12,7 @@
             {
                 return 1.0d / period;
             }
+
             return null;
         }
 
@@ -21,10 +22,12 @@
             {
                 return 1.0d / frequency;
             }
+
             if (value is double freq)
             {
                 return 1.0d / freq;
             }
+
             return null;
         }
     }

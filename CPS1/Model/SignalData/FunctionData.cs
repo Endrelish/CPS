@@ -1,29 +1,22 @@
-﻿namespace CPS1.Model.SignalData
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
+using CPS1.Converters;
+using CPS1.Model.Generation;
+using CPS1.Model.Parameters;
+using CPS1.Properties;
+using LiveCharts;
+
+namespace CPS1.Model.SignalData
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Globalization;
-    using System.Linq;
-    using System.Runtime.CompilerServices;
-    using System.Runtime.Serialization;
-    using System.Windows.Data;
-    using System.Windows.Documents;
-
-    using CPS1.Converters;
-    using CPS1.Model.Generation;
-    using CPS1.Model.Parameters;
-    using CPS1.Properties;
-
-    using LiveCharts;
-
     [Serializable]
     [DataContract]
     public class FunctionData : INotifyPropertyChanged, IParametersProvider
     {
-        [NonSerialized]
-        private Func<FunctionData, double, double> function;
+        [NonSerialized] private Func<FunctionData, double, double> function;
 
         private Signal type;
 
@@ -39,111 +32,102 @@
             bool continuous = true,
             Signal type = Signal.Sine)
         {
-            this.Amplitude = new FunctionAttribute<double>(
+            Amplitude = new FunctionAttribute<double>(
                 amplitude,
                 false,
                 Settings.Default.AmplitudeMin,
                 Settings.Default.AmplitudeMax,
                 "AMPLITUDE");
-            this.Period = new FunctionAttribute<double>(
+            Period = new FunctionAttribute<double>(
                 period,
                 false,
                 Settings.Default.PeriodMin,
                 Settings.Default.PeriodMax,
                 "PERIOD");
-            this.Frequency = new FunctionAttribute<double>(
+            Frequency = new FunctionAttribute<double>(
                 1.0d / period,
                 false,
                 1.0d / Settings.Default.PeriodMax,
                 1.0d / Settings.Default.PeriodMin,
                 "FREQUENCY");
-            this.Samples = new FunctionAttribute<int>(
+            Samples = new FunctionAttribute<int>(
                 samples,
                 false,
                 Settings.Default.SamplesMin,
                 Settings.Default.SamplesMax,
                 "NUMBER OF SAMPLES");
-            this.StartTime = new FunctionAttribute<double>(
+            StartTime = new FunctionAttribute<double>(
                 startTime,
                 false,
                 Settings.Default.StartTimeMin,
                 Settings.Default.StartTimeMax,
                 "STARTING TIME");
-            this.Duration = new FunctionAttribute<double>(
+            Duration = new FunctionAttribute<double>(
                 duration,
                 false,
                 Settings.Default.DurationMin,
                 Settings.Default.DurationMax,
                 "DURATION");
-            this.DutyCycle = new FunctionAttribute<double>(
+            DutyCycle = new FunctionAttribute<double>(
                 dutyCycle,
                 false,
                 Settings.Default.DutyCycleMin,
                 Settings.Default.DutyCycleMax,
                 "DUTY CYCLE");
-            this.HistogramIntervals = new FunctionAttribute<int>(
+            HistogramIntervals = new FunctionAttribute<int>(
                 histogramIntervals,
                 true,
                 Settings.Default.HistogramIntervalMin,
                 Settings.Default.HistogramIntervalMax,
                 "NUMBER OF INTERVALS");
-            this.Probability = new FunctionAttribute<double>(probability, false, 0, 1, "PROBABILITY");
-            this.Continuous = new FunctionAttribute<bool>(true, false, false, true, "CONTINUITY");
-            this.AverageValue = new Parameter(0, "AVERAGE VALUE");
-            this.AbsoluteAverageValue = new Parameter(0, "ABSOLUTE AVERAGE VALUE");
-            this.AveragePower = new Parameter(0, "AVERAGE POWER");
-            this.Variance = new Parameter(0, "VARIANCE");
-            this.RootMeanSquare = new Parameter(0, "ROOT MEAN SQUARE");
+            Probability = new FunctionAttribute<double>(probability, false, 0, 1, "PROBABILITY");
+            Continuous = new FunctionAttribute<bool>(true, false, false, true, "CONTINUITY");
+            AverageValue = new Parameter(0, "AVERAGE VALUE");
+            AbsoluteAverageValue = new Parameter(0, "ABSOLUTE AVERAGE VALUE");
+            AveragePower = new Parameter(0, "AVERAGE POWER");
+            Variance = new Parameter(0, "VARIANCE");
+            RootMeanSquare = new Parameter(0, "ROOT MEAN SQUARE");
 
-            this.Parameters = new List<Parameter>(
+            Parameters = new List<Parameter>(
                 new[]
-                    {
-                        this.AverageValue, this.AbsoluteAverageValue, this.AveragePower, this.Variance,
-                        this.RootMeanSquare
-                    });
+                {
+                    AverageValue, AbsoluteAverageValue, AveragePower, Variance,
+                    RootMeanSquare
+                });
 
-            this.Attributes = new List<object>(
+            Attributes = new List<object>(
                 new object[]
-                    {
-                        this.Amplitude, this.Period,
-                        this.Frequency, this.Samples,
-                        this.StartTime, this.Duration,
-                        this.DutyCycle, this.Probability
-                    });
-            this.HistogramAttributes =
-                new List<object>(new object[] { this.HistogramIntervals });
+                {
+                    Amplitude, Period,
+                    Frequency, Samples,
+                    StartTime, Duration,
+                    DutyCycle, Probability
+                });
+            HistogramAttributes =
+                new List<object>(new object[] {HistogramIntervals});
 
-            this.Points = new List<Point>();
-            this.HistogramPoints = new List<Point>();
+            Points = new List<Point>();
+            HistogramPoints = new List<Point>();
 
 
-            AttributesBinding.BindAttributesTwoWay(this.Frequency, this.Period, new FrequencyPeriodConverter());
-            this.RequiredAttributes = new Required(false, false, false, false, false, false, false, false);
+            AttributesBinding.BindAttributesTwoWay(Frequency, Period, new FrequencyPeriodConverter());
+            RequiredAttributes = new Required(false, false, false, false, false, false, false, false);
 
-            this.Continuous.Value = continuous;
-            this.Type = type;
-
+            Continuous.Value = continuous;
+            Type = type;
         }
 
-        [field: NonSerialized]
-        public event PropertyChangedEventHandler PropertyChanged;
+        [DataMember] public Parameter AbsoluteAverageValue { get; set; }
 
-        [DataMember]
-        public Parameter AbsoluteAverageValue { get; set; }
-
-        [DataMember]
-        public FunctionAttribute<double> Amplitude { get; set; }
+        [DataMember] public FunctionAttribute<double> Amplitude { get; set; }
 
         public IEnumerable<object> Attributes { get; }
 
-        [DataMember]
-        public Parameter AveragePower { get; set; }
+        [DataMember] public Parameter AveragePower { get; set; }
 
-        [DataMember]
-        public Parameter AverageValue { get; set; }
+        [DataMember] public Parameter AverageValue { get; set; }
 
-        [DataMember]
-        public FunctionAttribute<bool> Continuous { get; set; }
+        [DataMember] public FunctionAttribute<bool> Continuous { get; set; }
 
         public FunctionData Copy
         {
@@ -155,112 +139,90 @@
             }
         }
 
-        [DataMember]
-        public FunctionAttribute<double> Duration { get; set; }
+        [DataMember] public FunctionAttribute<double> Duration { get; set; }
 
-        [DataMember]
-        public FunctionAttribute<double> DutyCycle { get; set; }
+        [DataMember] public FunctionAttribute<double> DutyCycle { get; set; }
 
-        [IgnoreDataMember]
-        public Func<double, string> Formatter => value => value.ToString("N");
+        [IgnoreDataMember] public Func<double, string> Formatter => value => value.ToString("N");
 
         public FunctionAttribute<double> Frequency { get; set; }
 
         [IgnoreDataMember]
         public Func<FunctionData, double, double> Function
         {
-            get => this.function;
-            set => this.function = value;
+            get => function;
+            set => function = value;
         }
 
         public IEnumerable<object> HistogramAttributes { get; }
 
-        [DataMember]
-        public FunctionAttribute<int> HistogramIntervals { get; set; }
+        [DataMember] public FunctionAttribute<int> HistogramIntervals { get; set; }
 
         [IgnoreDataMember]
         public string[] HistogramLabels
         {
-            get
-            {
-                return this.HistogramPoints.Select(p => p.X.ToString("N")).ToArray();
-            }
+            get { return HistogramPoints.Select(p => p.X.ToString("N")).ToArray(); }
         }
 
-        [DataMember]
-        public List<Point> HistogramPoints { get; set; }
+        [DataMember] public List<Point> HistogramPoints { get; set; }
 
         [IgnoreDataMember]
         public ChartValues<double> HistogramValues
         {
-            get
-            {
-                return new ChartValues<double>(this.HistogramPoints.Select(p => p.Y));
-            }
+            get { return new ChartValues<double>(HistogramPoints.Select(p => p.Y)); }
         }
 
         [IgnoreDataMember]
         public string[] Labels
         {
-            get
-            {
-                return this.Points.Select(p => p.X.ToString("N")).ToArray();
-            }
+            get { return Points.Select(p => p.X.ToString("N")).ToArray(); }
         }
 
-        public IEnumerable<Parameter> Parameters { get; }
+        [DataMember] public FunctionAttribute<double> Period { get; set; }
 
-        [DataMember]
-        public FunctionAttribute<double> Period { get; set; }
+        [DataMember] public List<Point> Points { get; set; }
 
-        [DataMember]
-        public List<Point> Points { get; set; }
-
-        [DataMember]
-        public FunctionAttribute<double> Probability { get; set; }
+        [DataMember] public FunctionAttribute<double> Probability { get; set; }
 
         [IgnoreDataMember]
         public Required RequiredAttributes
         {
             set
             {
-                this.Amplitude.Visibility = value.Amplitude;
-                this.Period.Visibility = value.Period;
-                this.Samples.Visibility = value.Samples;
-                this.StartTime.Visibility = value.StartTime;
-                this.Duration.Visibility = value.Duration;
-                this.DutyCycle.Visibility = value.DutyCycle;
-                this.Samples.Visibility = value.Samples;
-                this.Probability.Visibility = value.Probability;
-                this.Continuous.Visibility = value.Continuous;
+                Amplitude.Visibility = value.Amplitude;
+                Period.Visibility = value.Period;
+                Samples.Visibility = value.Samples;
+                StartTime.Visibility = value.StartTime;
+                Duration.Visibility = value.Duration;
+                DutyCycle.Visibility = value.DutyCycle;
+                Samples.Visibility = value.Samples;
+                Probability.Visibility = value.Probability;
+                Continuous.Visibility = value.Continuous;
             }
         }
 
-        [DataMember]
-        public Parameter RootMeanSquare { get; set; }
+        [DataMember] public Parameter RootMeanSquare { get; set; }
 
-        [DataMember]
-        public FunctionAttribute<int> Samples { get; set; }
+        [DataMember] public FunctionAttribute<int> Samples { get; set; }
 
-        [DataMember]
-        public FunctionAttribute<double> StartTime { get; set; }
+        [DataMember] public FunctionAttribute<double> StartTime { get; set; }
 
         [DataMember]
         public Signal Type
         {
-            get => this.type;
+            get => type;
             set
             {
-                if (value == this.type)
+                if (value == type)
                 {
                     return;
                 }
 
-                this.type = value;
-                if (this.type != Signal.Composite)
+                type = value;
+                if (type != Signal.Composite)
                 {
-                    this.RequiredAttributes = AvailableFunctions.GetRequiredParameters(this.type);
-                    this.Function = AvailableFunctions.GetFunction(this.type);
+                    RequiredAttributes = AvailableFunctions.GetRequiredParameters(type);
+                    Function = AvailableFunctions.GetFunction(type);
                 }
             }
         }
@@ -268,100 +230,99 @@
         [IgnoreDataMember]
         public ChartValues<double> Values
         {
-            get
-            {
-                return new ChartValues<double>(this.Points.Select(p => p.Y));
-            }
+            get { return new ChartValues<double>(Points.Select(p => p.Y)); }
         }
 
-        [DataMember]
-        public Parameter Variance { get; set; }
+        [DataMember] public Parameter Variance { get; set; }
 
         [IgnoreDataMember]
         private double Max
         {
             get
             {
-                var max = this.StartTime.Value + this.Duration.Value;
-                if (this.Period.Visibility)
+                var max = StartTime.Value + Duration.Value;
+                if (Period.Visibility)
                 {
-                    var k = Math.Floor(this.Duration.Value / this.Period.Value);
-                    max = this.StartTime.Value + k * this.Period.Value;
+                    var k = Math.Floor(Duration.Value / Period.Value);
+                    max = StartTime.Value + k * Period.Value;
                 }
 
                 return max;
             }
         }
 
+        [field: NonSerialized] public event PropertyChangedEventHandler PropertyChanged;
+
+        public IEnumerable<Parameter> Parameters { get; }
+
         public void AssignSignal(FunctionData data)
         {
-            this.Amplitude.AssignAttribute(data.Amplitude);
-            this.Period.AssignAttribute(data.Period);
-            this.Samples.AssignAttribute(data.Samples);
-            this.StartTime.AssignAttribute(data.StartTime);
-            this.Duration.AssignAttribute(data.Duration);
-            this.DutyCycle.AssignAttribute(data.DutyCycle);
-            this.Samples.AssignAttribute(data.Samples);
-            this.Probability.AssignAttribute(data.Probability);
-            this.Continuous.AssignAttribute(data.Continuous);
-            this.HistogramIntervals.AssignAttribute(data.HistogramIntervals);
-            this.AverageValue.AssingParameter(data.AverageValue);
-            this.AbsoluteAverageValue.AssingParameter(data.AbsoluteAverageValue);
-            this.Variance.AssingParameter(data.Variance);
-            this.RootMeanSquare.AssingParameter(data.RootMeanSquare);
-            this.AveragePower.AssingParameter(data.AveragePower);
+            Amplitude.AssignAttribute(data.Amplitude);
+            Period.AssignAttribute(data.Period);
+            Samples.AssignAttribute(data.Samples);
+            StartTime.AssignAttribute(data.StartTime);
+            Duration.AssignAttribute(data.Duration);
+            DutyCycle.AssignAttribute(data.DutyCycle);
+            Samples.AssignAttribute(data.Samples);
+            Probability.AssignAttribute(data.Probability);
+            Continuous.AssignAttribute(data.Continuous);
+            HistogramIntervals.AssignAttribute(data.HistogramIntervals);
+            AverageValue.AssingParameter(data.AverageValue);
+            AbsoluteAverageValue.AssingParameter(data.AbsoluteAverageValue);
+            Variance.AssingParameter(data.Variance);
+            RootMeanSquare.AssingParameter(data.RootMeanSquare);
+            AveragePower.AssingParameter(data.AveragePower);
             if (data.Function != null)
             {
-                this.Function = (Func<FunctionData, double, double>)data.Function.Clone();
+                Function = (Func<FunctionData, double, double>) data.Function.Clone();
             }
 
-            this.Points.Clear();
-            this.Points.AddRange(data.Points);
-            this.PointsUpdate();
-            this.HistogramPoints.Clear();
-            this.HistogramPoints.AddRange(data.HistogramPoints);
-            this.HistogramPointsUpdate();
-            this.Type = data.Type;
+            Points.Clear();
+            Points.AddRange(data.Points);
+            PointsUpdate();
+            HistogramPoints.Clear();
+            HistogramPoints.AddRange(data.HistogramPoints);
+            HistogramPointsUpdate();
+            Type = data.Type;
         }
 
         public void CalculateParameters()
         {
-            this.AverageValue.Value = this.Points.Where(p => p.X <= this.Max).Select(p => p.Y).Sum()
-                                      / this.Points.Count(p => p.X <= this.Max);
-            this.AbsoluteAverageValue.Value = this.Points.Where(p => p.X <= this.Max).Select(p => Math.Abs(p.Y)).Sum()
-                                              / this.Points.Count(p => p.X <= this.Max);
-            this.AveragePower.Value = this.Points.Where(p => p.X <= this.Max).Select(p => p.Y * p.Y).Sum()
-                                      / this.Points.Count(p => p.X <= this.Max);
-            this.Variance.Value =
-                this.Points.Where(p => p.X <= this.Max)
-                    .Select(p => (p.X - this.AverageValue.Value) * (p.X - this.AverageValue.Value)).Sum()
-                / this.Points.Count(p => p.X <= this.Max);
-            this.RootMeanSquare.Value = Math.Sqrt(this.AveragePower.Value);
+            AverageValue.Value = Points.Where(p => p.X <= Max).Select(p => p.Y).Sum()
+                                 / Points.Count(p => p.X <= Max);
+            AbsoluteAverageValue.Value = Points.Where(p => p.X <= Max).Select(p => Math.Abs(p.Y)).Sum()
+                                         / Points.Count(p => p.X <= Max);
+            AveragePower.Value = Points.Where(p => p.X <= Max).Select(p => p.Y * p.Y).Sum()
+                                 / Points.Count(p => p.X <= Max);
+            Variance.Value =
+                Points.Where(p => p.X <= Max)
+                    .Select(p => (p.X - AverageValue.Value) * (p.X - AverageValue.Value)).Sum()
+                / Points.Count(p => p.X <= Max);
+            RootMeanSquare.Value = Math.Sqrt(AveragePower.Value);
         }
 
         public void HistogramPointsUpdate()
         {
-            this.OnPropertyChanged(nameof(this.HistogramValues));
-            this.OnPropertyChanged(nameof(this.HistogramLabels));
+            OnPropertyChanged(nameof(HistogramValues));
+            OnPropertyChanged(nameof(HistogramLabels));
         }
 
         public void PointsUpdate()
         {
-            this.OnPropertyChanged(nameof(this.Values));
-            this.OnPropertyChanged(nameof(this.Labels));
+            OnPropertyChanged(nameof(Values));
+            OnPropertyChanged(nameof(Labels));
         }
 
         public void SetAmplitude()
         {
-            this.Amplitude.Value =
-                Math.Ceiling(Math.Max(this.Points.Max(p => p.Y), Math.Abs(this.Points.Min(p => p.Y))));
+            Amplitude.Value =
+                Math.Ceiling(Math.Max(Points.Max(p => p.Y), Math.Abs(Points.Min(p => p.Y))));
         }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        
     }
 }

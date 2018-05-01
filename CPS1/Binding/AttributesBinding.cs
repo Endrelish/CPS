@@ -1,11 +1,10 @@
-﻿namespace CPS1.Converters
+﻿using System;
+using System.Globalization;
+using System.Windows.Data;
+using CPS1.Model.SignalData;
+
+namespace CPS1.Converters
 {
-    using System;
-    using System.Globalization;
-    using System.Windows.Data;
-
-    using CPS1.Model.SignalData;
-
     public static class AttributesBinding
     {
         private static void ConverterMethods(
@@ -19,8 +18,9 @@
             {
                 convert = converter.Convert;
                 convertBack = converter.ConvertBack;
-            } 
+            }
         }
+
         private static void BindAttributes<T>(
             FunctionAttribute<T> source,
             FunctionAttribute<T> target,
@@ -28,24 +28,24 @@
             where T : struct
         {
             source.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName.Equals(nameof(source.Value)))
                 {
-                    if (args.PropertyName.Equals(nameof(source.Value)))
-                    {
-                        target.Value = (T)(convert(
-                                               source.Value,
-                                               target.Value.GetType(),
-                                               null,
-                                               CultureInfo.InvariantCulture) ?? target.Value);
-                        return;
-                    }
+                    target.Value = (T) (convert(
+                                            source.Value,
+                                            target.Value.GetType(),
+                                            null,
+                                            CultureInfo.InvariantCulture) ?? target.Value);
+                    return;
+                }
 
-                    if (args.PropertyName.Equals(nameof(source.Visibility)))
-                    {
-                        target.Visibility = source.Visibility;
-                        return;
-                    }
-                };
+                if (args.PropertyName.Equals(nameof(source.Visibility)))
+                {
+                    target.Visibility = source.Visibility;
+                }
+            };
         }
+
         public static void BindAttributesOneWay<T>(
             FunctionAttribute<T> source,
             FunctionAttribute<T> target,
@@ -53,7 +53,7 @@
             where T : struct
         {
             ConverterMethods(converter, out var convert, out var convertBack);
-            
+
             BindAttributes(source, target, convert);
         }
 
@@ -63,11 +63,10 @@
             IValueConverter converter = null)
             where T : struct
         {
-           ConverterMethods(converter, out var convert, out var convertBack);
+            ConverterMethods(converter, out var convert, out var convertBack);
 
             BindAttributes(source, target, convert);
             BindAttributes(target, source, convertBack);
         }
-        
     }
 }

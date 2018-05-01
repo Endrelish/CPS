@@ -10,9 +10,9 @@
     <Application.Resources>
         <system:Int16 x:Key="First">1</system:Int16>
         <system:Int16 x:Key="Second">2</system:Int16>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:VisibilityInversionConverter x:Key="VisibilityInversionConverter" />
-        <converters:LogarithmConverter x:Key="LogarithmConverter"/>
-        <Image x:Key="ButtonBackground" Source="../resources/ButtonBackground.png"/>
+        <converters:LogarithmConverter x:Key="LogarithmConverter" />
+        <Image x:Key="ButtonBackground" Source="../resources/ButtonBackground.png" />
     </Application.Resources>
 </Application>

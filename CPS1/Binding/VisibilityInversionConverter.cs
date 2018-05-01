@@ -1,10 +1,10 @@
-﻿namespace CPS1.Converters
-{
-    using System;
-    using System.Globalization;
-    using System.Windows;
-    using System.Windows.Data;
+﻿using System;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
 
+namespace CPS1.Converters
+{
     public class VisibilityInversionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -24,7 +24,7 @@
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return this.Convert(value, targetType, parameter, culture);
+            return Convert(value, targetType, parameter, culture);
         }
     }
 }

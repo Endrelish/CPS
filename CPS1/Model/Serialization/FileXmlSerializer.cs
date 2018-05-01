@@ -1,18 +1,17 @@
-﻿namespace CPS1.Model.Serialization
+﻿using System.IO;
+using System.Runtime.Serialization;
+using CPS1.Model.SignalData;
+
+namespace CPS1.Model.Serialization
 {
-    using System.IO;
-    using System.Runtime.Serialization;
-
-    using CPS1.Model.SignalData;
-
     public class FileXmlSerializer : IFileSerializer
     {
         private readonly DataContractSerializer serializer;
 
         public FileXmlSerializer()
         {
-            this.serializer = new DataContractSerializer(typeof(FunctionData));
-            this.Format = "XML files (*.xml)|*.xml";
+            serializer = new DataContractSerializer(typeof(FunctionData));
+            Format = "XML files (*.xml)|*.xml";
         }
 
         public string Format { get; }
@@ -22,7 +21,7 @@
             FunctionData data;
             using (var stream = new FileStream(filename, FileMode.Open))
             {
-                data = (FunctionData)this.serializer.ReadObject(stream);
+                data = (FunctionData) serializer.ReadObject(stream);
             }
 
             return data;
@@ -32,7 +31,7 @@
         {
             using (var stream = new FileStream(filename, FileMode.Create))
             {
-                this.serializer.WriteObject(stream, data);
+                serializer.WriteObject(stream, data);
             }
         }
     }

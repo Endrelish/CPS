@@ -1,8 +1,8 @@
-﻿namespace CPS1.Model.Exceptions
-{
-    using System;
-    using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
+namespace CPS1.Model.Exceptions
+{
     public class SignalNotFoundException : Exception
     {
         public SignalNotFoundException()

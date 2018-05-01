@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using CPS1.Model.CommandHandlers;
 using CPS1.Model.Generation;
 using CPS1.Model.Serialization;
@@ -75,15 +74,15 @@ namespace CPS1.ViewModel
 
         private void Clear(object parameter)
         {
-                SignalData.AssignSignal(new FunctionData());
-                SignalData.PointsUpdate();
+            SignalData.AssignSignal(new FunctionData());
+            SignalData.PointsUpdate();
         }
 
         private void GenerateSignal(object parameter)
         {
             Generator.GenerateSignal(SignalData);
             Histogram.GetHistogram(SignalData);
-            
+
             SignalGenerated?.Invoke(this, null);
         }
 

@@ -1,9 +1,8 @@
-﻿namespace CPS1.View
+﻿using CPS1.ViewModel;
+using Microsoft.Win32;
+
+namespace CPS1.View
 {
-    using CPS1.ViewModel;
-
-    using Microsoft.Win32;
-
     public class FileDialogWpf : IFileDialog
     {
         public string GetOpenFilePath(string filter)

@@ -1,9 +1,9 @@
-﻿namespace CPS1.Converters
-{
-    using System;
-    using System.Globalization;
-    using System.Windows.Data;
+﻿using System;
+using System.Globalization;
+using System.Windows.Data;
 
+namespace CPS1.Converters
+{
     public class StringToDoubleConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -13,6 +13,7 @@
             {
                 double.TryParse(str, out ret);
             }
+
             return ret;
         }
 
@@ -22,6 +23,7 @@
             {
                 return val.ToString();
             }
+
             return null;
         }
     }

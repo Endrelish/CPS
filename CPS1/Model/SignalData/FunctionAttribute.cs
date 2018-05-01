@@ -1,14 +1,11 @@
-﻿using CPS1.ViewModel;
+﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
+using CPS1.Properties;
 
 namespace CPS1.Model.SignalData
 {
-    using System;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
-    using System.Runtime.Serialization;
-
-    using CPS1.Properties;
-
     [DataContract]
     [Serializable]
     public class FunctionAttribute<T> : INotifyPropertyChanged
@@ -23,110 +20,111 @@ namespace CPS1.Model.SignalData
         private T value;
 
         private bool visibility;
-        
+
         public FunctionAttribute(T value, bool visibility, T minValue, T maxValue, string name)
         {
-            this.Value = value;
-            this.Visibility = visibility;
-            this.MinValue = minValue;
-            this.MaxValue = maxValue;
-            this.Name = name;
+            Value = value;
+            Visibility = visibility;
+            MinValue = minValue;
+            MaxValue = maxValue;
+            Name = name;
         }
-        [field:NonSerialized]
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [DataMember]
         public T MaxValue
         {
-            get => this.maxValue;
+            get => maxValue;
             set
             {
-                if (value.Equals(this.maxValue))
+                if (value.Equals(maxValue))
                 {
                     return;
                 }
 
-                this.maxValue = value;
-                this.OnPropertyChanged();
+                maxValue = value;
+                OnPropertyChanged();
             }
         }
 
         [DataMember]
         public T MinValue
         {
-            get => this.minValue;
+            get => minValue;
             set
             {
-                if (value.Equals(this.minValue))
+                if (value.Equals(minValue))
                 {
                     return;
                 }
 
-                this.minValue = value;
-                this.OnPropertyChanged();
+                minValue = value;
+                OnPropertyChanged();
             }
         }
 
         [DataMember]
         public string Name
         {
-            get => this.name;
+            get => name;
             set
             {
-                if (value == this.name)
+                if (value == name)
                 {
                     return;
                 }
 
-                this.name = value;
-                this.OnPropertyChanged();
+                name = value;
+                OnPropertyChanged();
             }
         }
 
         [DataMember]
         public T Value
         {
-            get => this.value;
+            get => value;
             set
             {
                 if (value.Equals(this.value))
                 {
                     return;
                 }
+
                 this.value = value;
-                this.OnPropertyChanged();
+                OnPropertyChanged();
             }
         }
 
         [DataMember]
         public bool Visibility
         {
-            get => this.visibility;
+            get => visibility;
             set
             {
-                if (value == this.visibility)
+                if (value == visibility)
                 {
                     return;
                 }
 
-                this.visibility = value;
-                this.OnPropertyChanged();
+                visibility = value;
+                OnPropertyChanged();
             }
         }
-        
+
+        [field: NonSerialized] public event PropertyChangedEventHandler PropertyChanged;
+
         public void AssignAttribute(FunctionAttribute<T> attribute)
         {
-            this.MaxValue = attribute.MaxValue;
-            this.MinValue = attribute.MinValue;
-            this.Name = attribute.Name;
-            this.Visibility = attribute.Visibility;
-            this.Value = attribute.Value;
+            MaxValue = attribute.MaxValue;
+            MinValue = attribute.MinValue;
+            Name = attribute.Name;
+            Visibility = attribute.Visibility;
+            Value = attribute.Value;
         }
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

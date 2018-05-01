@@ -1,10 +1,9 @@
-﻿namespace CPS1.Model.Conversion
+﻿using System;
+using System.Linq;
+using CPS1.Model.SignalData;
+
+namespace CPS1.Model.Conversion
 {
-    using System;
-    using System.Linq;
-
-    using CPS1.Model.SignalData;
-
     public static class Metrics
     {
         public static double MaximumDifference(FunctionData first, FunctionData second)
@@ -16,8 +15,8 @@
         public static double MeanSquaredError(FunctionData first, FunctionData second)
         {
             return second.Points
-                    .Select(p => Math.Pow(first.Function(first, p.X) - p.Y, 2)).Sum()
-                / second.Points.Count;
+                       .Select(p => Math.Pow(first.Function(first, p.X) - p.Y, 2)).Sum()
+                   / second.Points.Count;
         }
 
         public static double PeakSignalToNoiseRatio(FunctionData first, FunctionData second)

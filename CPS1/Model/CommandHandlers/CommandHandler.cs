@@ -1,8 +1,8 @@
-﻿namespace CPS1.Model.CommandHandlers
-{
-    using System;
-    using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 
+namespace CPS1.Model.CommandHandlers
+{
     public class CommandHandler : ICommand
     {
         private readonly Action<object> action;
@@ -19,17 +19,17 @@
 
         public bool CanExecute(object parameter)
         {
-            return this.canExecute();
+            return canExecute();
         }
 
         public void Execute(object parameter)
         {
-            this.action(parameter);
+            action(parameter);
         }
 
         public void RaiseCanExecuteChanged()
         {
-            this.CanExecuteChanged?.Invoke(this, new EventArgs());
+            CanExecuteChanged?.Invoke(this, new EventArgs());
         }
     }
 }

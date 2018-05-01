@@ -14,7 +14,8 @@
                 <lvc:ColumnSeries Values="{Binding HistogramValues, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </lvc:CartesianChart.Series>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title="Histogram" Labels="{Binding HistogramLabels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                <lvc:Axis Title="Histogram"
+                          Labels="{Binding HistogramLabels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis LabelFormatter="{Binding Formatter}" />

@@ -1,24 +1,23 @@
-﻿namespace CPS1.Model.Conversion
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using CPS1.Model.Generation;
+using CPS1.Model.SignalData;
+
+namespace CPS1.Model.Conversion
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using CPS1.Model.Generation;
-    using CPS1.Model.SignalData;
-
     public static class Operations
     {
-
         private static readonly Func<double, double> sincFunc = t =>
+        {
+            if (t == 0)
             {
-                if (t == 0)
-                {
-                    return 1;
-                }
+                return 1;
+            }
 
-                return Math.Sin(Math.PI * t) / (Math.PI * t);
-            };
+            return Math.Sin(Math.PI * t) / (Math.PI * t);
+        };
+
         public static void ZeroOrderHold(FunctionData first, FunctionData second)
         {
             second.AssignSignal(first);
@@ -26,19 +25,19 @@
             second.Samples.Value = 500;
 
             second.Function = (data, t) =>
+            {
+                var ret = 0.0d;
+                if (first.Points.Any(p => p.X < t))
                 {
-                    var ret = 0.0d;
-                    if (first.Points.Any(p => p.X < t))
-                    {
-                        ret = first.Points.Where(p => p.X < t).OrderBy(p => -p.X).First().Y;
-                    }
-                    else
-                    {
-                        ret = first.Points.OrderBy(p => Math.Abs(p.X - t)).First().Y;
-                    }
+                    ret = first.Points.Where(p => p.X < t).OrderBy(p => -p.X).First().Y;
+                }
+                else
+                {
+                    ret = first.Points.OrderBy(p => Math.Abs(p.X - t)).First().Y;
+                }
 
-                    return ret;
-                };
+                return ret;
+            };
             Generator.GenerateSignal(second);
         }
 
@@ -50,22 +49,22 @@
             second.Samples.Value = 500;
 
             second.Function = (data, t) =>
+            {
+                var n = first.Points.Count(p => p.X < t);
+
+                var sum = 0.0d;
+                var ts = first.Duration.Value / first.Samples.Value;
+                for (var i = n - samples; i < n + samples; i++)
                 {
-                    var n = first.Points.Count(p => p.X < t);
-
-                    var sum = 0.0d;
-                    var ts = first.Duration.Value / first.Samples.Value;
-                    for (var i = n - samples; i < n + samples; i++)
+                    if (i >= 0 && i < first.Points.Count)
                     {
-                        if (i >= 0 && i < first.Points.Count)
-                        {
-                            sum += first.Points[i].Y
-                                   * sincFunc((t - first.Points[i].X) / ts);
-                        }
+                        sum += first.Points[i].Y
+                               * sincFunc((t - first.Points[i].X) / ts);
                     }
+                }
 
-                    return sum;
-                };
+                return sum;
+            };
 
             Generator.GenerateSignal(second);
         }
@@ -75,7 +74,7 @@
         {
             second.AssignSignal(first);
             second.Continuous.Value = false;
-            second.Samples.Value = (int)(second.Duration.Value * samplingFrequency);
+            second.Samples.Value = (int) (second.Duration.Value * samplingFrequency);
             Generator.GenerateSignal(second);
         }
 
@@ -98,6 +97,5 @@
 
             second.PointsUpdate();
         }
-
     }
 }

@@ -1,30 +1,29 @@
-﻿namespace CPS1.Model.Serialization
+﻿using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using CPS1.Model.SignalData;
+
+namespace CPS1.Model.Serialization
 {
-    using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
-
-    using CPS1.Model.SignalData;
-
     public class FileBinarySerializer : IFileSerializer
     {
         private readonly BinaryFormatter formatter;
 
-        public string Format { get; }
-
         public FileBinarySerializer()
         {
-            this.formatter = new BinaryFormatter();
-            this.Format = "Binary files (*.bin)|*.bin";
+            formatter = new BinaryFormatter();
+            Format = "Binary files (*.bin)|*.bin";
         }
+
+        public string Format { get; }
 
         public FunctionData Deserialize(string filename)
         {
             FunctionData data;
             using (var stream = new FileStream(filename, FileMode.Open))
             {
-                data = (FunctionData)this.formatter.Deserialize(stream);
+                data = (FunctionData) formatter.Deserialize(stream);
             }
-            
+
             return data;
         }
 
@@ -32,9 +31,8 @@
         {
             using (var stream = new FileStream(filename, FileMode.Create))
             {
-                this.formatter.Serialize(stream, data);
+                formatter.Serialize(stream, data);
             }
-            
         }
     }
 }

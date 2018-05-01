@@ -1,9 +1,9 @@
-﻿namespace CPS1.View
-{
-    using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
+namespace CPS1.View
+{
     /// <summary>
-    /// Interaction logic for SignalSettings.xaml
+    ///     Interaction logic for SignalSettings.xaml
     /// </summary>
     public partial class SignalSettings : UserControl
     {

@@ -1,30 +1,43 @@
 ﻿<UserControl x:Class="CPS1.View.AnalogDigitalSignalChart"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:CPS1.View"
              xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:converters="clr-namespace:CPS1.Converters"
              xmlns:viewModel="clr-namespace:CPS1.ViewModel"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <converters:ChartSettingsConverter x:Key="ChartSettingsConverter" />
-        <converters:PointSizeContinuousConverter x:Key="PointSizeContinuousConverter"/>
+        <converters:PointSizeContinuousConverter x:Key="PointSizeContinuousConverter" />
     </UserControl.Resources>
     <Grid>
         <wpf:CartesianChart>
             <wpf:CartesianChart.Series>
-                <wpf:LineSeries ScalesXAt="0" Values="{Binding FirstSignalData.Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointForeground="#2195f2" Fill="Transparent"  PointGeometrySize="{Binding FirstSignalData.Continuous.Value, Mode=OneWay, Converter={StaticResource PointSizeContinuousConverter}}" LineSmoothness="1" StrokeThickness="{Binding FirstSignalData.Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
-                <wpf:LineSeries ScalesXAt="1" Values="{Binding SecondSignalData.Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" PointForeground="#f34436" Fill="Transparent" PointGeometrySize="{Binding SecondSignalData.Continuous.Value, Mode=OneWay, Converter={StaticResource PointSizeContinuousConverter}}" LineSmoothness="1" StrokeThickness="{Binding SecondSignalData.Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
+                <wpf:LineSeries ScalesXAt="0"
+                                Values="{Binding FirstSignalData.Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                PointForeground="#2195f2" Fill="Transparent"
+                                PointGeometrySize="{Binding FirstSignalData.Continuous.Value, Mode=OneWay, Converter={StaticResource PointSizeContinuousConverter}}"
+                                LineSmoothness="1"
+                                StrokeThickness="{Binding FirstSignalData.Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
+                <wpf:LineSeries ScalesXAt="1"
+                                Values="{Binding SecondSignalData.Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                PointForeground="#f34436" Fill="Transparent"
+                                PointGeometrySize="{Binding SecondSignalData.Continuous.Value, Mode=OneWay, Converter={StaticResource PointSizeContinuousConverter}}"
+                                LineSmoothness="1"
+                                StrokeThickness="{Binding SecondSignalData.Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
             </wpf:CartesianChart.Series>
             <wpf:CartesianChart.AxisX>
-                <wpf:Axis Title="SignalData value" Labels="{Binding FirstSignalData.Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                <wpf:Axis ShowLabels="False" Labels="{Binding SecondSignalData.Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                <wpf:Axis Title="SignalData value"
+                          Labels="{Binding FirstSignalData.Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                <wpf:Axis ShowLabels="False"
+                          Labels="{Binding SecondSignalData.Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </wpf:CartesianChart.AxisX>
             <wpf:CartesianChart.AxisY>
-                <wpf:Axis LabelFormatter="{Binding FirstSignalData.Formatter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                <wpf:Axis
+                    LabelFormatter="{Binding FirstSignalData.Formatter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </wpf:CartesianChart.AxisY>
         </wpf:CartesianChart>
     </Grid>

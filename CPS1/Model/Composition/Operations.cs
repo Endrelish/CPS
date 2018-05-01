@@ -1,11 +1,10 @@
-﻿namespace CPS1.Model.Composition
+﻿using System;
+using System.Linq;
+using CPS1.Model.Generation;
+using CPS1.Model.SignalData;
+
+namespace CPS1.Model.Composition
 {
-    using System;
-    using System.Linq;
-
-    using CPS1.Model.Generation;
-    using CPS1.Model.SignalData;
-
     public static class Operations
     {
         public static void Compose(FunctionData first, FunctionData second, Operation operation)
@@ -57,8 +56,10 @@
                     }
                     else
                     {
-                        point.Y += (second.Points.First(a => a.X == second.Points.Where(p => p.X < point.X).Max(p => p.X)).Y
-                                    + second.Points.First(a => a.X == second.Points.Where(p => p.X > point.X).Min(p => p.X))
+                        point.Y += (second.Points
+                                        .First(a => a.X == second.Points.Where(p => p.X < point.X).Max(p => p.X)).Y
+                                    + second.Points.First(a =>
+                                            a.X == second.Points.Where(p => p.X > point.X).Min(p => p.X))
                                         .Y) / 2.0d;
                     }
                 }
@@ -238,6 +239,5 @@
                 }
             }
         }
-
     }
 }

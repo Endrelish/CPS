@@ -1,7 +1,7 @@
-﻿namespace CPS1.Model.SignalData
-{
-    using System.ComponentModel;
+﻿using System.ComponentModel;
 
+namespace CPS1.Model.SignalData
+{
     public interface IFunctionAttribute : INotifyPropertyChanged
     {
         string Name { get; set; }

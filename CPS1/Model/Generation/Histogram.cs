@@ -1,9 +1,8 @@
-﻿namespace CPS1.Model.Generation
+﻿using System;
+using CPS1.Model.SignalData;
+
+namespace CPS1.Model.Generation
 {
-    using System;
-
-    using CPS1.Model.SignalData;
-
     public static class Histogram
     {
         public static void GetHistogram(FunctionData data)
@@ -30,13 +29,19 @@
                     break;
                 }
 
-                var index = (int)((point.Y + data.Amplitude.Value) / step);
-                if (Math.Abs(step) < double.Epsilon) index = 0;
+                var index = (int) ((point.Y + data.Amplitude.Value) / step);
+                if (Math.Abs(step) < double.Epsilon)
+                {
+                    index = 0;
+                }
 
                 try
                 {
                     data.HistogramPoints[index].Y++;
-                } catch(ArgumentOutOfRangeException) { }
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                }
             }
 
             foreach (var point in data.HistogramPoints)
@@ -44,6 +49,7 @@
                 var x = point.X;
                 var y = point.Y;
             }
+
             data.Amplitude.Value = amp;
             data.HistogramPointsUpdate();
         }

@@ -1,43 +1,40 @@
-﻿namespace CPS1.Model.Parameters
+﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using CPS1.Properties;
+
+namespace CPS1.Model.Parameters
 {
-    using System;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
-
-    using CPS1.Properties;
-
     public class Parameter : INotifyPropertyChanged
-    {   
+    {
         private string name;
 
         private double value;
 
         public Parameter(double value, string name, bool visibility = false)
         {
-            this.Value = value;
-            this.Name = name;
+            Value = value;
+            Name = name;
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public string Name
         {
-            get => this.name;
+            get => name;
             set
             {
-                if (this.name == value)
+                if (name == value)
                 {
                     return;
                 }
 
-                this.name = value;
-                this.OnPropertyChanged();
+                name = value;
+                OnPropertyChanged();
             }
         }
 
         public double Value
         {
-            get => this.value;
+            get => value;
             set
             {
                 if (Math.Abs(this.value - value) < double.Epsilon)
@@ -46,20 +43,22 @@
                 }
 
                 this.value = value;
-                this.OnPropertyChanged();
+                OnPropertyChanged();
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public void AssingParameter(Parameter p)
         {
-            this.Value = p.value;
-            this.Name = p.Name;
+            Value = p.value;
+            Name = p.Name;
         }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
