@@ -83,12 +83,8 @@ namespace CPS1.ViewModel
         {
             Generator.GenerateSignal(SignalData);
             Histogram.GetHistogram(SignalData);
-
-            // TODO
+            
             SignalGenerated?.Invoke(this, null);
-
-            // ((CommandHandler)this.ComputeCommand).RaiseCanExecuteChanged();
-            // ((CommandHandler)this.SwapCommand).RaiseCanExecuteChanged();
         }
 
         public event EventHandler SignalGenerated;

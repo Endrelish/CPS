@@ -30,10 +30,10 @@
 
         private string operation;
 
-        public ConversionViewModel(SignalViewModel first, SignalViewModel second)
+        public ConversionViewModel(SignalViewModel first)
         {
             this.firstSignalViewModel = first;
-            this.secondSignalViewModel = second;
+            this.secondSignalViewModel = new SignalViewModel();
 
             this.SamplingFrequency = new FunctionAttribute<int>(10, false, 1, 5000, "SAMPLING FREQUENCY");
             this.QuantizationBits = new FunctionAttribute<int>(3, false, 2, 10, "QUANTIZATION BITS");

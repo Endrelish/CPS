@@ -20,7 +20,7 @@ namespace CPS1.ViewModel
             SecondSignalContinuous = this.SecondSignalViewModel.SignalData.Continuous;
 
             this.CompositionViewModel = new CompositionViewModel(this.FirstSignalViewModel, this.SecondSignalViewModel);
-            this.ConversionViewModel = new ConversionViewModel(this.FirstSignalViewModel, this.SecondSignalViewModel);
+            this.ConversionViewModel = new ConversionViewModel(this.FirstSignalViewModel);
         }
 
         public CompositionViewModel CompositionViewModel { get; }
