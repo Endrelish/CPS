@@ -62,7 +62,7 @@
         </Menu>
 
         <!--TODO Remember last open tab.-->
-        <TabControl Grid.Row="1" SelectedIndex="1" Background="Transparent">
+        <TabControl Grid.Row="1" SelectedIndex="2" Background="Transparent">
             <TabItem Header="Operations on signals">
                 <Grid Margin="5 5 5 5">
                     <Grid.ColumnDefinitions>
@@ -82,11 +82,11 @@
                     <TextBlock Grid.Column="1" Grid.Row="0" FontWeight="Bold" FontSize="20"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               Text="FIRST SIGNAL GRAPH AND HISTOGRAM" />
+                               Text="FIRST SIGNAL CHART AND HISTOGRAM" />
                     <TextBlock Grid.Column="2" Grid.Row="0" FontWeight="Bold" FontSize="20"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               Text="SECOND SIGNAL GRAPH AND HISTOGRAM" />
+                               Text="SECOND SIGNAL CHART AND HISTOGRAM" />
 
                     <TabControl Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}"
                                 Background="Transparent">
@@ -156,6 +156,41 @@
                     </ScrollViewer>
                     <view:AnalogDigitalSignalChart Grid.Row="1" Grid.Column="1"
                                                    DataContext="{Binding ConversionViewModel}"
+                                                   Style="{StaticResource ChartStyle}" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Convolution, filtration and correlation" DataContext="{Binding ConvolutionFiltrationCorrelationViewModel}">
+                <Grid Margin="5 5 5 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*" />
+                        <ColumnDefinition Width="75*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <!--<TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="MENU" />
+                    <TextBlock Grid.Column="1" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="CHART" />
+                    <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
+                        <TabControl Grid.Row="0">
+                            <TabItem Header="Generate signal">
+                                <view:SignalSettings DataContext="{Binding FirstSignalViewModel}"
+                                                     VerticalAlignment="Top" />
+                            </TabItem>
+                            <TabItem Header="Operations">
+                                <view:ConversionSettings DataContext="{Binding ConversionViewModel}"
+                                                         VerticalAlignment="Top" />
+                            </TabItem>
+                        </TabControl>
+                    </ScrollViewer>-->
+                    <view:SignalChart Grid.Row="1" Grid.Column="1"
+                                                   DataContext="{Binding ConvolutionVM.SignalData}"
                                                    Style="{StaticResource ChartStyle}" />
                 </Grid>
             </TabItem>

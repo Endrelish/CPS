@@ -1,4 +1,5 @@
-﻿using CPS1.Model.SignalData;
+﻿using System.Collections.Concurrent;
+using CPS1.Model.SignalData;
 
 namespace CPS1.ViewModel
 {
@@ -15,11 +16,14 @@ namespace CPS1.ViewModel
 
             CompositionViewModel = new CompositionViewModel(FirstSignalViewModel, SecondSignalViewModel);
             ConversionViewModel = new ConversionViewModel(FirstSignalViewModel);
+            ConvolutionFiltrationCorrelationViewModel = new ConvolutionFiltrationCorrelationViewModel(FirstSignalViewModel, SecondSignalViewModel);
         }
 
         public CompositionViewModel CompositionViewModel { get; }
 
         public ConversionViewModel ConversionViewModel { get; }
+
+        public ConvolutionFiltrationCorrelationViewModel ConvolutionFiltrationCorrelationViewModel { get; }
 
         public SignalViewModel FirstSignalViewModel { get; }
 
