@@ -103,6 +103,7 @@
     <Compile Include="Model\Conversion\Operations.cs" />
     <Compile Include="Model\CommandHandlers\SignalGeneratedCommandHandler.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Convolution.cs" />
+    <Compile Include="Model\ConvolutionFiltrationCorrelation\Correlation.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Filters\FilterType.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Filters\Filter.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\ImpulseResponse.cs" />
