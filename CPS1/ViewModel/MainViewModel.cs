@@ -13,8 +13,14 @@ namespace CPS1.ViewModel
 
         private void CompositeSine(object obj)
         {
+            FirstSignalViewModel.SignalData.Frequency.Value = 440.0d;
+            FirstSignalViewModel.SignalData.Duration.Value = 0.009d;
+            FirstSignalViewModel.SignalData.Samples.Value = 500;
             FirstSignalViewModel.GenerateSignalCommand.Execute(null);
-            SecondSignalViewModel.SignalData.Frequency.Value = 5.0d;
+            SecondSignalViewModel.SignalData.Frequency.Value = 3000.0d;
+            SecondSignalViewModel.SignalData.Duration.Value = 0.009d;
+            SecondSignalViewModel.SignalData.Amplitude.Value = 20.0d;
+            SecondSignalViewModel.SignalData.Samples.Value = 1500;
             SecondSignalViewModel.GenerateSignalCommand.Execute(null);
             CompositionViewModel.AddCommand.Execute((short)1);
         }

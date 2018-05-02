@@ -23,13 +23,19 @@ namespace CPS1.Model.ConvolutionFiltrationCorrelation.Filters
             var K = fp / fo;
             for (int i = 0; i < M; i++)
             {
-                var a = ImpulseResponse.Response(i, K, M);
-                var b = window.Window(i, M);
-                var c = filterTypes[filterType](i);
                 response.Add(new Point(i, ImpulseResponse.Response(i, K, M) * window.Window(i, M) * filterTypes[filterType](i)));
             }
 
-            return Convolution.Convolute(points, response);
+            var ret = Convolution.Convolute(points, response);
+            var amplitude = ret.Select(p => p.Y).Max();
+            amplitude = points.Select(p => p.Y).Max() / amplitude;
+
+            foreach (var point in ret)
+            {
+                point.Y *= amplitude;
+            }
+
+            return ret;
         }
     }
 }
