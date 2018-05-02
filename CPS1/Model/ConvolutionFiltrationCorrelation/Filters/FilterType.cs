@@ -1,7 +1,8 @@
 ﻿namespace CPS1.Model.ConvolutionFiltrationCorrelation.Filters
 {
-    public interface IFilter
+    public enum FilterType
     {
-        
+        LowPassFilter,
+        HighPassFilter
     }
 }

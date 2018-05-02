@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using CPS1.Annotations;
 using CPS1.Converters;
 using CPS1.Model.Generation;
 using CPS1.Model.Parameters;
@@ -19,6 +20,7 @@ namespace CPS1.Model.SignalData
         [NonSerialized] private Func<FunctionData, double, double> function;
 
         private Signal type;
+        private List<Point> points;
 
         public FunctionData(
             double startTime = 0,
@@ -180,8 +182,6 @@ namespace CPS1.Model.SignalData
 
         [DataMember] public FunctionAttribute<double> Period { get; set; }
 
-        [DataMember] public List<Point> Points { get; set; }
-
         [DataMember] public FunctionAttribute<double> Probability { get; set; }
 
         [IgnoreDataMember]
@@ -254,6 +254,20 @@ namespace CPS1.Model.SignalData
         [field: NonSerialized] public event PropertyChangedEventHandler PropertyChanged;
 
         public IEnumerable<Parameter> Parameters { get; }
+
+        [DataMember]
+        public List<Point> Points
+        {
+            get => points;
+            set
+            {
+                if (Equals(value, points)) return;
+                points = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Labels));
+                OnPropertyChanged(nameof(Values));
+            }
+        }
 
         public void AssignSignal(FunctionData data)
         {

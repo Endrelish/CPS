@@ -10,12 +10,6 @@
     <UserControl.Resources>
         <Image x:Key="SaveIcon" Source="../resources/SaveIcon.png" />
         <Image x:Key="OpenIcon" Source="../resources/OpenIcon.png" />
-        <Style x:Key="TitleStyle" TargetType="TextBlock">
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="FontSize" Value="15" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="0 10 0 10" />
-        </Style>
     </UserControl.Resources>
     <ScrollViewer>
         <Grid VerticalAlignment="Top" Margin="0 0 0 0">

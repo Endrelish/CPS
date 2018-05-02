@@ -103,7 +103,9 @@
     <Compile Include="Model\Conversion\Operations.cs" />
     <Compile Include="Model\CommandHandlers\SignalGeneratedCommandHandler.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Convolution.cs" />
-    <Compile Include="Model\ConvolutionFiltrationCorrelation\Filters\IFilter.cs" />
+    <Compile Include="Model\ConvolutionFiltrationCorrelation\Filters\FilterType.cs" />
+    <Compile Include="Model\ConvolutionFiltrationCorrelation\Filters\Filter.cs" />
+    <Compile Include="Model\ConvolutionFiltrationCorrelation\ImpulseResponse.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Windows\BlackmanWindow.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Windows\HammingWindow.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Windows\HanningWindow.cs" />
@@ -118,7 +120,6 @@
     <Compile Include="Model\Composition\Operation.cs" />
     <Compile Include="Model\Composition\Operations.cs" />
     <Compile Include="Model\Parameters\IParametersProvider.cs" />
-    <Compile Include="Model\SignalData\IFunctionAttribute.cs" />
     <Compile Include="Model\CommandHandlers\CommandHandler.cs" />
     <Compile Include="Model\Serialization\FileBinarySerializer.cs" />
     <Compile Include="ViewModel\CompositionViewModel.cs" />
@@ -145,6 +146,9 @@
     <Compile Include="Model\Generation\Signal.cs" />
     <Compile Include="Model\Generation\Generator.cs" />
     <Compile Include="Model\Generation\Histogram.cs" />
+    <Compile Include="View\FiltrationSettings.xaml.cs">
+      <DependentUpon>FiltrationSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\HistogramChart.xaml.cs">
       <DependentUpon>HistogramChart.xaml</DependentUpon>
     </Compile>
@@ -175,6 +179,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ConversionSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FiltrationSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

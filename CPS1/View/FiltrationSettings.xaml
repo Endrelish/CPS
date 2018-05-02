@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="CPS1.View.FiltrationSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CPS1.View"
+             xmlns:viewModel="clr-namespace:CPS1.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignWidth="400">
+    <StackPanel>
+        <TextBlock Style="{StaticResource TitleStyle}" Text="FILTER TYPE"/>
+        <ComboBox Margin="25 10 25 10" ItemsSource="{Binding Filters}" SelectedItem="{Binding SelectedFilter}"/>
+        <TextBlock Style="{StaticResource TitleStyle}" Text="WINDOW TYPE"/>
+        <ComboBox Margin="25 10 25 10" ItemsSource="{Binding Windows}" SelectedItem="{Binding Window}"/>
+        <TextBlock Style="{StaticResource TitleStyle}" Text="FILTER SETTINGS"/>
+        <local:Attributes DataContext="{Binding Attributes}" />
+        <Button Content="FILTER" Width="100" Height="40" FontWeight="Bold" Command="{Binding FilterCommand}"/>
+    </StackPanel>
+</UserControl>

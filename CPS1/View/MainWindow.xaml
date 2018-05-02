@@ -59,6 +59,7 @@
             <MenuItem Header="Clear _2. graph." Command="{Binding SecondSignalViewModel.ClearCommand}"
                       CommandParameter="2" />
             <MenuItem Header="_Swap signals." Command="{Binding CompositionViewModel.SwapCommand}" />
+            <MenuItem Header="Generate _composite sine." Command="{Binding CompositeSineCommand}"/>
         </Menu>
 
         <!--TODO Remember last open tab.-->
@@ -143,7 +144,7 @@
                                VerticalAlignment="Center"
                                Text="CHART" />
                     <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
-                        <TabControl Grid.Row="0">
+                        <TabControl>
                             <TabItem Header="Generate signal">
                                 <view:SignalSettings DataContext="{Binding FirstSignalViewModel}"
                                                      VerticalAlignment="Top" />
@@ -169,7 +170,7 @@
                         <RowDefinition Height="25" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <!--<TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                    <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" FontSize="20"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Text="MENU" />
@@ -179,19 +180,15 @@
                                Text="CHART" />
                     <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
                         <TabControl Grid.Row="0">
-                            <TabItem Header="Generate signal">
-                                <view:SignalSettings DataContext="{Binding FirstSignalViewModel}"
-                                                     VerticalAlignment="Top" />
+                            <TabItem Header="Filtration">
+                                <view:FiltrationSettings DataContext="{Binding}"/>
                             </TabItem>
-                            <TabItem Header="Operations">
-                                <view:ConversionSettings DataContext="{Binding ConversionViewModel}"
-                                                         VerticalAlignment="Top" />
+                            <TabItem Header="XYZ">
+                                <TextBlock Margin="25 50 25 0">throw new NotDesignedException();</TextBlock>
                             </TabItem>
                         </TabControl>
-                    </ScrollViewer>-->
-                    <view:SignalChart Grid.Row="1" Grid.Column="1"
-                                                   DataContext="{Binding ConvolutionVM.SignalData}"
-                                                   Style="{StaticResource ChartStyle}" />
+                    </ScrollViewer>
+                    <view:AnalogDigitalSignalChart Grid.Column="1" Grid.Row="1" DataContext="{Binding}"/>
                 </Grid>
             </TabItem>
         </TabControl>

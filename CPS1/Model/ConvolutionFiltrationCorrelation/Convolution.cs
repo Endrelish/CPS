@@ -1,18 +1,16 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CPS1.Model.SignalData;
 
 namespace CPS1.Model.ConvolutionFiltrationCorrelation
 {
     public static class Convolution
     {
-        public static FunctionData Convolute(FunctionData first, FunctionData second)
+        public static IEnumerable<Point> Convolute(IEnumerable<Point> first, IEnumerable<Point> second)
         {
-            var M = first.Points.Count;
-            var N = second.Points.Count;
-            var convolution = new FunctionData();
-            convolution.AssignSignal(first);
-            convolution.Points.Clear();
-            convolution.HistogramPoints.Clear();
+            var M = first.Count();
+            var N = second.Count();
+            var convolution = new List<Point>();
 
             for (int i = 0; i < M + N - 1; i++)
             {
@@ -20,18 +18,14 @@ namespace CPS1.Model.ConvolutionFiltrationCorrelation
 
                 for (int j = 0; j <M; j++)
                 {
-                    if (j < first.Points.Count && i - j >= 0 && i - j < second.Points.Count)
+                    if (j < first.Count() && i - j >= 0 && i - j < second.Count())
                     {
-                        y += first.Points[j].Y * second.Points[i - j].Y;
+                        y += first.ElementAt(j).Y * second.ElementAt(i - j).Y;
                     }
                 }
 
-                convolution.Points.Add(new Point(i, y));
+                convolution.Add(new Point(i, y));
             }
-
-            convolution.StartTime.Value = 0;
-            convolution.Duration.Value = M + N - 1;
-            convolution.SetAmplitude();
 
             return convolution;
         }

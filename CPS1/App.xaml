@@ -14,5 +14,12 @@
         <converters:VisibilityInversionConverter x:Key="VisibilityInversionConverter" />
         <converters:LogarithmConverter x:Key="LogarithmConverter" />
         <Image x:Key="ButtonBackground" Source="../resources/ButtonBackground.png" />
+
+        <Style x:Key="TitleStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0 10 0 10" />
+        </Style>
     </Application.Resources>
 </Application>

@@ -1,19 +1,96 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using CPS1.Model.ConvolutionFiltrationCorrelation;
+using System.Runtime.CompilerServices;
+using CPS1.Annotations;
+using CPS1.Model.CommandHandlers;
+using CPS1.Model.ConvolutionFiltrationCorrelation.Filters;
 using CPS1.Model.ConvolutionFiltrationCorrelation.Windows;
 using CPS1.Model.SignalData;
+using CPS1.Properties;
 
 namespace CPS1.ViewModel
 {
-    public class ConvolutionFiltrationCorrelationViewModel
+    public class ConvolutionFiltrationCorrelationViewModel : INotifyPropertyChanged
     {
-        public SignalViewModel FirstSignalViewModel { get; }
-        public SignalViewModel SecondSignalViewModel { get; }
-        public SignalViewModel ConvolutionVM { get; private set; }
+        private Dictionary<FilterType, string> filters;
+
+        private FilterType selectedFilter;
         private IWindow window;
-        public string Window { get; set; }
+
+        private Filter filter;
+
+        public ConvolutionFiltrationCorrelationViewModel(SignalViewModel first)
+        {
+            this.firstSignalViewModel = first;
+            this.SecondSignalData = new FunctionData();
+            this.filter = new Filter();
+
+            this.filters = new Dictionary<FilterType, string>();
+            this.filters.Add(FilterType.LowPassFilter, "LOW-PASS FILTER");
+            this.filters.Add(FilterType.HighPassFilter, "HIGH-PASS FILTER");
+
+            this.selectedFilter = FilterType.LowPassFilter;
+            this.window = new RectangularWindow();
+            this.windows = new List<IWindow>(new IWindow[]{new RectangularWindow(), new HanningWindow(), new HammingWindow(), new BlackmanWindow()});
+
+            this.filterOrder = new FunctionAttribute<int>(5, true, 1, 500, "FILTER ORDER");
+            this.cutoffFrequency = new FunctionAttribute<double>(400.0d, true, 10.0d, 25000.0d, "CUTOFF FREQUENCY");
+
+            this.Attributes = new List<object>(new []{(object)filterOrder, (object)cutoffFrequency});
+
+            this.firstSignalViewModel.SignalGenerated += ((sender, args) => this.FilterCommand.RaiseCanExecuteChanged());
+        }
+
+        private CommandHandler filterCommand;
+
+        public CommandHandler FilterCommand => this.filterCommand ?? (this.filterCommand =
+                                                   new CommandHandler(this.Filtration,
+                                                       () => firstSignalViewModel.IsSignalGenerated));
+
+        private void Filtration(object obj)
+        {
+            this.SecondSignalData.Points.Clear();
+            this.SecondSignalData.Points = filter.Filtration(filterOrder.Value, cutoffFrequency.Value,
+                FirstSignalData.Points, window, selectedFilter).ToList();
+        }
+
+        public IEnumerable<string> Filters => filters.Select(f => f.Value);
+
+        private FunctionAttribute<int> filterOrder;
+        private FunctionAttribute<double> cutoffFrequency;
+
+        public IEnumerable<object> Attributes { get; }
+
+        public string SelectedFilter
+        {
+            get => filters[selectedFilter];
+            set
+            {
+                selectedFilter = filters.First(f => f.Value.Equals(value)).Key;
+                OnPropertyChanged();
+            }
+        }
+
+        private SignalViewModel firstSignalViewModel;
+        public FunctionData FirstSignalData => firstSignalViewModel.SignalData;
+        public FunctionData SecondSignalData { get; }
+
+        public string Window
+        {
+            get => window.Name;
+            set
+            {
+                if (value.Equals(window.Name))
+                {
+                    return;
+                }
+
+                window = windows.First(w => w.Name.Equals(value));
+                OnPropertyChanged();
+            }
+        }
+
         private IEnumerable<IWindow> windows { get; }
 
         public IEnumerable<string> Windows
@@ -21,33 +98,12 @@ namespace CPS1.ViewModel
             get { return windows.Select(w => w.Name); }
         }
 
-        public ConvolutionFiltrationCorrelationViewModel(SignalViewModel first, SignalViewModel second)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            FirstSignalViewModel = first;
-            SecondSignalViewModel = second;
-        }
-
-        private void ConvolutionTest()
-        {
-            FirstSignalViewModel.SignalData.Points.Clear();
-            SecondSignalViewModel.SignalData.Points.Clear();
-            FirstSignalViewModel.SignalData.Continuous.Value = false;
-            SecondSignalViewModel.SignalData.Continuous.Value = false;
-
-            var points = FirstSignalViewModel.SignalData.Points;
-            points.AddRange(new[] { new Point(0, 1), new Point(1, 2), new Point(2, 3), new Point(3, 4) });
-            points = SecondSignalViewModel.SignalData.Points;
-            points.AddRange(new[] { new Point(0, 5), new Point(1, 6), new Point(2, 7) });
-
-            ConvolutionVM = new SignalViewModel();
-            ConvolutionVM.SignalData.AssignSignal(Convolution.Convolute(FirstSignalViewModel.SignalData, SecondSignalViewModel.SignalData));
-        }
-
-        // K = fp / f0 fp - cz. probkowania, f0 - cz. odciecia
-        public static double ImpulseResponse(double n, double K, double M)
-        {
-            if (Math.Abs(n - (M - 1) / 2.0d) < double.Epsilon) return 2.0d / K;
-            return (Math.Sin((2 * Math.PI * (n - (M - 1) / 2.0d)) / K) / (Math.PI * (n - (M - 1) / 2.0d)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

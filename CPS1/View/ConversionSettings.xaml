@@ -16,16 +16,16 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Name="AdTextBlock"
                    Visibility="{Binding IsSignalAnalog, Converter={StaticResource BooleanToVisibilityConverter}}"
-                   FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
+                   Style="{StaticResource TitleStyle}"
                    Text="A/D CONVERSION" />
-        <ComboBox Grid.Row="1" Visibility="{Binding ElementName=AdTextBlock, Path=Visibility}" Margin="10 10 10 10"
+        <ComboBox Grid.Row="1" Visibility="{Binding ElementName=AdTextBlock, Path=Visibility}" Margin="25 10 25 10"
                   ItemsSource="{Binding AnalogToDigitalConversionOperations}"
                   SelectedItem="{Binding Operation}" />
         <TextBlock Grid.Row="0" Name="DaTextBlock"
                    Visibility="{Binding ElementName=AdTextBlock, Path=Visibility, Converter={StaticResource VisibilityInversionConverter}}"
-                   FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"
+                   Style="{StaticResource TitleStyle}"
                    Text="D/A CONVERSION" />
-        <ComboBox Grid.Row="1" Visibility="{Binding ElementName=DaTextBlock, Path=Visibility}" Margin="10 10 10 10"
+        <ComboBox Grid.Row="1" Visibility="{Binding ElementName=DaTextBlock, Path=Visibility}" Margin="25 10 25 10"
                   ItemsSource="{Binding DigitalToAnalogConversionOperations}"
                   SelectedItem="{Binding Operation}" />
         <local:Attributes Grid.Row="2" DataContext="{Binding Attributes}" />
