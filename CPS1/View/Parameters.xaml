@@ -8,8 +8,7 @@
              d:DesignWidth="400">
     <UserControl.Resources>
         <DataTemplate x:Key="Item">
-            <Grid Margin="25 5 25 5"
-                  Visibility="{Binding Visibility, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid Margin="25 5 25 5">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />

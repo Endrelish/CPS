@@ -9,6 +9,7 @@
         xmlns:converters="clr-namespace:CPS1.Converters"
         xmlns:viewModel="clr-namespace:CPS1.ViewModel"
         xmlns:view="clr-namespace:CPS1.View"
+        
         mc:Ignorable="d"
         Title="MainWindow"
         WindowState="Maximized"
@@ -60,6 +61,7 @@
                       CommandParameter="2" />
             <MenuItem Header="_Swap signals." Command="{Binding CompositionViewModel.SwapCommand}" />
             <MenuItem Header="Generate _composite sine." Command="{Binding CompositeSineCommand}"/>
+            <MenuItem Header="CorrelationData test" Command="{Binding CorrelationTestcommand}"/>
         </Menu>
 
         <!--TODO Remember last open tab.-->
@@ -160,7 +162,7 @@
                                                    Style="{StaticResource ChartStyle}" />
                 </Grid>
             </TabItem>
-            <TabItem Header="Convolution, filtration and correlation" DataContext="{Binding ConvolutionFiltrationCorrelationViewModel}">
+            <TabItem Header="Filtration" DataContext="{Binding ConvolutionFiltrationCorrelationViewModel}">
                 <Grid Margin="5 5 5 5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="25*" />
@@ -179,16 +181,39 @@
                                VerticalAlignment="Center"
                                Text="CHART" />
                     <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
-                        <TabControl Grid.Row="0">
-                            <TabItem Header="Filtration">
-                                <view:FiltrationSettings DataContext="{Binding}"/>
-                            </TabItem>
-                            <TabItem Header="XYZ">
-                                <TextBlock Margin="25 50 25 0">throw new NotDesignedException();</TextBlock>
-                            </TabItem>
-                        </TabControl>
+                        <view:FiltrationSettings DataContext="{Binding}"/>
                     </ScrollViewer>
                     <view:AnalogDigitalSignalChart Grid.Column="1" Grid.Row="1" DataContext="{Binding}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Distance sensor" DataContext="{Binding DistanceSensorViewModel}">
+                <Grid Margin="5 5 5 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*" />
+                        <ColumnDefinition Width="75*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="MENU" />
+                    <TextBlock Grid.Column="1" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="CHART" />
+                    <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource TitleStyle}" Text="PROBING SIGNAL SETTINGS"/>
+                            <view:Attributes DataContext="{Binding SentSignalData.Attributes}"/>
+                            <TextBlock Style="{StaticResource TitleStyle}" Text="TRACKED OBJECT SETTINGS"/>
+                            <view:Attributes DataContext="{Binding Object.Attributes}"/>
+                            <Button Width="100" Height="40" Content="SIMULATION" FontWeight="Bold" Command="{Binding StartSimulationCommand}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <view:DistanceSensorCharts Grid.Row="1" Grid.Column="1" DataContext="{Binding}"/>
                 </Grid>
             </TabItem>
         </TabControl>

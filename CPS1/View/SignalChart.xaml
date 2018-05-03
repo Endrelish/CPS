@@ -12,8 +12,7 @@
     <UserControl.Resources>
         <converters1:ChartSettingsConverter x:Key="ChartSettingsConverter" />
     </UserControl.Resources>
-    <Grid>
-        <lvc:CartesianChart>
+    <lvc:CartesianChart>
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries Values="{Binding Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 PointForeground="#2195f2" PointGeometrySize="3" LineSmoothness="1"
@@ -27,5 +26,4 @@
                 <lvc:Axis LabelFormatter="{Binding Formatter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
-    </Grid>
 </UserControl>

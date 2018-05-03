@@ -37,10 +37,10 @@ namespace CPS1.ViewModel
             DigitalToAnalogConversionOperations = new List<string> {"ZERO-ORDER HOLD", "SINC RECONSTRUCTION"};
             Operation = string.Empty;
 
-            MaximumDifference = new Parameter(0.0d, "MAXIMUM DIFFERENCE", true);
-            SignalToNoiseRatio = new Parameter(0, "SIGNAL TO NOISE RATIO", true);
-            MeanSquaredError = new Parameter(0, "MEAN SQUARED ERROR", true);
-            PeakSignalToNoiseRatio = new Parameter(0, "PEAK SIGNAL TO NOISE RATIO", true);
+            MaximumDifference = new Parameter(0.0d, "MAXIMUM DIFFERENCE");
+            SignalToNoiseRatio = new Parameter(0, "SIGNAL TO NOISE RATIO");
+            MeanSquaredError = new Parameter(0, "MEAN SQUARED ERROR");
+            PeakSignalToNoiseRatio = new Parameter(0, "PEAK SIGNAL TO NOISE RATIO");
 
 
             Attributes = new List<FunctionAttribute<int>>(

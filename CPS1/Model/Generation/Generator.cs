@@ -12,7 +12,7 @@ namespace CPS1.Model.Generation
             var interval = data.Duration.Value / (data.Samples.Value - 1);
             for (var i = 0; i < data.Samples.Value; i++)
             {
-                var x = i * interval + data.StartTime.Value - data.Duration.Value / 2.0d;
+                var x = i * interval;
                 try
                 {
                     var y = data.Function(data, x);

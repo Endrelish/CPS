@@ -117,6 +117,7 @@ namespace CPS1.Model.SignalData
 
             Continuous.Value = continuous;
             Type = type;
+            IsLive = false;
         }
 
         [DataMember] public Parameter AbsoluteAverageValue { get; set; }
@@ -207,6 +208,8 @@ namespace CPS1.Model.SignalData
 
         [DataMember] public FunctionAttribute<double> StartTime { get; set; }
 
+        public bool IsLive { get; set; }
+
         [DataMember]
         public Signal Type
         {
@@ -224,13 +227,24 @@ namespace CPS1.Model.SignalData
                     RequiredAttributes = AvailableFunctions.GetRequiredParameters(type);
                     Function = AvailableFunctions.GetFunction(type);
                 }
+                
             }
         }
+
+        private ChartValues<double> values;
 
         [IgnoreDataMember]
         public ChartValues<double> Values
         {
-            get { return new ChartValues<double>(Points.Select(p => p.Y)); }
+            get
+            {
+                if (!IsLive)
+                {
+                    values = new ChartValues<double>(Points.Select(p => p.Y));
+                    return values;
+                }
+                else return values;
+            }
         }
 
         [DataMember] public Parameter Variance { get; set; }

@@ -1,18 +1,23 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using CPS1.Annotations;
 using CPS1.Properties;
 
 namespace CPS1.Model.Parameters
 {
+    [DataContract]
+    [Serializable]
     public class Parameter : INotifyPropertyChanged
     {
+        [DataMember]
         private string name;
 
+        [DataMember]
         private double value;
 
-        public Parameter(double value, string name, bool visibility = false)
+        public Parameter(double value, string name)
         {
             Value = value;
             Name = name;
@@ -48,6 +53,7 @@ namespace CPS1.Model.Parameters
             }
         }
 
+        [field:NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void AssingParameter(Parameter p)

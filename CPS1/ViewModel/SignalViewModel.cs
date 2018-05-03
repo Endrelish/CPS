@@ -92,8 +92,6 @@ namespace CPS1.ViewModel
 
         private void OpenSignal(object parameter)
         {
-            if (parameter is short chart)
-            {
                 var filename = fileDialog.GetOpenFilePath(serializer.Format);
                 if (string.IsNullOrEmpty(filename))
                 {
@@ -103,13 +101,10 @@ namespace CPS1.ViewModel
                 var data = serializer.Deserialize(filename);
 
                 SignalData.AssignSignal(data);
-            }
         }
 
         private void SaveSignal(object parameter)
         {
-            if (parameter is short chart)
-            {
                 var filename = fileDialog.GetSaveFilePath(serializer.Format);
                 if (string.IsNullOrEmpty(filename))
                 {
@@ -117,7 +112,6 @@ namespace CPS1.ViewModel
                 }
 
                 serializer.Serialize(SignalData, filename);
-            }
         }
     }
 }

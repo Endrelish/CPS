@@ -58,15 +58,6 @@
     <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Rychusoft.NumericalLibraries.Calculator, Version=1.0.6216.39191, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Rychusoft.NumericalLibraries.Calculator.1.0.6216.39191\lib\net40\Rychusoft.NumericalLibraries.Calculator.dll</HintPath>
-    </Reference>
-    <Reference Include="Rychusoft.NumericalLibraries.Derivative, Version=1.0.6216.39191, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Rychusoft.NumericalLibraries.Derivative.1.0.6216.39191\lib\net40\Rychusoft.NumericalLibraries.Derivative.dll</HintPath>
-    </Reference>
-    <Reference Include="Rychusoft.NumericalLibraries.NumericalLibrariesCommon, Version=1.0.6216.39191, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Rychusoft.NumericalLibraries.Calculator.1.0.6216.39191\lib\net40\Rychusoft.NumericalLibraries.NumericalLibrariesCommon.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Collections.Immutable.1.4.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
@@ -104,6 +95,8 @@
     <Compile Include="Model\CommandHandlers\SignalGeneratedCommandHandler.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Convolution.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Correlation.cs" />
+    <Compile Include="Model\ConvolutionFiltrationCorrelation\DistanceSensor\SensorSignal.cs" />
+    <Compile Include="Model\ConvolutionFiltrationCorrelation\DistanceSensor\TrackedObject.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Filters\FilterType.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Filters\Filter.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\ImpulseResponse.cs" />
@@ -126,6 +119,7 @@
     <Compile Include="ViewModel\CompositionViewModel.cs" />
     <Compile Include="ViewModel\ConversionViewModel.cs" />
     <Compile Include="ViewModel\ConvolutionFiltrationCorrelationViewModel.cs" />
+    <Compile Include="ViewModel\DistanceSensorViewModel.cs" />
     <Compile Include="ViewModel\SignalViewModel.cs" />
     <Compile Include="View\AnalogDigitalSignalChart.xaml.cs">
       <DependentUpon>AnalogDigitalSignalChart.xaml</DependentUpon>
@@ -133,11 +127,17 @@
     <Compile Include="View\Attributes.xaml.cs">
       <DependentUpon>Attributes.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ChartsTest.xaml.cs">
+      <DependentUpon>ChartsTest.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\CompositionSettings.xaml.cs">
       <DependentUpon>CompositionSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ConversionSettings.xaml.cs">
       <DependentUpon>ConversionSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DistanceSensorCharts.xaml.cs">
+      <DependentUpon>DistanceSensorCharts.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\FileDialogWpf.cs" />
     <Compile Include="Binding\FrequencyPeriodConverter.cs" />
@@ -175,11 +175,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\ChartsTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\CompositionSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ConversionSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DistanceSensorCharts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
