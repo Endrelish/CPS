@@ -95,6 +95,7 @@
     <Compile Include="Model\CommandHandlers\SignalGeneratedCommandHandler.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Convolution.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Correlation.cs" />
+    <Compile Include="Model\ConvolutionFiltrationCorrelation\DistanceSensor\SensorParameters.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\DistanceSensor\SensorSignal.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\DistanceSensor\TrackedObject.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Filters\FilterType.cs" />
@@ -126,9 +127,6 @@
     </Compile>
     <Compile Include="View\Attributes.xaml.cs">
       <DependentUpon>Attributes.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ChartsTest.xaml.cs">
-      <DependentUpon>ChartsTest.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\CompositionSettings.xaml.cs">
       <DependentUpon>CompositionSettings.xaml</DependentUpon>
@@ -172,10 +170,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Attributes.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ChartsTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

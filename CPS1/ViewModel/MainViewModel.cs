@@ -51,7 +51,7 @@ namespace CPS1.ViewModel
         {
             FirstSignalViewModel = new SignalViewModel();
             SecondSignalViewModel = new SignalViewModel();
-            
+
             CompositionViewModel = new CompositionViewModel(FirstSignalViewModel, SecondSignalViewModel);
             ConversionViewModel = new ConversionViewModel(FirstSignalViewModel);
             ConvolutionFiltrationCorrelationViewModel = new ConvolutionFiltrationCorrelationViewModel(FirstSignalViewModel);

@@ -33,8 +33,6 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Style="{StaticResource TitleStyle}" Text="SENT SIGNAL"/>
         <UserControl Grid.Row="1" Template="{StaticResource Chart}" DataContext="{Binding SentSignal}"/>
@@ -42,7 +40,5 @@
         <UserControl Grid.Row="3" Template="{StaticResource Chart}" DataContext="{Binding ReceivedSignal}"/>
         <TextBlock Grid.Row="4" Style="{StaticResource TitleStyle}" Text="CORRELATION"/>
         <UserControl Grid.Row="5" Template="{StaticResource Chart}" DataContext="{Binding CorrelationData}"/>
-        <TextBlock Grid.Row="6" Style="{StaticResource TitleStyle}" Text="NVM SIGNAL"/>
-        <UserControl Grid.Row="7" Template="{StaticResource Chart}" DataContext="{Binding NVM}"/>
     </Grid>
 </UserControl>

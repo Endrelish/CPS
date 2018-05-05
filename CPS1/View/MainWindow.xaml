@@ -210,7 +210,9 @@
                             <view:Attributes DataContext="{Binding SentSignalData.Attributes}"/>
                             <TextBlock Style="{StaticResource TitleStyle}" Text="TRACKED OBJECT SETTINGS"/>
                             <view:Attributes DataContext="{Binding Object.Attributes}"/>
-                            <Button Width="100" Height="40" Content="SIMULATION" FontWeight="Bold" Command="{Binding StartSimulationCommand}"/>
+                            <Button Width="100" Height="40" Content="SIMULATION" FontWeight="Bold" Command="{Binding TestCommand}"/>
+                            <Separator Margin="50" Foreground="Black"/>
+                            <view:Parameters DataContext="{Binding SensorParameters.Parameters}"/>
                         </StackPanel>
                     </ScrollViewer>
                     <view:DistanceSensorCharts Grid.Row="1" Grid.Column="1" DataContext="{Binding}"/>
