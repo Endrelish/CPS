@@ -19,6 +19,7 @@ namespace CPS1.Model.ConvolutionFiltrationCorrelation.Filters
         public IEnumerable<Point> Filtration(int M, double fo, IEnumerable<Point> points, IWindow window, FilterType filterType)
         {
             var fp = 1 / (points.ElementAt(1).X - points.ElementAt(0).X);
+            if (filterType == FilterType.HighPassFilter) fo = fp / 2 - fo;
             var response = new List<Point>();
             var K = fp / fo;
             for (int i = 0; i < M; i++)

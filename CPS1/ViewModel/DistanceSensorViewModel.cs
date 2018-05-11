@@ -81,12 +81,10 @@ namespace CPS1.ViewModel
         private void RunSimulation()
         {
             var samplingPeriod = 1.0d / SentSignalData.SamplingFrequency.Value;
-            var currentTime = 0.0d;
 
             while (true)
             {
                 Thread.Sleep((int)SentSignalData.ReportPeriod.Value * 1000);
-                currentTime += SentSignalData.ReportPeriod.Value;
                 Object.Position.Value += Object.Velocity.Value * SentSignalData.ReportPeriod.Value;
                 var delay = 2.0d * Object.Position.Value / SentSignalData.SignalSpeed.Value;
                 var second = new List<double>();
