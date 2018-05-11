@@ -31,9 +31,9 @@ namespace CPS1.ViewModel
 
         public CommandHandler CorrelationTestcommand => correlationTestCommand ??
                                                         (correlationTestCommand =
-                                                            new CommandHandler(CorrelationTest, () => true));
+                                                            new CommandHandler(ConvolutionTest, () => true));
 
-        private void CorrelationTest(object obj)
+        private void ConvolutionTest(object obj)
         {
             var first = FirstSignalViewModel.SignalData;
             var second = SecondSignalViewModel.SignalData;
@@ -44,7 +44,7 @@ namespace CPS1.ViewModel
             FirstSignalViewModel.GenerateSignalCommand.Execute(null);
             SecondSignalViewModel.GenerateSignalCommand.Execute(null);
 
-            SecondSignalViewModel.SignalData.Points = Correlation.Correlate(first.Points, second.Points).ToList();
+            SecondSignalViewModel.SignalData.Points = Convolution.Convolute(first.Points, second.Points).ToList();
         }
 
         public MainViewModel()

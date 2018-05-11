@@ -61,7 +61,7 @@
                       CommandParameter="2" />
             <MenuItem Header="_Swap signals." Command="{Binding CompositionViewModel.SwapCommand}" />
             <MenuItem Header="Generate _composite sine." Command="{Binding CompositeSineCommand}"/>
-            <MenuItem Header="CorrelationData test" Command="{Binding CorrelationTestcommand}"/>
+            <MenuItem Header="ConvolutionData test" Command="{Binding CorrelationTestcommand}"/>
         </Menu>
 
         <!--TODO Remember last open tab.-->
