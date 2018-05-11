@@ -20,6 +20,7 @@ namespace CPS1.ViewModel
     public class DistanceSensorViewModel
     {
         private CommandHandler startSimulationCommand;
+
         
         private Thread simulationThread;
 
@@ -81,7 +82,7 @@ namespace CPS1.ViewModel
         {
             var samplingPeriod = 1.0d / SentSignalData.SamplingFrequency.Value;
             var currentTime = 0.0d;
-            var coefficient = SentSignalData.SignalSpeed.Value / SentSignalData.SamplingFrequency.Value / 2.0d;
+
             while (true)
             {
                 Thread.Sleep((int)SentSignalData.ReportPeriod.Value * 1000);

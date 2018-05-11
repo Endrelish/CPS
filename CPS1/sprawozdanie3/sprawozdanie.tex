@@ -1,0 +1,159 @@
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[T1]{polski}
+\usepackage[cp1250]{inputenc}
+\newcommand{\BibTeX}{{\sc Bib}\TeX} 
+\usepackage{graphicx}
+\usepackage{amsfonts}
+
+\setlength{\textheight}{21cm}
+
+\title{{\bf Zadanie nr 3 - Splot, filtracja i korelacja sygna³ów}\linebreak
+Cyfrowe Przetwarzanie Sygna³ów}
+\author{Pawe³ Purgat, 203975 \and Bart³omiej Ciach, 203860}
+\date{11.05.2018}
+
+\begin{document}
+\clearpage\maketitle
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+\section{Cel zadania}
+
+Celem æwiczenia by³o zapoznanie siê oraz prezentacja operacji splotu, filtracji i korelacji sygna³ów. Na podstawie korelacji zosta³ zasymulowany korelacyjny czujnik odleg³oœci.
+
+\section{Wstêp teoretyczny}
+
+W zadaniu zosta³y zaimplementowane operacje splotu, korelacji oraz filtracji sygna³u. Wszystkie potrzebne wzory zosta³y zaczerpniête z instrukcji do zadania[1]. Na podstawie tej¿e instrukcji zosta³ równie¿ zasymulowany korelacyjny czujnik odleg³oœci.
+
+\section{Eksperymenty i wyniki}
+
+W celu ilustracji wykonania zadania zosta³ wykonany szereg eksperymentów.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PODROZDZIA£ PT. EKSPERYMENT NR 1 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Eksperyment nr 1}
+
+Filtracja sygna³u filtrem dolnoprzepustowym.\\
+\subsubsection{Za³o¿enia}
+Sygna³ z³o¿ony z dwóch sygna³ów o ró¿nych czêstotliwoœciach po filtracji filtrem dolnoprzepustowym powinien posiadaæ jedynie sk³adowe o czêstotliwoœci mniejszej od czêstotliwoœci odciêcia filtru.
+\subsubsection{Przebieg}
+Wygenerowany zosta³ sygna³ z³o¿ony z dwóch sygna³ów sinusoidalnych o czêstotliwoœciach 440 Hz i 3 kHz. Nastêpnie sygna³ zosta³ poddany operacji filtracji filtrem dolnoprzepustowym o czêstotliwoœci odciêcia 500 Hz przy u¿yciu dwóch funkcji okien: okna prostok¹tnego oraz okna Hanninga. 
+
+\subsubsection{Rezultat}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=13cm]{f1.png}
+ \vspace{-0.3cm}
+ \caption{Filtr dolnoprzepustowy, okno prostok¹tne, rz¹d filtru: 45.}
+ \label{rys1}
+\end{figure}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=13cm]{f2.png}
+ \vspace{-0.3cm}
+ \caption{Filtr dolnoprzepustowy, okno Hanninga, rz¹d filtru: 20.}
+ \label{rys2}
+\end{figure}
+
+\noindent Na rysunkach 1 i 2 przedstawione zosta³y wyniki filtracji filtrem dolnoprzepustowym przy zastosowaniu ró¿nych funkcji okien. Kolorem niebieskim zaznaczony zosta³ sygna³ oryginalny, a kolorem czerwonym sygna³ odfiltrowany. 
+\subsubsection{Spostrze¿enia}
+\begin{itemize}
+\item Dla niskich wartoœci rzêdu filtru sygna³ odfiltrowany zawiera œlady sk³adowych odfiltrowanych.
+\item Na krañcach okresu trwania sygna³u odfiltrowanego mo¿na zauwa¿yæ zniekszta³cenia. S¹ one tym wiêksze, im wiêkszy jest rz¹d filtru.
+\item Wspomniane zniekszta³cenia, zmniejszaj¹c okres trwania sygna³u, zmieniaj¹ nieznacznie czêstotliwoœæ sygna³u, przez co w zale¿noœci od odleg³oœci od œrodkowej próbki sygna³ odfiltrowany nie pokrywa siê z oryginalnym.
+\item Aby wyeliminowaæ wp³yw zniekszta³ceñ na odfiltrowany sygna³, mo¿na "obcinaæ" próbki zniekszta³cone, co "rozci¹gnê³oby" sygna³, przez co pokrywa³by siê ze sk³adow¹ sygna³u oryginalnego.
+\item Zastosowanie okna Hanninga pozwala na zastosowanie ni¿szego rzêdu filtru przy zachowaniu efektywnoœci filtru, tym samym minimalizuj¹c zniekszta³cenia, co prowadzi do otrzymania sygna³u lepiej odwzorowuj¹cego orygina³.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PODROZDZIA£ PT. EKSPERYMENT NR 2 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\subsection{Eksperyment nr 2}
+
+Filtracja sygna³u filtrem górnoprzepustowym.\\
+\subsubsection{Za³o¿enia}
+Sygna³ z³o¿ony z dwóch sygna³ów o ró¿nych czêstotliwoœciach po filtracji filtrem górnoprzepustowym powinien posiadaæ jedynie sk³adowe o czêstotliwoœci wiêkszej od czêstotliwoœci odciêcia filtru.
+\subsubsection{Przebieg}
+Wygenerowany zosta³ sygna³ z³o¿ony z dwóch sygna³ów sinusoidalnych o czêstotliwoœciach 440 Hz i 3 kHz. Nastêpnie sygna³ zosta³ poddany operacji filtracji filtrem górnoprzepustowym o czêstotliwoœci odciêcia 2 kHz przy u¿yciu dwóch funkcji okien: okna prostok¹tnego oraz okna Hanninga. 
+\subsubsection{Rezultat}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=13cm]{f3.png}
+ \vspace{-0.3cm}
+ \caption{Filtr górnoprzepustowy, okno prostok¹tne, rz¹d filtru: 27.}
+ \label{rys3}
+\end{figure}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=13cm]{f4.png}
+ \vspace{-0.3cm}
+ \caption{Filtr górnoprzepustowy, okno Hanninga, rz¹d filtru: 5.}
+ \label{rys4}
+\end{figure}
+
+
+\noindent Na rysunkach 3 i 4 przedstawione zosta³y wyniki filtracji filtrem górnoprzepustowym przy zastosowaniu ró¿nych funkcji okien. Kolorem niebieskim zaznaczony zosta³ sygna³ oryginalny, a kolorem czerwonym sygna³ odfiltrowany.
+
+\subsubsection{Spostrze¿enia}
+\begin{itemize}
+\item W przypadku filtru górnoprzepustowego, rz¹d filtru ma ogromny wp³yw na efektywnoœæ filtru.
+\item W przeciwieñstwie do filtru dolnoprzepustowego, zale¿noœæ nie jest liniowa - dla dwóch s¹siednich wartoœci rzêdu filtru sygna³ wynikowy jest skrajnie ró¿ny, dobór odpowiedniego wspó³czynnika odbywa³ siê metod¹ prób i b³êdów.
+\item Powstawanie zniekszta³ceñ przebiega identycznie, jak w przypadku filtru dolnoprzepustowego.
+\item Zastosowanie okna Hanninga pozwala na zastosowanie ni¿szego rzêdu filtru, a co za tym idzie minimalizacjê zniekszta³ceñ.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PODROZDZIA£ PT. EKSPERYMENT NR N 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Eksperyment nr 3}
+Eksperyment nr 3 polega³ na zasymulowaniu i demonstracji dzia³ania korelacyjnego czujnika odleg³oœci. 
+\subsubsection{Za³o¿enia}
+W tej czêœci æwiczenia nale¿a³o zasymulowaæ fizyczny obiekt poruszaj¹cy siê z okreœlon¹ prêdkoœci¹. W stronê obiektu wysy³any jest okreœlony sygna³, który odbiwszy siê od wspomnianego obiektu, wraca do czujnika i tam jest odczytywany. Na podstawie korelacji obu sygna³ów liczone jest ich przesuniêcie wzglêdem siebiei na jego podstawie obliczana odleg³oœæ obiektu od czujnika.
+\subsubsection{Przebieg}
+Symulowany obiekt zaczyna swoj¹ podró¿ z miejsca, w którym znajduje siê czujnik (jego odleg³oœæ od czujnika wynosi 0). Co okreœlony czas, obiekt oddala siê od czujnika o odleg³oœæ zale¿n¹ od swojej prêdkoœci, jednoczeœnie próbkowane s¹ sygna³ wys³any oraz sygna³ odbity. Nastêpnie liczona jest korelacja tych dwóch sygna³ów. Odleg³oœæ obiektu od czujnika jest wyliczana w nastêpuj¹cy sposób: wyznaczany jest numer maksymalnej próbki z lewej po³owy wykresu korelacji oraz obliczana jest jego odleg³oœæ od œrodkowej próbki, nastêpnie mno¿ymy tê odleg³oœæ przez okres próbkowania (otrzymuj¹c przesuniêcie obu wykresów wzglêdem siebie w czasie), nastêpnie mno¿ymy przez prêdkoœæ rozchodzenia siê sygna³u w oœrodku (aby otrzymaæ ca³kowit¹ drogê przebyt¹ przez sygna³). Z racji tego, ¿e sygna³, odbijaj¹c siê od obiektu, pokonuje dwa razy wiêksz¹ drogê, gdy¿ musi wróciæ do czujnika, otrzyman¹ drogê musimy podzieliæ na dwa, otrzymuj¹c odleg³oœæ obiektu od czujnika.
+\subsubsection{Rezultat}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=13cm]{f5.png}
+ \vspace{-0.3cm}
+ \caption{Wykresy sygna³ów wys³anego i odbitego oraz ich korelacji.}
+ \label{rys4}
+\end{figure}
+\noindent Czujnik odleg³oœci raportuje faktyczn¹ odleg³oœæ obiektu od czujnika z okreœlon¹ dok³adnoœci¹. Dok³adnoœæ ta jest zale¿na od prêdkoœci rozchodzenia siê sygna³u w danym oœrodku oraz czêstotliwoœci próbkowania. Jest ona równa drodze, jak¹ sygna³ przebêdzie w czasie okresu próbkowania podzielonej przez 2 (z racji tego, ¿e droga przebyta przez sygna³ jest dwukrotnoœci¹ odleg³oœci obiektu).
+\subsubsection{Spostrze¿enia}
+\begin{itemize}
+\item Wzór opisuj¹cy korelacjê w instrukcji do zadania[1] zawiera b³¹d.
+\item Czujnik korelacyjny mierzy odleg³oœæ z okreœlon¹ dok³adnoœci¹ zale¿n¹ od prêdkoœci sygna³u w oœrodku i czêstotliwoœci próbkowania.
+\item Je¿eli dobierzemy sygna³ o zbyt krótkim okresie, po przebyciu okreœlonej odleg³oœci czujnik zacznie liczyæ odleg³oœæ od zera (gdy sygna³ odbity bêdzie przesuniêty o czas wiêkszy od jego okresu).
+\end{itemize}
+
+\section{Wnioski}
+\begin{itemize}
+\item U¿yta w zadaniu metoda filtrów SOI generuje zak³ócenia na krañcach sygna³u odfiltrowanego. Aby wyeliminowaæ tê niedogodnoœæ mo¿na "obcinaæ" krañcowe próbki, które s¹ zniekszta³cone.
+\item Funkcja okna pozwala zwiêkszyæ efektywnoœæ filtru, zmniejszaj¹c rz¹d filtru wymagany do poprawnej filtracji, tym samym minimalizuj¹c zniekszta³cenia.
+\item Operacja korelacji jest bardzo podobna do operacji splotu. Co wiêcej, mo¿na zrealizowaæ korelacjê w oparciu o splot. Korelacja dwóch sygna³ów jest tym samym, co splot sygna³u pierwszego i odwróconego w czasie sygna³u drugiego.
+\item Korelacyjny czujnik odleg³oœci jest stosunkowo dok³adny. Jest to wynikiem du¿ej prêdkoœci sygna³u, jednak wymaga du¿ej czêstotliwoœci próbkowania.
+\item Aby wyd³u¿yæ zasiêg czujnika nale¿y dobraæ sygna³ o odpowiednio d³ugim okresie (dla sygna³ów z³o¿onych z okresami wzglêdnie pierwszymi bêdzie do iloczyn wszystkich okresów).
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BIBLIOGRAFIA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Bibliografia}
+\begin{enumerate}
+\item Instrukcja do zadania 3: Splot, filtracja i korelacja sygna³ów, WIKAMP
+\end{enumerate}
+
+\end{document}

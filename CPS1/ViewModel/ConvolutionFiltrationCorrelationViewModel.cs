@@ -32,7 +32,7 @@ namespace CPS1.ViewModel
 
             this.selectedFilter = FilterType.LowPassFilter;
             this.window = new RectangularWindow();
-            this.windows = new List<IWindow>(new IWindow[]{new RectangularWindow(), new HanningWindow(), new HammingWindow(), new BlackmanWindow()});
+            this.windows = new List<IWindow>(new IWindow[]{new RectangularWindow(), new HanningWindow()/*, new HammingWindow(), new BlackmanWindow()*/});
 
             this.filterOrder = new FunctionAttribute<int>(5, true, 1, 500, "FILTER ORDER");
             this.cutoffFrequency = new FunctionAttribute<double>(400.0d, true, 10.0d, 25000.0d, "CUTOFF FREQUENCY");

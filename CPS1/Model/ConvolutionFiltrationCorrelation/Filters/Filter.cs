@@ -27,7 +27,7 @@ namespace CPS1.Model.ConvolutionFiltrationCorrelation.Filters
             }
 
             var ret = Convolution.Convolute(points, response);
-            var amplitude = ret.Select(p => p.Y).Max();
+            var amplitude = ret.Select(p => p.Y).Max() * 2;
             amplitude = points.Select(p => p.Y).Max() / amplitude;
 
             foreach (var point in ret)

@@ -16,7 +16,7 @@ namespace CPS1.ViewModel
         private void CompositeSine(object obj)
         {
             FirstSignalViewModel.SignalData.Frequency.Value = 440.0d;
-            FirstSignalViewModel.SignalData.Duration.Value = 0.009d;
+            FirstSignalViewModel.SignalData.Duration.Value = 0.02d;
             FirstSignalViewModel.SignalData.Samples.Value = 500;
             FirstSignalViewModel.GenerateSignalCommand.Execute(null);
             SecondSignalViewModel.SignalData.Frequency.Value = 3000.0d;
