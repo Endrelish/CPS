@@ -16,10 +16,17 @@ namespace CPS1.Model.SignalData
             X = x;
             Y = y;
         }
+        public Point(double x, double y, double z)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+        }
 
         [DataMember] public double X { get; set; }
 
         [DataMember] public double Y { get; set; }
+        [DataMember] public double Z { get; set; }
 
         public int CompareTo(object obj)
         {
