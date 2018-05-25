@@ -40,7 +40,7 @@ namespace CPS1.ViewModel
 
             first.Duration.Value = 5;
             second.Duration.Value = 5;
-            first.StartTime.Value = 0.3d;
+            //first.StartTime.Value = 0.3d;
             FirstSignalViewModel.GenerateSignalCommand.Execute(null);
             SecondSignalViewModel.GenerateSignalCommand.Execute(null);
 

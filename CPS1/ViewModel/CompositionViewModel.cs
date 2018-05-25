@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using CPS1.Model.CommandHandlers;
 using CPS1.Model.Composition;
+using CPS1.Model.SignalData;
 
 namespace CPS1.ViewModel
 {
@@ -15,6 +17,8 @@ namespace CPS1.ViewModel
         private readonly SignalViewModel secondSignalViewModel;
         private CommandHandler subtractCommand;
         private CommandHandler swapCommand;
+        private CommandHandler correlationCommand;
+        private CommandHandler convolutionCommand;
 
         public CompositionViewModel(SignalViewModel first, SignalViewModel second)
         {
@@ -27,6 +31,29 @@ namespace CPS1.ViewModel
 
         public CommandHandler AddCommand => addCommand
                                             ?? (addCommand = new CommandHandler(AddSignals, AreSignalsGenerated));
+        public CommandHandler CorrelationCommand => correlationCommand
+                                            ?? (correlationCommand = new CommandHandler(Correlation, AreSignalsGenerated));
+
+        private void Correlation(object obj)
+        {
+            var points = new List<Point>();
+            points.AddRange(secondSignalViewModel.SignalData.Points);
+            secondSignalViewModel.SignalData.Points.Clear();
+            secondSignalViewModel.SignalData.Points.AddRange(Model.ConvolutionFiltrationCorrelation.Correlation.Correlate(firstSignalViewModel.SignalData.Points, points));
+            secondSignalViewModel.SignalData.PointsUpdate();
+        }
+
+        public CommandHandler ConvolutionCommand => convolutionCommand
+                                            ?? (convolutionCommand = new CommandHandler(Convolution, AreSignalsGenerated));
+
+        private void Convolution(object obj)
+        {
+            var points = new List<Point>();
+            points.AddRange(secondSignalViewModel.SignalData.Points);
+            secondSignalViewModel.SignalData.Points.Clear();
+            secondSignalViewModel.SignalData.Points.AddRange(Model.ConvolutionFiltrationCorrelation.Convolution.Convolute(firstSignalViewModel.SignalData.Points, points));
+            secondSignalViewModel.SignalData.PointsUpdate();
+        }
 
         public CommandHandler DivideCommand => divideCommand
                                                ?? (divideCommand = new CommandHandler(
@@ -53,6 +80,8 @@ namespace CPS1.ViewModel
             MultiplyCommand.RaiseCanExecuteChanged();
             SubtractCommand.RaiseCanExecuteChanged();
             SwapCommand.RaiseCanExecuteChanged();
+            CorrelationCommand.RaiseCanExecuteChanged();
+            ConvolutionCommand.RaiseCanExecuteChanged();
         }
 
         public bool AreSignalsGenerated()
