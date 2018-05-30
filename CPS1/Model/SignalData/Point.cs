@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using System.Runtime.Serialization;
 
 namespace CPS1.Model.SignalData
@@ -16,11 +17,23 @@ namespace CPS1.Model.SignalData
             X = x;
             Y = y;
         }
+
+        public Point(double x, Complex yz)
+        {
+            X = x;
+            Y = yz.Real;
+            Z = yz.Imaginary;
+        }
         public Point(double x, double y, double z)
         {
             X = x;
             Y = y;
             Z = z;
+        }
+
+        public Complex ToComplex()
+        {
+            return new Complex(Y, Z);
         }
 
         [DataMember] public double X { get; set; }

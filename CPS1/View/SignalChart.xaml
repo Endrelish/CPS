@@ -6,11 +6,11 @@
              xmlns:local="clr-namespace:CPS1"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:converters="clr-namespace:IKriv.Windows.Mvvm.Converters;assembly=IKriv.Windows"
-             xmlns:converters1="clr-namespace:CPS1.Converters"
+             xmlns:binding="clr-namespace:CPS1.Binding"
              mc:Ignorable="d"
              d:DesignHeight="305" d:DesignWidth="400">
     <UserControl.Resources>
-        <converters1:ChartSettingsConverter x:Key="ChartSettingsConverter" />
+        <binding:ChartSettingsConverter x:Key="ChartSettingsConverter" />
     </UserControl.Resources>
     <lvc:CartesianChart>
             <lvc:CartesianChart.Series>

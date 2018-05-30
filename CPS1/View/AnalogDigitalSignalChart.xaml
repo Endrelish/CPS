@@ -5,13 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:CPS1.View"
              xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             xmlns:converters="clr-namespace:CPS1.Converters"
              xmlns:viewModel="clr-namespace:CPS1.ViewModel"
+             xmlns:binding="clr-namespace:CPS1.Binding"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <converters:ChartSettingsConverter x:Key="ChartSettingsConverter" />
-        <converters:PointSizeContinuousConverter x:Key="PointSizeContinuousConverter" />
+        <binding:ChartSettingsConverter x:Key="ChartSettingsConverter" />
+        <binding:PointSizeContinuousConverter x:Key="PointSizeContinuousConverter" />
     </UserControl.Resources>
     <Grid>
         <wpf:CartesianChart>

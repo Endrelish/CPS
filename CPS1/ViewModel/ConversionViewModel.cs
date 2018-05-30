@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using CPS1.Annotations;
-using CPS1.Converters;
+using CPS1.Binding;
 using CPS1.Model.CommandHandlers;
 using CPS1.Model.Conversion;
 using CPS1.Model.Parameters;

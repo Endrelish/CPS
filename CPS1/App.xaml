@@ -4,15 +4,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:converters="clr-namespace:CPS1.Converters"
+             xmlns:binding="clr-namespace:CPS1.Binding"
              x:Class="CPS1.App"
              DispatcherUnhandledException="ApplicationDispatcherUnhandledException">
     <Application.Resources>
         <system:Int16 x:Key="First">1</system:Int16>
         <system:Int16 x:Key="Second">2</system:Int16>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <converters:VisibilityInversionConverter x:Key="VisibilityInversionConverter" />
-        <converters:LogarithmConverter x:Key="LogarithmConverter" />
+        <binding:VisibilityInversionConverter x:Key="VisibilityInversionConverter" />
+        <binding:LogarithmConverter x:Key="LogarithmConverter" />
         <Image x:Key="ButtonBackground" Source="../resources/ButtonBackground.png" />
 
         <Style x:Key="TitleStyle" TargetType="TextBlock">

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace CPS1
+namespace CPS1.View
 {
     /// <summary>
     ///     Interaction logic for MainWindow.xaml

@@ -1,4 +1,4 @@
-﻿namespace CPS1.Model.Delegates
+﻿namespace CPS1.Model.CommandHandlers
 {
     internal class SignalGeneratedCommandHandler
     {

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace CPS1.Converters
+namespace CPS1.Binding
 {
     public class LogarithmConverter : IValueConverter
     {

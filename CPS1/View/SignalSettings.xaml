@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:CPS1"
-             xmlns:converters="clr-namespace:CPS1.Converters"
              xmlns:view="clr-namespace:CPS1.View"
              mc:Ignorable="d" d:DesignWidth="400">
     <UserControl.Resources>

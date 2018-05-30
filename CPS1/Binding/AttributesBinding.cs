@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using CPS1.Model.SignalData;
 
-namespace CPS1.Converters
+namespace CPS1.Binding
 {
     public static class AttributesBinding
     {
