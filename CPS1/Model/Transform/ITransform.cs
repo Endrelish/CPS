@@ -3,7 +3,7 @@ using CPS1.Model.SignalData;
 
 namespace CPS1.Model.Transform.FourierTransform
 {
-    public interface IFourierTransform
+    public interface ITransform
     {
         IEnumerable<Point> Transform(IEnumerable<Point> signal);
     }

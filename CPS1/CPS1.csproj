@@ -122,9 +122,10 @@
     <Compile Include="Model\CommandHandlers\CommandHandler.cs" />
     <Compile Include="Model\Serialization\FileBinarySerializer.cs" />
     <Compile Include="Model\Transform\FourierTransform\FourierTransform.cs" />
-    <Compile Include="Model\Transform\FourierTransform\IFourierTransform.cs" />
+    <Compile Include="Model\Transform\ITransform.cs" />
     <Compile Include="Model\Transform\Matrix.cs" />
-    <Compile Include="Model\Transform\WalshHadamardTransform\IWalshHadamardTransform.cs" />
+    <Compile Include="Model\Transform\WalshHadamardTransform\DiscreteWalshHadamardTransform.cs" />
+    <Compile Include="Model\Transform\WalshHadamardTransform\FastWalshHadamardTransform.cs" />
     <Compile Include="Model\Transform\WalshHadamardTransform\WalshHadamardTransform.cs" />
     <Compile Include="ViewModel\CompositionViewModel.cs" />
     <Compile Include="ViewModel\ConversionViewModel.cs" />

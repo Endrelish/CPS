@@ -5,7 +5,7 @@ using CPS1.Model.SignalData;
 
 namespace CPS1.Model.Transform.FourierTransform
 {
-    public abstract class FourierTransform : IFourierTransform
+    public abstract class FourierTransform : ITransform
     {
         protected List<Point> transform;
         public virtual IEnumerable<Point> Transform(IEnumerable<Point> signal)

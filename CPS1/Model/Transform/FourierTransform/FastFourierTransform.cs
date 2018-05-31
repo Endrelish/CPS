@@ -10,7 +10,7 @@ namespace CPS1.Model.Transform.FourierTransform
     {
         private List<Point> even;
         private List<Point> odd;
-        private IFourierTransform dft;
+        private ITransform dft;
 
         public FastFourierTransform()
         {
