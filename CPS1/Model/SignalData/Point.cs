@@ -48,7 +48,7 @@ namespace CPS1.Model.SignalData
 
         public override string ToString()
         {
-            return X + " | " + Y;
+            return X + " | " + Y + " | " + Z;
         }
     }
 }

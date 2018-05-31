@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Linq;
+using System.Windows.Input;
 using CPS1.Model.CommandHandlers;
 using CPS1.Model.ConvolutionFiltrationCorrelation;
 using CPS1.Model.SignalData;
@@ -69,5 +70,14 @@ namespace CPS1.ViewModel
         public SignalViewModel FirstSignalViewModel { get; }
 
         public SignalViewModel SecondSignalViewModel { get; }
+        private ICommand whTransformCommand;
+
+        public ICommand WhTransformCommand =>
+            whTransformCommand ?? (whTransformCommand = new CommandHandler(WhTransform, () => true));
+
+        private void WhTransform(object obj)
+        {
+            //
+        }
     }
 }

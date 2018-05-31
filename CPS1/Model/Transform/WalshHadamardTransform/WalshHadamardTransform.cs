@@ -36,6 +36,6 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
             return matrix;
         }
 
-        public abstract IEnumerable<Point> Transform(IEnumerable<Point> signal);
+        public abstract IEnumerable<Point> Transform(IEnumerable<Point> signal, bool reversed =false);
     }
 }

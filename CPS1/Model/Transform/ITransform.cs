@@ -5,6 +5,6 @@ namespace CPS1.Model.Transform.FourierTransform
 {
     public interface ITransform
     {
-        IEnumerable<Point> Transform(IEnumerable<Point> signal);
+        IEnumerable<Point> Transform(IEnumerable<Point> signal, bool reversed = false);
     }
 }
