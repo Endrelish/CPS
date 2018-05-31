@@ -107,6 +107,7 @@
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Windows\HanningWindow.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Windows\IWindow.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Windows\RectangularWindow.cs" />
+    <Compile Include="Model\Exceptions\MatrixOperationException.cs" />
     <Compile Include="Model\Exceptions\InvalidFunctionException.cs" />
     <Compile Include="Model\Exceptions\SignalNotFoundException.cs" />
     <Compile Include="Model\Transform\FourierTransform\DiscreteFourierTransform.cs" />
@@ -122,6 +123,9 @@
     <Compile Include="Model\Serialization\FileBinarySerializer.cs" />
     <Compile Include="Model\Transform\FourierTransform\FourierTransform.cs" />
     <Compile Include="Model\Transform\FourierTransform\IFourierTransform.cs" />
+    <Compile Include="Model\Transform\Matrix.cs" />
+    <Compile Include="Model\Transform\WalshHadamardTransform\IWalshHadamardTransform.cs" />
+    <Compile Include="Model\Transform\WalshHadamardTransform\WalshHadamardTransform.cs" />
     <Compile Include="ViewModel\CompositionViewModel.cs" />
     <Compile Include="ViewModel\ConversionViewModel.cs" />
     <Compile Include="ViewModel\ConvolutionFiltrationCorrelationViewModel.cs" />
