@@ -21,22 +21,33 @@ namespace CPS1.Model.Transform.FourierTransform.Tests
             var t2 = new FastFourierTransform();
 
             var points = new List<Point>();
+            var points2 = new List<Point>();
             var x = 0;
 
             points.Add(new Point(x++, 1));
             points.Add(new Point(x++, 2));
             points.Add(new Point(x++, 3));
             points.Add(new Point(x, 1));
-
-            var complex = points.Select(p => new Complex(p.Y, 0)).ToArray();
+            x = 0;
+            points2.Add(new Point(x, 1));
+            points2.Add(new Point(x, 1));
+            points2.Add(new Point(x, 1));
+            points2.Add(new Point(x, 1));
+            points2.Add(new Point(x, 0));
+            points2.Add(new Point(x, 0));
+            points2.Add(new Point(x, 0));
+            points2.Add(new Point(x, 0));
+            
 
             var first = t1.Transform(points).ToList();
-            var comp = DiscreteFourierTransform.computeDft(complex);
             var second = t2.Transform(points).ToList();
+            var f2 = t1.Transform(points2).ToList();
+            var s2 = t2.Transform(points2).ToList();
+            
         
             for (int i = 0; i < first.Count; i++)
             {
-                Assert.AreEqual(first[i], second[i]);
+                Assert.AreEqual(first[i] , second[i]);
             }
         }
     }

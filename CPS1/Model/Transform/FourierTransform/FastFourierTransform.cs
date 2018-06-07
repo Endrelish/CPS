@@ -2,41 +2,62 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using CPS1.Model.SignalData;
 
 namespace CPS1.Model.Transform.FourierTransform
 {
     public sealed class FastFourierTransform : FourierTransform
     {
-        private List<Point> even;
-        private List<Point> odd;
-        private ITransform fft;
-        
-        public override IEnumerable<Point> Transform(IEnumerable<Point> signal, bool reversed = false)
+        private List<Point> _even;
+        private List<Point> _odd;
+
+        public override IEnumerable<Point> Transform(IEnumerable<Point> signal)
         {
-            if (signal.Count() == 2) fft = new DiscreteFourierTransform();
-                else fft = new FastFourierTransform();
             var enumerable = signal as Point[] ?? signal.ToArray();
-            odd = fft.Transform(enumerable.Where(s => enumerable.ToList().IndexOf(s) % 2 == 1)).ToList();
-            even = fft.Transform(enumerable.Where(s => enumerable.ToList().IndexOf(s) % 2 == 0)).ToList();
-            return base.Transform(enumerable);
+            if (enumerable.Count() <= 1) return enumerable;
+            var currentFt = new FastFourierTransform();
+            var points = enumerable.ToList();
+            var N = points.Count;
+            var o = new List<Point>();
+            var e = new List<Point>();
+            for (int i = 0; i < N; i += 2)
+            {
+                e.Add(points[i]);
+            }
+
+            for (int i = 1; i < N; i += 2)
+            {
+                o.Add(points[i]);
+            }
+
+            _odd = currentFt.Transform(o).ToList();
+            _even = currentFt.Transform(e).ToList();
+
+            return base.Transform(points);
         }
 
         protected override Complex TransformValue(int m, int N, Point[] signal)
         {
-            if (m - N / 2 >= 0) return TransformValue(m - N / 2, N, signal);
+            Complex ret;
+            if (m - N / 2 >= 0)
+            {
+                var tf = TwiddleFactor(m - N / 2, 1, N);
+                ret = _even[m - N / 2].ToComplex() - tf * _odd[m - N / 2].ToComplex();
+            }
+            else
+            {
+                var tf = TwiddleFactor(m, 1, N);
+                ret = _even[m].ToComplex() + tf * _odd[m].ToComplex();
+            }
 
-            return even[m].ToComplex() - TwiddleFactor(m, N) * odd[m].ToComplex();
+            return ret;
         }
 
         protected override Complex ReverseTransformValue(int m, int N, List<Point> signal)
         {
             throw new NotImplementedException();
         }
-
-        private Complex TwiddleFactor(int k, int n)
-        {
-            return Complex.Exp(-2 * Math.PI * k / n);
-        }
+        
     }
 }

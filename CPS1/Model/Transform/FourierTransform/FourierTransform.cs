@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using CPS1.Model.SignalData;
 
 namespace CPS1.Model.Transform.FourierTransform
 {
     public abstract class FourierTransform : ITransform
     {
-        public virtual IEnumerable<Point> Transform(IEnumerable<Point> signal, bool reversed = false)
+        public virtual IEnumerable<Point> Transform(IEnumerable<Point> signal)
         {
             var signalList = signal.ToArray();
             var N = signalList.Length;
@@ -18,9 +19,15 @@ namespace CPS1.Model.Transform.FourierTransform
             for (int i = 0; i < N; i++)
             {
                 transform[i] = new Point(i, TransformValue(i, N, signalList));
+                transform[i].Round(10E-15);
             }
 
             return transform;
+        }
+
+        protected Complex TwiddleFactor(int k, int m, int N)
+        {
+            return Complex.Exp(new Complex(0, -2 * Math.PI * m * k / N));
         }
 
         protected abstract Complex TransformValue(int m, int N, Point[] signal);

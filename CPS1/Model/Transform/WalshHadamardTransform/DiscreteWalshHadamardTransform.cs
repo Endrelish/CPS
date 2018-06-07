@@ -7,7 +7,7 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
 {
     public sealed class DiscreteWalshHadamardTransform : WalshHadamardTransform
     {
-        public override IEnumerable<Point> Transform(IEnumerable<Point> signal, bool reversed = false)
+        public override IEnumerable<Point> Transform(IEnumerable<Point> signal)
         {
             var signalList = signal.ToList();
             var count = signalList.Count();

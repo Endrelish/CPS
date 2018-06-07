@@ -60,6 +60,8 @@
     <Compile Include="Model\ConvolutionFiltrationCorrelation\ConvolutionTests.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\CorrelationTests.cs" />
     <Compile Include="Model\Transform\FourierTransform\FourierTransformTests.cs" />
+    <Compile Include="Model\Transform\MatrixTests.cs" />
+    <Compile Include="Model\Transform\WalshHadamardTransform\DiscreteWalshHadamardTransformTests.cs" />
     <Compile Include="Model\Transform\WalshHadamardTransform\WalshHadamardTransformTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

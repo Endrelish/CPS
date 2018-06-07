@@ -18,8 +18,8 @@ namespace CPS1.Model.Transform
             values = new T[sizeX, sizeY];
         }
 
-        public int SizeX { get; set; }
-        public int SizeY { get; set; }
+        public int SizeX { get; }
+        public int SizeY { get; }
 
         public T this[int x, int y]
         {

@@ -8,19 +8,18 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
 {
     public abstract class WalshHadamardTransform : ITransform
     {
-        protected Matrix<double> WalshHadamardMatrix(int m)
+        public Matrix<double> WalshHadamardMatrix(int m)
         {
             if (m == 0)
             {
                 var singleMatrix = new Matrix<double>(1, 1);
                 singleMatrix[0, 0] = 1.0d;
+                return singleMatrix;
             }
 
             var previousMatrix = WalshHadamardMatrix(m - 1);
             var sX = previousMatrix.SizeX;
             var sY = previousMatrix.SizeY;
-
-            previousMatrix *= 1.0d / Math.Sqrt(2);
 
             var matrix = new Matrix<double>(previousMatrix.SizeX * 2, previousMatrix.SizeY * 2);
             for (var i = 0; i < sX; i++)
@@ -36,6 +35,6 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
             return matrix;
         }
 
-        public abstract IEnumerable<Point> Transform(IEnumerable<Point> signal, bool reversed =false);
+        public abstract IEnumerable<Point> Transform(IEnumerable<Point> signal);
     }
 }
