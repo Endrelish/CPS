@@ -16,10 +16,10 @@ namespace CPS1.Model.SignalData
     [DataContract]
     public class FunctionData : INotifyPropertyChanged, IParametersProvider
     {
-        [NonSerialized] private Func<FunctionData, double, double> function;
+        [NonSerialized] private Func<FunctionData, double, double> _function;
 
-        private Signal type;
-        private List<Point> points;
+        private Signal _type;
+        private List<Point> _points;
 
         public FunctionData(
             double startTime = 0,
@@ -116,7 +116,6 @@ namespace CPS1.Model.SignalData
 
             Continuous.Value = continuous;
             Type = type;
-            IsLive = false;
         }
 
         [DataMember] public Parameter AbsoluteAverageValue { get; set; }
@@ -147,13 +146,13 @@ namespace CPS1.Model.SignalData
 
         [IgnoreDataMember] public Func<double, string> Formatter => value => value.ToString("N");
 
-        public FunctionAttribute<double> Frequency { get; set; }
+        public FunctionAttribute<double> Frequency { get; }
 
         [IgnoreDataMember]
         public Func<FunctionData, double, double> Function
         {
-            get => function;
-            set => function = value;
+            get => _function;
+            set => _function = value;
         }
 
         public IEnumerable<object> HistogramAttributes { get; }
@@ -206,44 +205,37 @@ namespace CPS1.Model.SignalData
         [DataMember] public FunctionAttribute<int> Samples { get; set; }
 
         [DataMember] public FunctionAttribute<double> StartTime { get; set; }
-
-        public bool IsLive { get; set; }
-
+        
         [DataMember]
         public Signal Type
         {
-            get => type;
+            get => _type;
             set
             {
-                if (value == type)
+                if (value == _type)
                 {
                     return;
                 }
 
-                type = value;
-                if (type != Signal.Composite)
+                _type = value;
+                if (_type != Signal.Composite)
                 {
-                    RequiredAttributes = AvailableFunctions.GetRequiredParameters(type);
-                    Function = AvailableFunctions.GetFunction(type);
+                    RequiredAttributes = AvailableFunctions.GetRequiredParameters(_type);
+                    Function = AvailableFunctions.GetFunction(_type);
                 }
                 
             }
         }
-
-        private ChartValues<double> values;
-
+        
         [IgnoreDataMember]
         public ChartValues<double> Values
         {
-            get
-            {
-                if (!IsLive)
-                {
-                    values = new ChartValues<double>(Points.Select(p => p.Y));
-                    return values;
-                }
-                else return values;
-            }
+            get => new ChartValues<double>(Points.Select(p => p.Y));
+        }
+        [IgnoreDataMember]
+        public ChartValues<double> ComplexValues
+        {
+            get => new ChartValues<double>(Points.Select(p => p.Z));
         }
 
         [DataMember] public Parameter Variance { get; set; }
@@ -271,11 +263,11 @@ namespace CPS1.Model.SignalData
         [DataMember]
         public List<Point> Points
         {
-            get => points;
+            get => _points;
             set
             {
-                if (Equals(value, points)) return;
-                points = value;
+                if (Equals(value, _points)) return;
+                _points = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Labels));
                 OnPropertyChanged(nameof(Values));

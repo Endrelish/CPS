@@ -18,12 +18,12 @@ namespace CPS1.ViewModel
         {
             FirstSignalViewModel.SignalData.Frequency.Value = 440.0d;
             FirstSignalViewModel.SignalData.Duration.Value = 0.02d;
-            FirstSignalViewModel.SignalData.Samples.Value = 500;
+            FirstSignalViewModel.SignalData.Samples.Value = 1024;
             FirstSignalViewModel.GenerateSignalCommand.Execute(null);
             SecondSignalViewModel.SignalData.Frequency.Value = 3000.0d;
             SecondSignalViewModel.SignalData.Duration.Value = 0.009d;
             SecondSignalViewModel.SignalData.Amplitude.Value = 20.0d;
-            SecondSignalViewModel.SignalData.Samples.Value = 1500;
+            SecondSignalViewModel.SignalData.Samples.Value = 1024;
             SecondSignalViewModel.GenerateSignalCommand.Execute(null);
             CompositionViewModel.AddCommand.Execute((short)1);
         }
@@ -57,6 +57,7 @@ namespace CPS1.ViewModel
             ConversionViewModel = new ConversionViewModel(FirstSignalViewModel);
             ConvolutionFiltrationCorrelationViewModel = new ConvolutionFiltrationCorrelationViewModel(FirstSignalViewModel);
             DistanceSensorViewModel = new DistanceSensorViewModel();
+            TransformViewModel = new TransformViewModel(FirstSignalViewModel.SignalData);
         }
 
         public CompositionViewModel CompositionViewModel { get; }
@@ -70,14 +71,6 @@ namespace CPS1.ViewModel
         public SignalViewModel FirstSignalViewModel { get; }
 
         public SignalViewModel SecondSignalViewModel { get; }
-        private ICommand whTransformCommand;
-
-        public ICommand WhTransformCommand =>
-            whTransformCommand ?? (whTransformCommand = new CommandHandler(WhTransform, () => true));
-
-        private void WhTransform(object obj)
-        {
-            //
-        }
+        public TransformViewModel TransformViewModel { get; }
     }
 }

@@ -4,9 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CPS1.View"
+             xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:binding="clr-namespace:CPS1.Binding"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <binding:ChartSettingsConverter x:Key="ChartSettingsConverter" />
+    </UserControl.Resources>
     <Grid>
-            
+        <wpf:CartesianChart>
+            <wpf:CartesianChart.Series>
+                <wpf:LineSeries Values="{Binding Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                PointForeground="#2195f2" PointGeometrySize="3" LineSmoothness="1"
+                                StrokeThickness="{Binding Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
+                <wpf:LineSeries Values="{Binding ComplexValues, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                PointForeground="#219500" PointGeometrySize="3" LineSmoothness="1"
+                                StrokeThickness="{Binding Continuous.Value, Converter={StaticResource ChartSettingsConverter}, ConverterParameter=line}" />
+            </wpf:CartesianChart.Series>
+            <wpf:CartesianChart.AxisX>
+                <wpf:Axis Title="Signal value"
+                          Labels="{Binding Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            </wpf:CartesianChart.AxisX>
+            <wpf:CartesianChart.AxisY>
+                <wpf:Axis LabelFormatter="{Binding Formatter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            </wpf:CartesianChart.AxisY>
+        </wpf:CartesianChart>
     </Grid>
 </UserControl>

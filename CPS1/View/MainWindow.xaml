@@ -217,6 +217,32 @@
                     <view:DistanceSensorCharts Grid.Row="1" Grid.Column="1" DataContext="{Binding}"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="Fourier transform" DataContext="{Binding TransformViewModel}">
+                <Grid Margin="5 5 5 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*" />
+                        <ColumnDefinition Width="75*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="MENU" />
+                    <TextBlock Grid.Column="1" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="CHART" />
+                    <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
+                        <StackPanel>
+                            <Button Width="100" Height="40" Content="SIMULATION" FontWeight="Bold" Command="{Binding FourierTransformCommand}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <view:ComplexChartV1 Grid.Row="1" Grid.Column="1" DataContext="{Binding Transform}"/>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

@@ -22,6 +22,13 @@ namespace CPS1.Model.Transform.FourierTransform
                 transform[i].Round(10E-15);
             }
 
+            var duration = (N - 1) * (signalList[1].X - signalList[0].X);
+
+            foreach (var point in transform)
+            {
+                point.X /= duration;
+            }
+
             return transform;
         }
 

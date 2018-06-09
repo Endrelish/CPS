@@ -6,6 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using CPS1.Model.Generation;
 using CPS1.Model.SignalData;
 
 namespace CPS1.Model.Transform.FourierTransform.Tests
@@ -13,6 +14,15 @@ namespace CPS1.Model.Transform.FourierTransform.Tests
     [TestClass()]
     public class FourierTransformTests
     {
+        [TestMethod()]
+        public void SineSignalTransform()
+        {
+            var data = new FunctionData(samples:256);
+            Generator.GenerateSignal(data);
+
+            var fft = new FastFourierTransform();
+            var transform = fft.Transform(data.Points);
+        }
         [TestMethod()]
         public void TransformTest()
         {
