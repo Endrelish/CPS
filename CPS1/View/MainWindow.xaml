@@ -220,27 +220,35 @@
             <TabItem Header="Fourier transform" DataContext="{Binding TransformViewModel}">
                 <Grid Margin="5 5 5 5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25*" />
-                        <ColumnDefinition Width="75*" />
+                        <ColumnDefinition Width="155*" />
+                        <ColumnDefinition Width="290*"/>
+                        <ColumnDefinition Width="1332*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="25" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" FontSize="20"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Text="MENU" />
                     <TextBlock Grid.Column="1" Grid.Row="0" FontWeight="Bold" FontSize="20"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               Text="CHART" />
-                    <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
+                               Text="MENU" Margin="37.5,-1,191,887" Grid.RowSpan="2" />
+                    <TextBlock Grid.Column="2" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="CHART" Margin="633,-1,632,887" Grid.RowSpan="2" />
+                    <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}" Grid.ColumnSpan="2">
                         <StackPanel>
                             <Button Width="100" Height="40" Content="SIMULATION" FontWeight="Bold" Command="{Binding FourierTransformCommand}"/>
                         </StackPanel>
                     </ScrollViewer>
-                    <view:ComplexChartV1 Grid.Row="1" Grid.Column="1" DataContext="{Binding Transform}"/>
+                    <TabControl Grid.Row="1" Grid.Column="2" DataContext="{Binding Transform}">
+                        <TabItem Header="Version 1">
+                            <view:ComplexChartV1 DataContext="{Binding}"/>
+                        </TabItem>
+                        <TabItem Header="Version 2">
+                            <view:ComplexChartV2 DataContext="{Binding}"/>
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </TabItem>
         </TabControl>

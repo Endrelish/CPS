@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using CPS1.Annotations;
 using CPS1.Properties;
 
 namespace CPS1.Model.SignalData
@@ -11,15 +12,15 @@ namespace CPS1.Model.SignalData
     public class FunctionAttribute<T> : INotifyPropertyChanged
         where T : struct
     {
-        private T maxValue;
+        private T _maxValue;
 
-        private T minValue;
+        private T _minValue;
 
-        private string name;
+        private string _name;
 
-        private T value;
+        private T _value;
 
-        private bool visibility;
+        private bool _visibility;
 
         public FunctionAttribute(T value, bool visibility, T minValue, T maxValue, string name)
         {
@@ -33,15 +34,15 @@ namespace CPS1.Model.SignalData
         [DataMember]
         public T MaxValue
         {
-            get => maxValue;
+            get => _maxValue;
             set
             {
-                if (value.Equals(maxValue))
+                if (value.Equals(_maxValue))
                 {
                     return;
                 }
 
-                maxValue = value;
+                _maxValue = value;
                 OnPropertyChanged();
             }
         }
@@ -49,15 +50,15 @@ namespace CPS1.Model.SignalData
         [DataMember]
         public T MinValue
         {
-            get => minValue;
+            get => _minValue;
             set
             {
-                if (value.Equals(minValue))
+                if (value.Equals(_minValue))
                 {
                     return;
                 }
 
-                minValue = value;
+                _minValue = value;
                 OnPropertyChanged();
             }
         }
@@ -65,15 +66,15 @@ namespace CPS1.Model.SignalData
         [DataMember]
         public string Name
         {
-            get => name;
+            get => _name;
             set
             {
-                if (value == name)
+                if (value == _name)
                 {
                     return;
                 }
 
-                name = value;
+                _name = value;
                 OnPropertyChanged();
             }
         }
@@ -81,15 +82,15 @@ namespace CPS1.Model.SignalData
         [DataMember]
         public T Value
         {
-            get => value;
+            get => _value;
             set
             {
-                if (value.Equals(this.value))
+                if (value.Equals(this._value))
                 {
                     return;
                 }
 
-                this.value = value;
+                this._value = value;
                 OnPropertyChanged();
             }
         }
@@ -97,15 +98,15 @@ namespace CPS1.Model.SignalData
         [DataMember]
         public bool Visibility
         {
-            get => visibility;
+            get => _visibility;
             set
             {
-                if (value == visibility)
+                if (value == _visibility)
                 {
                     return;
                 }
 
-                visibility = value;
+                _visibility = value;
                 OnPropertyChanged();
             }
         }

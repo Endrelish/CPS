@@ -142,6 +142,9 @@
     <Compile Include="View\ComplexChartV1.xaml.cs">
       <DependentUpon>ComplexChartV1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ComplexChartV2.xaml.cs">
+      <DependentUpon>ComplexChartV2.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\CompositionSettings.xaml.cs">
       <DependentUpon>CompositionSettings.xaml</DependentUpon>
     </Compile>
@@ -168,7 +171,7 @@
     <Compile Include="ViewModel\IFileDialog.cs" />
     <Compile Include="Model\Serialization\IFileSerializer.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Annotations\Annotations.cs" />
     <Compile Include="View\Parameters.xaml.cs">
       <DependentUpon>Parameters.xaml</DependentUpon>
     </Compile>
@@ -188,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ComplexChartV1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ComplexChartV2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

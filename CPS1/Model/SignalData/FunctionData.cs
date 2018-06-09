@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using CPS1.Annotations;
 using CPS1.Binding;
 using CPS1.Model.Generation;
 using CPS1.Model.Parameters;
@@ -130,6 +132,7 @@ namespace CPS1.Model.SignalData
 
         [DataMember] public FunctionAttribute<bool> Continuous { get; set; }
 
+        [IgnoreDataMember]
         public FunctionData Copy
         {
             get
@@ -216,7 +219,7 @@ namespace CPS1.Model.SignalData
                 {
                     return;
                 }
-
+                
                 _type = value;
                 if (_type != Signal.Composite)
                 {
@@ -226,16 +229,65 @@ namespace CPS1.Model.SignalData
                 
             }
         }
-        
+
         [IgnoreDataMember]
         public ChartValues<double> Values
         {
-            get => new ChartValues<double>(Points.Select(p => p.Y));
+            get
+            {
+                var ret = new ChartValues<double>();
+                foreach (var point in Points)
+                {
+                    ret.Add(point.Y);
+                }
+
+                return ret;
+            }
         }
+
+        [IgnoreDataMember]
+        public ChartValues<double> AbsoluteValues
+        {
+            get
+            {
+                var ret = new ChartValues<double>();
+                foreach (var point in Points)
+                {
+                    ret.Add(point.ToComplex().Magnitude);
+                }
+
+                return ret;
+            }
+        }
+
+        [IgnoreDataMember]
+        public ChartValues<double> PhaseValues
+        {
+            get
+            {
+                var ret = new ChartValues<double>();
+                foreach (var point in Points)
+                {
+                    ret.Add(point.ToComplex().Phase);
+                }
+
+                return ret;
+            }
+        }
+
         [IgnoreDataMember]
         public ChartValues<double> ComplexValues
         {
-            get => new ChartValues<double>(Points.Select(p => p.Z));
+            get
+            {
+                var ret = new ChartValues<double>();
+                foreach (var point in Points)
+                {
+                    ret.Add(point.Z);
+                }
+
+                return ret;
+            }
         }
 
         [DataMember] public Parameter Variance { get; set; }
@@ -271,6 +323,9 @@ namespace CPS1.Model.SignalData
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Labels));
                 OnPropertyChanged(nameof(Values));
+                OnPropertyChanged(nameof(ComplexValues));
+                OnPropertyChanged(nameof(AbsoluteValues));
+                OnPropertyChanged(nameof(PhaseValues));
             }
         }
 

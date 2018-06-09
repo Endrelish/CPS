@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using CPS1.Annotations;
 using CPS1.Properties;
 
 namespace CPS1.Model.Parameters

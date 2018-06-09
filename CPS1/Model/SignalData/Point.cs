@@ -60,7 +60,7 @@ namespace CPS1.Model.SignalData
             return X + " | " + Y + " | " + Z;
         }
 
-        public bool Equals(object x, object y)
+        public new bool Equals(object x, object y)
         {
             if (x is Point f && y is Point s)
             {

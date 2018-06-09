@@ -26,7 +26,7 @@ namespace CPS1.ViewModel
 
         private void FourierTransform(object obj)
         {
-            var fft = new DiscreteFourierTransform();
+            var fft = new FastFourierTransform();
             Transform.Points = fft.Transform(SignalData.Points).ToList();
         }
     }
