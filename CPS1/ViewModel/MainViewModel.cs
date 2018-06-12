@@ -47,12 +47,12 @@ namespace CPS1.ViewModel
         {
             FirstSignalViewModel.SignalData.Frequency.Value = 460.0d;
             FirstSignalViewModel.SignalData.Duration.Value = 0.02d;
-            FirstSignalViewModel.SignalData.Samples.Value = 1024;
+            FirstSignalViewModel.SignalData.Samples.Value = 128;
             FirstSignalViewModel.GenerateSignalCommand.Execute(null);
             SecondSignalViewModel.SignalData.Frequency.Value = 3000.0d;
             SecondSignalViewModel.SignalData.Duration.Value = 0.009d;
             SecondSignalViewModel.SignalData.Amplitude.Value = 20.0d;
-            SecondSignalViewModel.SignalData.Samples.Value = 1024;
+            SecondSignalViewModel.SignalData.Samples.Value = 128;
             SecondSignalViewModel.GenerateSignalCommand.Execute(null);
             CompositionViewModel.AddCommand.Execute((short) 1);
         }
