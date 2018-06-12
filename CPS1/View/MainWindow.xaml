@@ -244,6 +244,8 @@
                                       SelectedItem="{Binding SelectedFourierTransform}" Margin="10 10 10 20" />
                             <Button Width="100" Height="40" Content="TRANSFORM" FontWeight="Bold"
                                     Command="{Binding FourierTransformCommand}" />
+                            
+                            <view:Parameters DataContext="{Binding Parameters}" Margin="0 250 0 0"/>
                         </StackPanel>
                     </ScrollViewer>
                     <TabControl Grid.Row="1" Grid.Column="2" DataContext="{Binding FourierTransformResult}">
@@ -282,6 +284,8 @@
                                       SelectedItem="{Binding SelectedWalshHadamardTransform}" Margin="10 10 10 20" />
                             <Button Width="100" Height="40" Content="TRANSFORM" FontWeight="Bold"
                                     Command="{Binding WalshHadamardTransformCommand}" />
+
+                            <view:Parameters DataContext="{Binding Parameters}" Margin="0 250 0 0"/>
                         </StackPanel>
                     </ScrollViewer>
                     <view:SignalChart Grid.Row="1" Grid.Column="2" DataContext="{Binding WalshHadamardTransformResult}" />

@@ -1,18 +1,25 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Timers;
 using System.Windows.Input;
+using CPS1.Annotations;
 using CPS1.Model.CommandHandlers;
+using CPS1.Model.Parameters;
 using CPS1.Model.SignalData;
 using CPS1.Model.Transform.FourierTransform;
 using CPS1.Model.Transform.WalshHadamardTransform;
 
 namespace CPS1.ViewModel
 {
-    public class TransformViewModel
+    public class TransformViewModel : INotifyPropertyChanged, IParametersProvider
     {
         private ICommand fourierTransformCommand;
 
         private ICommand walshHadamardTransformCommand;
+        private Parameter _elapsedTime;
 
         public TransformViewModel(FunctionData data)
         {
@@ -27,6 +34,20 @@ namespace CPS1.ViewModel
 
             SelectedFourierTransform = FourierTransforms.ElementAt(0);
             SelectedWalshHadamardTransform = WalshHadamardTransforms.ElementAt(0);
+
+            ElapsedTime = new Parameter(0.0d, "LAST OPERATION DURATION");
+            Parameters = new List<Parameter>(new []{ElapsedTime});
+        }
+
+        public Parameter ElapsedTime
+        {
+            get => _elapsedTime;
+            set
+            {
+                if (Equals(value, _elapsedTime)) return;
+                _elapsedTime = value;
+                OnPropertyChanged();
+            }
         }
 
         public FunctionData SignalData { get; }
@@ -49,12 +70,30 @@ namespace CPS1.ViewModel
 
         private void FourierTransform(object obj)
         {
+            Stopwatch s = new Stopwatch();
+            s.Start();
             FourierTransformResult.Points = SelectedFourierTransform.Transform(SignalData.Points).ToList();
+            s.Stop();
+            ElapsedTime.Value = s.ElapsedMilliseconds / 1000.0d;
         }
 
         private void WalshHadamardTransform(object obj)
         {
+            Stopwatch s = new Stopwatch();
+            s.Start();
             WalshHadamardTransformResult.Points = SelectedWalshHadamardTransform.Transform(SignalData.Points).ToList();
+            s.Stop();
+            ElapsedTime.Value = s.ElapsedMilliseconds / 1000.0d;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public IEnumerable<Parameter> Parameters { get; }
     }
 }
