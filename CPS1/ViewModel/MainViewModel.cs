@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using CPS1.Model.CommandHandlers;
 using CPS1.Model.ConvolutionFiltrationCorrelation;
+using CPS1.Model.SignalData;
 
 namespace CPS1.ViewModel
 {
@@ -45,16 +46,29 @@ namespace CPS1.ViewModel
 
         private void CompositeSine(object obj)
         {
-            FirstSignalViewModel.SignalData.Frequency.Value = 460.0d;
-            FirstSignalViewModel.SignalData.Duration.Value = 0.02d;
-            FirstSignalViewModel.SignalData.Samples.Value = 128;
+            var signalFirst = FirstSignalViewModel.SignalData;
+            var signalSecond = SecondSignalViewModel.SignalData;
+            signalFirst.Amplitude.Value = 2.0d;
+            signalFirst.Period.Value = 2.0d;
+            signalFirst.Duration.Value = 4.0d;
+            signalFirst.Samples.Value = 64;
             FirstSignalViewModel.GenerateSignalCommand.Execute(null);
-            SecondSignalViewModel.SignalData.Frequency.Value = 3000.0d;
-            SecondSignalViewModel.SignalData.Duration.Value = 0.009d;
-            SecondSignalViewModel.SignalData.Amplitude.Value = 20.0d;
-            SecondSignalViewModel.SignalData.Samples.Value = 128;
+
+            signalSecond.Amplitude.Value = 1.0d;
+            signalSecond.Period.Value = 1.0d;
+            signalSecond.Duration.Value = 4.0d;
+            signalSecond.Samples.Value = 64;
             SecondSignalViewModel.GenerateSignalCommand.Execute(null);
             CompositionViewModel.AddCommand.Execute((short) 1);
+
+            signalSecond.AssignSignal(new FunctionData());
+
+            signalSecond.Amplitude.Value = 5.0d;
+            signalSecond.Period.Value = 0.5d;
+            signalSecond.Duration.Value = 4.0d;
+            signalSecond.Samples.Value = 64;
+            SecondSignalViewModel.GenerateSignalCommand.Execute(null);
+            CompositionViewModel.AddCommand.Execute((short)1);
         }
 
         private void ConvolutionTest(object obj)
