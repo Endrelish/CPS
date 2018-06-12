@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Reflection;
 using CPS1.Model.SignalData;
 
 namespace CPS1.Model.Transform.FourierTransform
@@ -12,21 +11,29 @@ namespace CPS1.Model.Transform.FourierTransform
         private List<Point> _even;
         private List<Point> _odd;
 
+        public FastFourierTransform() : base("Fast Fourier Transform")
+        {
+        }
+
         public override IEnumerable<Point> Transform(IEnumerable<Point> signal)
         {
             var enumerable = signal as Point[] ?? signal.ToArray();
-            if (enumerable.Count() <= 1) return enumerable;
+            if (enumerable.Count() <= 1)
+            {
+                return enumerable;
+            }
+
             var currentFt = new FastFourierTransform();
             var points = enumerable.ToList();
             var N = points.Count;
             var o = new List<Point>();
             var e = new List<Point>();
-            for (int i = 0; i < N; i += 2)
+            for (var i = 0; i < N; i += 2)
             {
                 e.Add(points[i]);
             }
 
-            for (int i = 1; i < N; i += 2)
+            for (var i = 1; i < N; i += 2)
             {
                 o.Add(points[i]);
             }
@@ -58,6 +65,5 @@ namespace CPS1.Model.Transform.FourierTransform
         {
             throw new NotImplementedException();
         }
-        
     }
 }

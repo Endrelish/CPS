@@ -7,58 +7,53 @@ using CPS1.Model.CommandHandlers;
 using CPS1.Model.ConvolutionFiltrationCorrelation.Filters;
 using CPS1.Model.ConvolutionFiltrationCorrelation.Windows;
 using CPS1.Model.SignalData;
-using CPS1.Properties;
 
 namespace CPS1.ViewModel
 {
     public class ConvolutionFiltrationCorrelationViewModel : INotifyPropertyChanged
     {
-        private Dictionary<FilterType, string> filters;
+        private readonly FunctionAttribute<double> cutoffFrequency;
+
+        private readonly Filter filter;
+
+        private CommandHandler filterCommand;
+
+        private readonly FunctionAttribute<int> filterOrder;
+        private readonly Dictionary<FilterType, string> filters;
+
+        private readonly SignalViewModel firstSignalViewModel;
 
         private FilterType selectedFilter;
         private IWindow window;
 
-        private Filter filter;
-
         public ConvolutionFiltrationCorrelationViewModel(SignalViewModel first)
         {
-            this.firstSignalViewModel = first;
-            this.SecondSignalData = new FunctionData();
-            this.filter = new Filter();
+            firstSignalViewModel = first;
+            SecondSignalData = new FunctionData();
+            filter = new Filter();
 
-            this.filters = new Dictionary<FilterType, string>();
-            this.filters.Add(FilterType.LowPassFilter, "LOW-PASS FILTER");
-            this.filters.Add(FilterType.HighPassFilter, "HIGH-PASS FILTER");
+            filters = new Dictionary<FilterType, string>();
+            filters.Add(FilterType.LowPassFilter, "LOW-PASS FILTER");
+            filters.Add(FilterType.HighPassFilter, "HIGH-PASS FILTER");
 
-            this.selectedFilter = FilterType.LowPassFilter;
-            this.window = new RectangularWindow();
-            this.windows = new List<IWindow>(new IWindow[]{new RectangularWindow(), new HanningWindow()/*, new HammingWindow(), new BlackmanWindow()*/});
+            selectedFilter = FilterType.LowPassFilter;
+            window = new RectangularWindow();
+            windows = new List<IWindow>(new IWindow[]
+                {new RectangularWindow(), new HanningWindow() /*, new HammingWindow(), new BlackmanWindow()*/});
 
-            this.filterOrder = new FunctionAttribute<int>(5, true, 1, 500, "FILTER ORDER");
-            this.cutoffFrequency = new FunctionAttribute<double>(400.0d, true, 10.0d, 25000.0d, "CUTOFF FREQUENCY");
+            filterOrder = new FunctionAttribute<int>(5, true, 1, 500, "FILTER ORDER");
+            cutoffFrequency = new FunctionAttribute<double>(400.0d, true, 10.0d, 25000.0d, "CUTOFF FREQUENCY");
 
-            this.Attributes = new List<object>(new []{(object)filterOrder, (object)cutoffFrequency});
+            Attributes = new List<object>(new[] {filterOrder, (object) cutoffFrequency});
 
-            this.firstSignalViewModel.SignalGenerated += ((sender, args) => this.FilterCommand.RaiseCanExecuteChanged());
+            firstSignalViewModel.SignalGenerated += (sender, args) => FilterCommand.RaiseCanExecuteChanged();
         }
 
-        private CommandHandler filterCommand;
-
-        public CommandHandler FilterCommand => this.filterCommand ?? (this.filterCommand =
-                                                   new CommandHandler(this.Filtration,
+        public CommandHandler FilterCommand => filterCommand ?? (filterCommand =
+                                                   new CommandHandler(Filtration,
                                                        () => firstSignalViewModel.IsSignalGenerated));
 
-        private void Filtration(object obj)
-        {
-            this.SecondSignalData.Points.Clear();
-            this.SecondSignalData.Points = filter.Filtration(filterOrder.Value, cutoffFrequency.Value,
-                FirstSignalData.Points, window, selectedFilter).ToList();
-        }
-
         public IEnumerable<string> Filters => filters.Select(f => f.Value);
-
-        private FunctionAttribute<int> filterOrder;
-        private FunctionAttribute<double> cutoffFrequency;
 
         public IEnumerable<object> Attributes { get; }
 
@@ -72,7 +67,6 @@ namespace CPS1.ViewModel
             }
         }
 
-        private SignalViewModel firstSignalViewModel;
         public FunctionData FirstSignalData => firstSignalViewModel.SignalData;
         public FunctionData SecondSignalData { get; }
 
@@ -99,6 +93,13 @@ namespace CPS1.ViewModel
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void Filtration(object obj)
+        {
+            SecondSignalData.Points.Clear();
+            SecondSignalData.Points = filter.Filtration(filterOrder.Value, cutoffFrequency.Value,
+                FirstSignalData.Points, window, selectedFilter).ToList();
+        }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

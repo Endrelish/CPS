@@ -64,6 +64,6 @@
         <Button Grid.Column="2" Grid.Row="7" Margin="4 4 4 4" Content="COMPUTE" Command="{Binding DivideCommand}"
                 CommandParameter="{StaticResource Second}" />
         <Button Grid.Column="2" Grid.Row="8" Margin="4 4 4 4" Content="COMPUTE" Command="{Binding ConvolutionCommand}" />
-        <Button Grid.Column="2" Grid.Row="9" Margin="4 4 4 4" Content="COMPUTE" Command="{Binding CorrelationCommand}"/>
+        <Button Grid.Column="2" Grid.Row="9" Margin="4 4 4 4" Content="COMPUTE" Command="{Binding CorrelationCommand}" />
     </Grid>
 </UserControl>

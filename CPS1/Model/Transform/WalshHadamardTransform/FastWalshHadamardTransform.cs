@@ -7,6 +7,10 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
 {
     public sealed class FastWalshHadamardTransform : WalshHadamardTransform
     {
+        public FastWalshHadamardTransform() : base("Fast Walsh-Hadamard Transform")
+        {
+        }
+
         public override IEnumerable<Point> Transform(IEnumerable<Point> signal)
         {
             var count = signal.Count();

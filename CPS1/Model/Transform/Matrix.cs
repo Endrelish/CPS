@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CPS1.Model.Exceptions;
-using CPS1.Model.SignalData;
 using Microsoft.CSharp.RuntimeBinder;
 
 namespace CPS1.Model.Transform
@@ -56,6 +55,7 @@ namespace CPS1.Model.Transform
         {
             return m * factor;
         }
+
         public static Matrix<T> operator *(Matrix<T> first, T factor)
         {
             var ret = first.Clone();
@@ -99,7 +99,7 @@ namespace CPS1.Model.Transform
         public List<T> ToList()
         {
             var list = new List<T>();
-            int index = 0;
+            var index = 0;
             foreach (var value in values)
             {
                 list.Add(value);

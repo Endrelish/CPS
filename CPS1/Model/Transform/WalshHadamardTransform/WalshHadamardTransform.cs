@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using CPS1.Model.SignalData;
 using CPS1.Model.Transform.FourierTransform;
 
@@ -8,7 +6,15 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
 {
     public abstract class WalshHadamardTransform : ITransform
     {
-        public Matrix<double> WalshHadamardMatrix(int m)
+        protected WalshHadamardTransform(string name)
+        {
+            Name = name;
+        }
+
+        public abstract IEnumerable<Point> Transform(IEnumerable<Point> signal);
+        public string Name { get; }
+
+        protected Matrix<double> WalshHadamardMatrix(int m)
         {
             if (m == 0)
             {
@@ -35,6 +41,9 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
             return matrix;
         }
 
-        public abstract IEnumerable<Point> Transform(IEnumerable<Point> signal);
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

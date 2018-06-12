@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Numerics;
 using System.Runtime.Serialization;
 
@@ -25,24 +24,12 @@ namespace CPS1.Model.SignalData
             Y = yz.Real;
             Z = yz.Imaginary;
         }
+
         public Point(double x, double y, double z)
         {
             X = x;
             Y = y;
             Z = z;
-        }
-
-        public void Round(double tolerance)
-        {
-            if (Y - Math.Floor(Y) < tolerance) Y = Math.Floor(Y);
-            else if (Math.Ceiling(Y) - Y < tolerance) Y = Math.Ceiling(Y);
-            if (Z - Math.Floor(Z) < tolerance) Z = Math.Floor(Z);
-            else if (Math.Ceiling(Z) - Z < tolerance) Z = Math.Ceiling(Z);
-        }
-
-        public Complex ToComplex()
-        {
-            return new Complex(Y, Z);
         }
 
         [DataMember] public double X { get; set; }
@@ -53,26 +40,6 @@ namespace CPS1.Model.SignalData
         public int CompareTo(object obj)
         {
             return X.CompareTo(((Point) obj).X);
-        }
-
-        public override string ToString()
-        {
-            return X + " | " + Y + " | " + Z;
-        }
-
-        public new bool Equals(object x, object y)
-        {
-            if (x is Point f && y is Point s)
-            {
-                return Math.Abs(f.X - s.X) < Double.Epsilon && Math.Abs(f.Y - s.Y) < double.Epsilon && Math.Abs(f.Z - s.Z) < double.Epsilon;
-            }
-
-            return false;
-        }
-
-        public int GetHashCode(object obj)
-        {
-            return base.GetHashCode();
         }
 
         public bool Equals(Point other)
@@ -90,6 +57,53 @@ namespace CPS1.Model.SignalData
             return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
         }
 
+        public void Round(double tolerance)
+        {
+            if (Y - Math.Floor(Y) < tolerance)
+            {
+                Y = Math.Floor(Y);
+            }
+            else if (Math.Ceiling(Y) - Y < tolerance)
+            {
+                Y = Math.Ceiling(Y);
+            }
+
+            if (Z - Math.Floor(Z) < tolerance)
+            {
+                Z = Math.Floor(Z);
+            }
+            else if (Math.Ceiling(Z) - Z < tolerance)
+            {
+                Z = Math.Ceiling(Z);
+            }
+        }
+
+        public Complex ToComplex()
+        {
+            return new Complex(Y, Z);
+        }
+
+        public override string ToString()
+        {
+            return X + " | " + Y + " | " + Z;
+        }
+
+        public new bool Equals(object x, object y)
+        {
+            if (x is Point f && y is Point s)
+            {
+                return Math.Abs(f.X - s.X) < double.Epsilon && Math.Abs(f.Y - s.Y) < double.Epsilon &&
+                       Math.Abs(f.Z - s.Z) < double.Epsilon;
+            }
+
+            return false;
+        }
+
+        public int GetHashCode(object obj)
+        {
+            return base.GetHashCode();
+        }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -102,7 +116,7 @@ namespace CPS1.Model.SignalData
                 return true;
             }
 
-            if (obj.GetType() != this.GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }

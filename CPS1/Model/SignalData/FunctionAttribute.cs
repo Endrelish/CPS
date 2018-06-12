@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using CPS1.Annotations;
-using CPS1.Properties;
 
 namespace CPS1.Model.SignalData
 {
@@ -85,12 +84,12 @@ namespace CPS1.Model.SignalData
             get => _value;
             set
             {
-                if (value.Equals(this._value))
+                if (value.Equals(_value))
                 {
                     return;
                 }
 
-                this._value = value;
+                _value = value;
                 OnPropertyChanged();
             }
         }
@@ -127,6 +126,5 @@ namespace CPS1.Model.SignalData
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }

@@ -8,7 +8,7 @@
         xmlns:win32="clr-namespace:Microsoft.Win32;assembly=PresentationFramework"
         xmlns:viewModel="clr-namespace:CPS1.ViewModel"
         xmlns:view="clr-namespace:CPS1.View"
-        
+
         mc:Ignorable="d"
         Title="MainWindow"
         WindowState="Maximized"
@@ -59,8 +59,8 @@
             <MenuItem Header="Clear _2. graph." Command="{Binding SecondSignalViewModel.ClearCommand}"
                       CommandParameter="2" />
             <MenuItem Header="_Swap signals." Command="{Binding CompositionViewModel.SwapCommand}" />
-            <MenuItem Header="Generate _composite sine." Command="{Binding CompositeSineCommand}"/>
-            <MenuItem Header="Walsh-Hadamard transfrom test" Command="{Binding WhTransformCommand}"/>
+            <MenuItem Header="Generate _composite sine." Command="{Binding CompositeSineCommand}" />
+            <MenuItem Header="Walsh-Hadamard transfrom test" Command="{Binding WhTransformCommand}" />
         </Menu>
 
         <!--TODO Remember last open tab.-->
@@ -180,9 +180,9 @@
                                VerticalAlignment="Center"
                                Text="CHART" />
                     <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
-                        <view:FiltrationSettings DataContext="{Binding}"/>
+                        <view:FiltrationSettings DataContext="{Binding}" />
                     </ScrollViewer>
-                    <view:AnalogDigitalSignalChart Grid.Column="1" Grid.Row="1" DataContext="{Binding}"/>
+                    <view:AnalogDigitalSignalChart Grid.Column="1" Grid.Row="1" DataContext="{Binding}" />
                 </Grid>
             </TabItem>
             <TabItem Header="Distance sensor" DataContext="{Binding DistanceSensorViewModel}">
@@ -205,23 +205,24 @@
                                Text="CHART" />
                     <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}">
                         <StackPanel>
-                            <TextBlock Style="{StaticResource TitleStyle}" Text="PROBING SIGNAL SETTINGS"/>
-                            <view:Attributes DataContext="{Binding SentSignalData.Attributes}"/>
-                            <TextBlock Style="{StaticResource TitleStyle}" Text="TRACKED OBJECT SETTINGS"/>
-                            <view:Attributes DataContext="{Binding Object.Attributes}"/>
-                            <Button Width="100" Height="40" Content="SIMULATION" FontWeight="Bold" Command="{Binding StartSimulationCommand}"/>
-                            <Separator Margin="50" Foreground="Black"/>
-                            <view:Parameters DataContext="{Binding SensorParameters.Parameters}"/>
+                            <TextBlock Style="{StaticResource TitleStyle}" Text="PROBING SIGNAL SETTINGS" />
+                            <view:Attributes DataContext="{Binding SentSignalData.Attributes}" />
+                            <TextBlock Style="{StaticResource TitleStyle}" Text="TRACKED OBJECT SETTINGS" />
+                            <view:Attributes DataContext="{Binding Object.Attributes}" />
+                            <Button Width="100" Height="40" Content="SIMULATION" FontWeight="Bold"
+                                    Command="{Binding StartSimulationCommand}" />
+                            <Separator Margin="50" Foreground="Black" />
+                            <view:Parameters DataContext="{Binding SensorParameters.Parameters}" />
                         </StackPanel>
                     </ScrollViewer>
-                    <view:DistanceSensorCharts Grid.Row="1" Grid.Column="1" DataContext="{Binding}"/>
+                    <view:DistanceSensorCharts Grid.Row="1" Grid.Column="1" DataContext="{Binding}" />
                 </Grid>
             </TabItem>
             <TabItem Header="Fourier transform" DataContext="{Binding TransformViewModel}">
                 <Grid Margin="5 5 5 5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="155*" />
-                        <ColumnDefinition Width="290*"/>
+                        <ColumnDefinition Width="290*" />
                         <ColumnDefinition Width="1332*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -238,17 +239,52 @@
                                Text="CHART" Margin="633,-1,632,887" Grid.RowSpan="2" />
                     <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}" Grid.ColumnSpan="2">
                         <StackPanel>
-                            <Button Width="100" Height="40" Content="SIMULATION" FontWeight="Bold" Command="{Binding FourierTransformCommand}"/>
+                            <view:SignalChart DataContext="{Binding SignalData}" Height="150" Margin="0 0 0 20" />
+                            <ComboBox ItemsSource="{Binding FourierTransforms}"
+                                      SelectedItem="{Binding SelectedFourierTransform}" Margin="10 10 10 20" />
+                            <Button Width="100" Height="40" Content="TRANSFORM" FontWeight="Bold"
+                                    Command="{Binding FourierTransformCommand}" />
                         </StackPanel>
                     </ScrollViewer>
-                    <TabControl Grid.Row="1" Grid.Column="2" DataContext="{Binding Transform}">
+                    <TabControl Grid.Row="1" Grid.Column="2" DataContext="{Binding FourierTransformResult}">
                         <TabItem Header="Version 1">
-                            <view:ComplexChartV1 DataContext="{Binding}"/>
+                            <view:ComplexChartV1 DataContext="{Binding}" />
                         </TabItem>
                         <TabItem Header="Version 2">
-                            <view:ComplexChartV2 DataContext="{Binding}"/>
+                            <view:ComplexChartV2 DataContext="{Binding}" />
                         </TabItem>
                     </TabControl>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Walsh-Hadamard transform" DataContext="{Binding TransformViewModel}">
+                <Grid Margin="5 5 5 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="155*" />
+                        <ColumnDefinition Width="290*" />
+                        <ColumnDefinition Width="1332*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="1" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="MENU" Margin="37.5,-1,191,887" Grid.RowSpan="2" />
+                    <TextBlock Grid.Column="2" Grid.Row="0" FontWeight="Bold" FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="CHART" Margin="633,-1,632,887" Grid.RowSpan="2" />
+                    <ScrollViewer Grid.Column="0" Grid.Row="1" Style="{StaticResource ChartStyle}" Grid.ColumnSpan="2">
+                        <StackPanel>
+                            <view:SignalChart DataContext="{Binding SignalData}" Height="150" Margin="0 0 0 20" />
+                            <ComboBox ItemsSource="{Binding WalshHadamardTransforms}"
+                                      SelectedItem="{Binding SelectedWalshHadamardTransform}" Margin="10 10 10 20" />
+                            <Button Width="100" Height="40" Content="TRANSFORM" FontWeight="Bold"
+                                    Command="{Binding WalshHadamardTransformCommand}" />
+                        </StackPanel>
+                    </ScrollViewer>
+                    <view:SignalChart Grid.Row="1" Grid.Column="2" DataContext="{Binding WalshHadamardTransformResult}" />
                 </Grid>
             </TabItem>
         </TabControl>

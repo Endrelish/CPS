@@ -7,7 +7,6 @@ using CPS1.Model.CommandHandlers;
 using CPS1.Model.Conversion;
 using CPS1.Model.Parameters;
 using CPS1.Model.SignalData;
-using CPS1.Properties;
 
 namespace CPS1.ViewModel
 {

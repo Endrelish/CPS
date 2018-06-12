@@ -10,8 +10,9 @@ namespace CPS1.Model.ConvolutionFiltrationCorrelation.DistanceSensor
         {
             Position = new Parameter(0.0d, "POSITION");
             Velocity = new FunctionAttribute<double>(1.0d, true, 0.5d, 20.0d, "VELOCITY");
-            Attributes = new List<FunctionAttribute<double>>(new []{Velocity});
+            Attributes = new List<FunctionAttribute<double>>(new[] {Velocity});
         }
+
         public List<FunctionAttribute<double>> Attributes { get; }
         public Parameter Position { get; }
         public FunctionAttribute<double> Velocity { get; }

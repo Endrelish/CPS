@@ -12,11 +12,11 @@ namespace CPS1.Model.ConvolutionFiltrationCorrelation
             var N = second.Count();
             var convolution = new List<Point>();
 
-            for (int i = 0; i < M + N - 1; i++)
+            for (var i = 0; i < M + N - 1; i++)
             {
                 var y = 0.0d;
 
-                for (int j = 0; j <M; j++)
+                for (var j = 0; j < M; j++)
                 {
                     if (j < first.Count() && i - j >= 0 && i - j < second.Count())
                     {

@@ -14,9 +14,10 @@ namespace CPS1.Model.ConvolutionFiltrationCorrelation.DistanceSensor
             SignalSpeed = new FunctionAttribute<double>(10.0d, true, 10.0d, 5000.0d, "SPEED OF SIGNAL");
             ReportPeriod = new FunctionAttribute<double>(1.0d, true, 1.0d, 5.0d, "SENSOR REPORTING PERIOD");
 
-            Attributes = new List<object>(new object[] {FirstPeriod, SecondPeriod, SamplingFrequency, NumberOfSamples, SignalSpeed, ReportPeriod});
+            Attributes = new List<object>(new object[]
+                {FirstPeriod, SecondPeriod, SamplingFrequency, NumberOfSamples, SignalSpeed, ReportPeriod});
         }
-        
+
         public List<object> Attributes { get; }
         public FunctionAttribute<double> FirstPeriod { get; }
         public FunctionAttribute<double> SecondPeriod { get; }

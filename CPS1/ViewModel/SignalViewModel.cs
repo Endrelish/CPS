@@ -8,7 +8,6 @@ using CPS1.Model.CommandHandlers;
 using CPS1.Model.Generation;
 using CPS1.Model.Serialization;
 using CPS1.Model.SignalData;
-using CPS1.Properties;
 using CPS1.View;
 
 namespace CPS1.ViewModel
@@ -92,26 +91,26 @@ namespace CPS1.ViewModel
 
         private void OpenSignal(object parameter)
         {
-                var filename = fileDialog.GetOpenFilePath(serializer.Format);
-                if (string.IsNullOrEmpty(filename))
-                {
-                    return;
-                }
+            var filename = fileDialog.GetOpenFilePath(serializer.Format);
+            if (string.IsNullOrEmpty(filename))
+            {
+                return;
+            }
 
-                var data = serializer.Deserialize(filename);
+            var data = serializer.Deserialize(filename);
 
-                SignalData.AssignSignal(data);
+            SignalData.AssignSignal(data);
         }
 
         private void SaveSignal(object parameter)
         {
-                var filename = fileDialog.GetSaveFilePath(serializer.Format);
-                if (string.IsNullOrEmpty(filename))
-                {
-                    return;
-                }
+            var filename = fileDialog.GetSaveFilePath(serializer.Format);
+            if (string.IsNullOrEmpty(filename))
+            {
+                return;
+            }
 
-                serializer.Serialize(SignalData, filename);
+            serializer.Serialize(SignalData, filename);
         }
     }
 }

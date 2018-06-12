@@ -14,14 +14,16 @@
                 <wpf:CartesianChart>
                     <wpf:CartesianChart.Series>
                         <wpf:LineSeries Values="{Binding}"
-                                        PointForeground="#2195f2" PointGeometrySize="5" LineSmoothness="1"/>
+                                        PointForeground="#2195f2" PointGeometrySize="5" LineSmoothness="1" />
                     </wpf:CartesianChart.Series>
                     <wpf:CartesianChart.AxisX>
                         <wpf:Axis Title="Signal value"
-                                  Labels="{Binding Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MinValue="2"/>
+                                  Labels="{Binding Labels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="2" />
                     </wpf:CartesianChart.AxisX>
                     <wpf:CartesianChart.AxisY>
-                        <wpf:Axis LabelFormatter="{Binding Formatter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <wpf:Axis
+                            LabelFormatter="{Binding Formatter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                     </wpf:CartesianChart.AxisY>
                 </wpf:CartesianChart>
             </ControlTemplate>
@@ -34,11 +36,11 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Style="{StaticResource TitleStyle}" Text="SENT SIGNAL"/>
-        <UserControl Grid.Row="1" Template="{StaticResource Chart}" DataContext="{Binding SentSignal}"/>
-        <TextBlock Grid.Row="2" Style="{StaticResource TitleStyle}" Text="RECEIVED SIGNAL"/>
-        <UserControl Grid.Row="3" Template="{StaticResource Chart}" DataContext="{Binding ReceivedSignal}"/>
-        <TextBlock Grid.Row="4" Style="{StaticResource TitleStyle}" Text="CORRELATION"/>
-        <UserControl Grid.Row="5" Template="{StaticResource Chart}" DataContext="{Binding CorrelationData}"/>
+        <TextBlock Grid.Row="0" Style="{StaticResource TitleStyle}" Text="SENT SIGNAL" />
+        <UserControl Grid.Row="1" Template="{StaticResource Chart}" DataContext="{Binding SentSignal}" />
+        <TextBlock Grid.Row="2" Style="{StaticResource TitleStyle}" Text="RECEIVED SIGNAL" />
+        <UserControl Grid.Row="3" Template="{StaticResource Chart}" DataContext="{Binding ReceivedSignal}" />
+        <TextBlock Grid.Row="4" Style="{StaticResource TitleStyle}" Text="CORRELATION" />
+        <UserControl Grid.Row="5" Template="{StaticResource Chart}" DataContext="{Binding CorrelationData}" />
     </Grid>
 </UserControl>

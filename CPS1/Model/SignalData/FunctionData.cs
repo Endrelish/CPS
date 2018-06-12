@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using CPS1.Annotations;
@@ -19,9 +18,9 @@ namespace CPS1.Model.SignalData
     public class FunctionData : INotifyPropertyChanged, IParametersProvider
     {
         [NonSerialized] private Func<FunctionData, double, double> _function;
+        private List<Point> _points;
 
         private Signal _type;
-        private List<Point> _points;
 
         public FunctionData(
             double startTime = 0,
@@ -208,7 +207,7 @@ namespace CPS1.Model.SignalData
         [DataMember] public FunctionAttribute<int> Samples { get; set; }
 
         [DataMember] public FunctionAttribute<double> StartTime { get; set; }
-        
+
         [DataMember]
         public Signal Type
         {
@@ -219,14 +218,13 @@ namespace CPS1.Model.SignalData
                 {
                     return;
                 }
-                
+
                 _type = value;
                 if (_type != Signal.Composite)
                 {
                     RequiredAttributes = AvailableFunctions.GetRequiredParameters(_type);
                     Function = AvailableFunctions.GetFunction(_type);
                 }
-                
             }
         }
 
@@ -308,17 +306,17 @@ namespace CPS1.Model.SignalData
             }
         }
 
-        [field: NonSerialized] public event PropertyChangedEventHandler PropertyChanged;
-
-        public IEnumerable<Parameter> Parameters { get; }
-
         [DataMember]
         public List<Point> Points
         {
             get => _points;
             set
             {
-                if (Equals(value, _points)) return;
+                if (Equals(value, _points))
+                {
+                    return;
+                }
+
                 _points = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Labels));
@@ -328,6 +326,10 @@ namespace CPS1.Model.SignalData
                 OnPropertyChanged(nameof(PhaseValues));
             }
         }
+
+        [field: NonSerialized] public event PropertyChangedEventHandler PropertyChanged;
+
+        public IEnumerable<Parameter> Parameters { get; }
 
         public void AssignSignal(FunctionData data)
         {
