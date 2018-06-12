@@ -11,11 +11,10 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
         {
         }
 
-        public override IEnumerable<Point> Transform(IEnumerable<Point> signal)
+        public override IEnumerable<Point> Transform(Point[] signal)
         {
-            var count = signal.Count();
+            var count = signal.Length;
             var exp = Convert.ToInt32(Math.Log(count, 2));
-            var signalArray = signal.ToArray();
 
             var whTransform = WalshHadamardMatrix(exp - 1);
             var points = new List<Point>(count);
@@ -24,7 +23,7 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
 
             for (var i = 0; i < count / 2; i++)
             {
-                vector[0, i] = signalArray[i].Y + signalArray[i + count / 2].Y;
+                vector[0, i] = signal[i].Y + signal[i + count / 2].Y;
             }
 
             var half = whTransform * vector;
@@ -36,7 +35,7 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
 
             for (var i = 0; i < count / 2; i++)
             {
-                vector[0, i] = signalArray[i].Y - signalArray[i + count / 2].Y;
+                vector[0, i] = signal[i].Y - signal[i + count / 2].Y;
             }
 
             half = whTransform * vector;

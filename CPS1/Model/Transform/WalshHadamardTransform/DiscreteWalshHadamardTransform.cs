@@ -12,7 +12,7 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
         {
         }
 
-        public override IEnumerable<Point> Transform(IEnumerable<Point> signal)
+        public override IEnumerable<Point> Transform(Point[] signal)
         {
             var signalList = signal.ToList();
             var count = signalList.Count();

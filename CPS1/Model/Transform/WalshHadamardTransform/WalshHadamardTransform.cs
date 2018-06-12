@@ -11,7 +11,7 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
             Name = name;
         }
 
-        public abstract IEnumerable<Point> Transform(IEnumerable<Point> signal);
+        public abstract IEnumerable<Point> Transform(Point[] signal);
         public string Name { get; }
 
         protected Matrix<double> WalshHadamardMatrix(int m)

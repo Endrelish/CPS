@@ -13,20 +13,19 @@ namespace CPS1.Model.Transform.FourierTransform
             Name = name;
         }
 
-        public virtual IEnumerable<Point> Transform(IEnumerable<Point> signal)
+        public virtual IEnumerable<Point> Transform(Point[] signal)
         {
-            var signalList = signal.ToArray();
-            var N = signalList.Length;
+            var N = signal.Length;
             var transform = new Point[N];
 
 
             for (var i = 0; i < N; i++)
             {
-                transform[i] = new Point(i, TransformValue(i, N, signalList));
+                transform[i] = new Point(i, TransformValue(i, N, signal));
                 transform[i].Round(10E-15);
             }
 
-            var duration = (N - 1) * (signalList[1].X - signalList[0].X);
+            var duration = (N - 1) * (signal[1].X - signal[0].X);
 
             foreach (var point in transform)
             {

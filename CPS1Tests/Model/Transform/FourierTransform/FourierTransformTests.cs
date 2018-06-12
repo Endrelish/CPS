@@ -21,7 +21,7 @@ namespace CPS1.Model.Transform.FourierTransform.Tests
             Generator.GenerateSignal(data);
 
             var fft = new FastFourierTransform();
-            var transform = fft.Transform(data.Points);
+            var transform = fft.Transform(data.Points.ToArray());
         }
         [TestMethod()]
         public void TransformTest()
@@ -49,10 +49,10 @@ namespace CPS1.Model.Transform.FourierTransform.Tests
             points2.Add(new Point(x, 0));
             
 
-            var first = t1.Transform(points).ToList();
-            var second = t2.Transform(points).ToList();
-            var f2 = t1.Transform(points2).ToList();
-            var s2 = t2.Transform(points2).ToList();
+            var first = t1.Transform(points.ToArray()).ToList();
+            var second = t2.Transform(points.ToArray()).ToList();
+            var f2 = t1.Transform(points2.ToArray()).ToList();
+            var s2 = t2.Transform(points2.ToArray()).ToList();
             
         
             for (int i = 0; i < first.Count; i++)

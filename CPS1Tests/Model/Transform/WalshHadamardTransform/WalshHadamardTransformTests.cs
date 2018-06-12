@@ -27,8 +27,8 @@ namespace CPS1.Model.Transform.WalshHadamardTransform.Tests
                 points.Add(new Point(i, r.Next()));
             }
 
-            var first = transformD.Transform(points).ToList();
-            var second = transformF.Transform(points).ToList();
+            var first = transformD.Transform(points.ToArray()).ToList();
+            var second = transformF.Transform(points.ToArray()).ToList();
 
             for (int i = 0; i < first.Count; i++)
             {

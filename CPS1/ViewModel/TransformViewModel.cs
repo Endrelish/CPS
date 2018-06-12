@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Timers;
 using System.Windows.Input;
 using CPS1.Annotations;
@@ -72,7 +73,7 @@ namespace CPS1.ViewModel
         {
             Stopwatch s = new Stopwatch();
             s.Start();
-            FourierTransformResult.Points = SelectedFourierTransform.Transform(SignalData.Points).ToList();
+            FourierTransformResult.Points = SelectedFourierTransform.Transform(SignalData.Points.ToArray()).ToList();
             s.Stop();
             ElapsedTime.Value = s.ElapsedMilliseconds / 1000.0d;
         }
@@ -81,7 +82,7 @@ namespace CPS1.ViewModel
         {
             Stopwatch s = new Stopwatch();
             s.Start();
-            WalshHadamardTransformResult.Points = SelectedWalshHadamardTransform.Transform(SignalData.Points).ToList();
+            WalshHadamardTransformResult.Points = SelectedWalshHadamardTransform.Transform(SignalData.Points.ToArray()).ToList();
             s.Stop();
             ElapsedTime.Value = s.ElapsedMilliseconds / 1000.0d;
         }

@@ -16,7 +16,7 @@ namespace CPS1.Model.Transform.FourierTransform
         {
         }
 
-        public override IEnumerable<Point> Transform(IEnumerable<Point> signal)
+        public override IEnumerable<Point> Transform(Point[] signal)
         {
             var enumerable = signal as Point[] ?? signal.ToArray();
             if (enumerable.Count() <= 1)
@@ -25,20 +25,16 @@ namespace CPS1.Model.Transform.FourierTransform
             }
 
             var currentFt = new FastFourierTransform();
-            var points = enumerable.ToList();
-            var N = points.Count;
-            var o = new List<Point>();
-            var e = new List<Point>();
-            for (var i = 0; i < N; i += 2)
+            var points = enumerable.ToArray();
+            var N = points.Length;
+            var o = new Point[points.Length / 2];
+            var e = new Point[points.Length / 2];
+            for (var i = 0; i < N - 1; i += 2)
             {
-                e.Add(points[i]);
+                e[i / 2] = points[i];
+                o[i / 2] = points[i + 1];
             }
-
-            for (var i = 1; i < N; i += 2)
-            {
-                o.Add(points[i]);
-            }
-
+            
             _odd = currentFt.Transform(o).ToList();
             _even = currentFt.Transform(e).ToList();
 
