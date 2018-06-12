@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Threading;
+using CPS1.Model.Exceptions;
 
 namespace CPS1
 {
@@ -10,8 +11,16 @@ namespace CPS1
     {
         private void ApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            MessageBox.Show("You shouldn't have done that, look what happened: " + e.Exception.Message,
-                "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Warning);
+            if (e.Exception.GetType() == typeof(InvalidSamplesNumberException))
+            {
+                MessageBox.Show(e.Exception.Message, "It was a mistake", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("You shouldn't have done that, look what happened: " + e.Exception.Message,
+                    "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
             e.Handled = true;
         }
     }

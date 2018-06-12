@@ -107,6 +107,7 @@
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Windows\HanningWindow.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Windows\IWindow.cs" />
     <Compile Include="Model\ConvolutionFiltrationCorrelation\Windows\RectangularWindow.cs" />
+    <Compile Include="Model\Exceptions\InvalidSamplesNumber.cs" />
     <Compile Include="Model\Exceptions\MatrixOperationException.cs" />
     <Compile Include="Model\Exceptions\InvalidFunctionException.cs" />
     <Compile Include="Model\Exceptions\SignalNotFoundException.cs" />
