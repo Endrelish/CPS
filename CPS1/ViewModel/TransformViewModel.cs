@@ -73,18 +73,20 @@ namespace CPS1.ViewModel
         {
             Stopwatch s = new Stopwatch();
             s.Start();
-            FourierTransformResult.Points = SelectedFourierTransform.Transform(SignalData.Points.ToArray()).ToList();
+            var result = SelectedFourierTransform.Transform(SignalData.Points.ToArray()).ToList();
             s.Stop();
             ElapsedTime.Value = s.ElapsedMilliseconds / 1000.0d;
+            FourierTransformResult.Points = result;
         }
 
         private void WalshHadamardTransform(object obj)
         {
             Stopwatch s = new Stopwatch();
             s.Start();
-            WalshHadamardTransformResult.Points = SelectedWalshHadamardTransform.Transform(SignalData.Points.ToArray()).ToList();
+            var result = SelectedWalshHadamardTransform.Transform(SignalData.Points.ToArray()).ToList();
             s.Stop();
             ElapsedTime.Value = s.ElapsedMilliseconds / 1000.0d;
+            WalshHadamardTransformResult.Points = result;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
