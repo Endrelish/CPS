@@ -11,9 +11,11 @@ namespace CPS1.Model.Transform.FourierTransform
     {
         private List<Point> _even;
         private List<Point> _odd;
+        private Dictionary<int, Complex> _twiddleFactors;
 
         public FastFourierTransform() : base("Fast Fourier Transform")
         {
+            _twiddleFactors = new Dictionary<int, Complex>();
         }
 
         public override IEnumerable<Point> Transform(Point[] signal)
@@ -46,13 +48,15 @@ namespace CPS1.Model.Transform.FourierTransform
             Complex ret;
             if (m - N / 2 >= 0)
             {
-                    var tf = TwiddleFactor(m - N / 2, 1, N);
-                    ret = _even[m - N / 2].ToComplex() - tf * _odd[m - N / 2].ToComplex();
+                if(!_twiddleFactors.ContainsKey(m - N / 2))
+                    _twiddleFactors[m - N / 2] = TwiddleFactor(m - N / 2, 1, N);
+                    ret = _even[m - N / 2].ToComplex() - _twiddleFactors[m - N / 2] * _odd[m - N / 2].ToComplex();
             }
             else
             {
-                var tf = TwiddleFactor(m, 1, N);
-                ret = _even[m].ToComplex() + tf * _odd[m].ToComplex();
+                if(!_twiddleFactors.ContainsKey(m))
+                    _twiddleFactors[m] = TwiddleFactor(m, 1, N);
+                ret = _even[m].ToComplex() + _twiddleFactors[m] * _odd[m].ToComplex();
             }
 
             return ret;
