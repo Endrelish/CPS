@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using CPS1.Model.Exceptions;
 using CPS1.Model.SignalData;
 
 namespace CPS1.Model.Transform.FourierTransform
@@ -16,6 +17,7 @@ namespace CPS1.Model.Transform.FourierTransform
         public virtual IEnumerable<Point> Transform(Point[] signal)
         {
             var N = signal.Length;
+            if((N != 0) && ((N & (N - 1)) != 0)) throw new InvalidSamplesNumberException("The number of samples must be a power of 2.");
             var transform = new Point[N];
 
 

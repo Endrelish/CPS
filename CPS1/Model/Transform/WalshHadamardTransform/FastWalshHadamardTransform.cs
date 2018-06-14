@@ -13,6 +13,7 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
 
         public override IEnumerable<Point> Transform(Point[] signal)
         {
+            CheckPointsNumber(signal);
             var count = signal.Length;
             var exp = Convert.ToInt32(Math.Log(count, 2));
 

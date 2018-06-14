@@ -14,6 +14,7 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
 
         public override IEnumerable<Point> Transform(Point[] signal)
         {
+            CheckPointsNumber(signal);
             var signalList = signal.ToList();
             var count = signalList.Count();
             var points = new List<Point>(count);

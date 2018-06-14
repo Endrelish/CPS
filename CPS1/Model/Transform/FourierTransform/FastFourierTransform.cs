@@ -46,15 +46,8 @@ namespace CPS1.Model.Transform.FourierTransform
             Complex ret;
             if (m - N / 2 >= 0)
             {
-                try
-                {
                     var tf = TwiddleFactor(m - N / 2, 1, N);
                     ret = _even[m - N / 2].ToComplex() - tf * _odd[m - N / 2].ToComplex();
-                }
-                catch (ArgumentOutOfRangeException e)
-                {
-                    throw new InvalidSamplesNumberException("The number of samples must be a power of 2.");
-                }
             }
             else
             {

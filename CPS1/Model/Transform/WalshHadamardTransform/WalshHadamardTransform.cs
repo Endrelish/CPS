@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CPS1.Model.Exceptions;
 using CPS1.Model.SignalData;
 using CPS1.Model.Transform.FourierTransform;
 
@@ -12,6 +13,11 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
             Name = name;
         }
 
+        protected void CheckPointsNumber(Point[] points)
+        {
+            var N = points.Length;
+            if ((N != 0) && ((N & (N - 1)) != 0)) throw new InvalidSamplesNumberException("The number of samples must be a power of 2.");
+        }
         public abstract IEnumerable<Point> Transform(Point[] signal);
         public string Name { get; }
 
