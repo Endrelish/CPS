@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CPS1.Model.SignalData;
 using CPS1.Model.Transform.FourierTransform;
 
@@ -38,6 +39,7 @@ namespace CPS1.Model.Transform.WalshHadamardTransform
                 }
             }
 
+            matrix *= 1 / Math.Sqrt(2);
             return matrix;
         }
 
